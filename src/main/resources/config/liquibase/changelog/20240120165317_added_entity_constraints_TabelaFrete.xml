@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity TabelaFrete.
+    -->
+    <changeSet id="20240120165317-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="embarcador_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__embarcador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="embarcador"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="transportadora_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__transportadora_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transportadora"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="tipo_carga_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__tipo_carga_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_carga"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="tipo_frete_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__tipo_frete_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_frete"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="forma_cobranca_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__forma_cobranca_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="forma_cobranca"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="regiao_origem_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__regiao_origem_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="regiao"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="regiao_destino_id"
+                                 baseTableName="tabela_frete"
+                                 constraintName="fk_tabela_frete__regiao_destino_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="regiao"
+                                 />
+    </changeSet>
+</databaseChangeLog>

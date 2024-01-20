@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (transportadora) {
+      <div>
+        <h2 data-cy="transportadoraDetailsHeading"><span>Transportadora</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ transportadora.id }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ transportadora.nome }}</span>
+          </dd>
+          <dt><span>Cnpj</span></dt>
+          <dd>
+            <span>{{ transportadora.cnpj }}</span>
+          </dd>
+          <dt><span>Razao Social</span></dt>
+          <dd>
+            <span>{{ transportadora.razaoSocial }}</span>
+          </dd>
+          <dt><span>Inscricao Estadual</span></dt>
+          <dd>
+            <span>{{ transportadora.inscricaoEstadual }}</span>
+          </dd>
+          <dt><span>Inscricao Municipal</span></dt>
+          <dd>
+            <span>{{ transportadora.inscricaoMunicipal }}</span>
+          </dd>
+          <dt><span>Responsavel</span></dt>
+          <dd>
+            <span>{{ transportadora.responsavel }}</span>
+          </dd>
+          <dt><span>Cep</span></dt>
+          <dd>
+            <span>{{ transportadora.cep }}</span>
+          </dd>
+          <dt><span>Endereco</span></dt>
+          <dd>
+            <span>{{ transportadora.endereco }}</span>
+          </dd>
+          <dt><span>Numero</span></dt>
+          <dd>
+            <span>{{ transportadora.numero }}</span>
+          </dd>
+          <dt><span>Complemento</span></dt>
+          <dd>
+            <span>{{ transportadora.complemento }}</span>
+          </dd>
+          <dt><span>Bairro</span></dt>
+          <dd>
+            <span>{{ transportadora.bairro }}</span>
+          </dd>
+          <dt><span>Telefone</span></dt>
+          <dd>
+            <span>{{ transportadora.telefone }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ transportadora.email }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ transportadora.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ transportadora.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ transportadora.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ transportadora.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ transportadora.usuarioAtualizacao }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/transportadora', transportadora.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

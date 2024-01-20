@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity StatusColeta.
+    -->
+    <changeSet id="20240120170117-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="status_coleta_id"
+                                 baseTableName="rel_status_coleta__status_coleta_origem"
+                                 constraintName="fk_rel_status_coleta__status_coleta_origem__status_coleta_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_coleta"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="status_coleta_origem_id"
+                                 baseTableName="rel_status_coleta__status_coleta_origem"
+                                 constraintName="fk_rel_status_coleta__status_co__status_coleta_origem_1f_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_coleta"
+                                 />
+    </changeSet>
+</databaseChangeLog>

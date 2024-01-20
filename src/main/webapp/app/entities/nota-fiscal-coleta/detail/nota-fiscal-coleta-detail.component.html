@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (notaFiscalColeta) {
+      <div>
+        <h2 data-cy="notaFiscalColetaDetailsHeading"><span>Nota Fiscal Coleta</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.id }}</span>
+          </dd>
+          <dt><span>Numero</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.numero }}</span>
+          </dd>
+          <dt><span>Serie</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.serie }}</span>
+          </dd>
+          <dt><span>Remetente</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.remetente }}</span>
+          </dd>
+          <dt><span>Destinatario</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.destinatario }}</span>
+          </dd>
+          <dt><span>Metro Cubico</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.metroCubico }}</span>
+          </dd>
+          <dt><span>Quantidade</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.quantidade }}</span>
+          </dd>
+          <dt><span>Peso</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.peso }}</span>
+          </dd>
+          <dt><span>Data Emissao</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.dataEmissao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Saida</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.dataSaida | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.valorTotal }}</span>
+          </dd>
+          <dt><span>Peso Total</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.pesoTotal }}</span>
+          </dd>
+          <dt><span>Quantidade Total</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.quantidadeTotal }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Solicitacao Coleta</span></dt>
+          <dd>
+            @if (notaFiscalColeta.solicitacaoColeta) {
+              <div>
+                <a [routerLink]="['/solicitacao-coleta', notaFiscalColeta.solicitacaoColeta.id, 'view']">{{
+                  notaFiscalColeta.solicitacaoColeta.id
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/nota-fiscal-coleta', notaFiscalColeta.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

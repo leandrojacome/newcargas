@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (notificacao) {
+      <div>
+        <h2 data-cy="notificacaoDetailsHeading"><span>Notificacao</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ notificacao.id }}</span>
+          </dd>
+          <dt><span>Tipo</span></dt>
+          <dd>
+            <span>{{ notificacao.tipo }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ notificacao.email }}</span>
+          </dd>
+          <dt><span>Telefone</span></dt>
+          <dd>
+            <span>{{ notificacao.telefone }}</span>
+          </dd>
+          <dt><span>Assunto</span></dt>
+          <dd>
+            <span>{{ notificacao.assunto }}</span>
+          </dd>
+          <dt><span>Mensagem</span></dt>
+          <dd>
+            <span>{{ notificacao.mensagem }}</span>
+          </dd>
+          <dt><span>Data Hora Envio</span></dt>
+          <dd>
+            <span>{{ notificacao.dataHoraEnvio | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Hora Leitura</span></dt>
+          <dd>
+            <span>{{ notificacao.dataHoraLeitura | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ notificacao.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ notificacao.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Lido</span></dt>
+          <dd>
+            <span>{{ notificacao.lido }}</span>
+          </dd>
+          <dt><span>Data Leitura</span></dt>
+          <dd>
+            <span>{{ notificacao.dataLeitura | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ notificacao.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ notificacao.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ notificacao.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (notificacao.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', notificacao.embarcador.id, 'view']">{{ notificacao.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (notificacao.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', notificacao.transportadora.id, 'view']">{{ notificacao.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/notificacao', notificacao.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

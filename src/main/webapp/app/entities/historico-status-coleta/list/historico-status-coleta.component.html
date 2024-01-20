@@ -1,0 +1,201 @@
+<div>
+  <h2 id="page-heading" data-cy="HistoricoStatusColetaHeading">
+    <span>Historico Status Coletas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-historico-status-coleta"
+        [routerLink]="['/historico-status-coleta/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Historico Status Coleta</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Historico Status Coleta</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (historicoStatusColetas?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Historico Status Coleta encontrado</span>
+    </div>
+  }
+
+  @if (historicoStatusColetas && historicoStatusColetas.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCriacao">
+              <div class="d-flex">
+                <span>Data Criacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="solicitacaoColeta.id">
+              <div class="d-flex">
+                <span>Solicitacao Coleta</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="roteirizacao.id">
+              <div class="d-flex">
+                <span>Roteirizacao</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="statusColetaOrigem.id">
+              <div class="d-flex">
+                <span>Status Coleta Origem</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="statusColetaDestino.id">
+              <div class="d-flex">
+                <span>Status Coleta Destino</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (historicoStatusColeta of historicoStatusColetas; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/historico-status-coleta', historicoStatusColeta.id, 'view']">{{ historicoStatusColeta.id }}</a>
+              </td>
+              <td>{{ historicoStatusColeta.dataCriacao | formatMediumDatetime }}</td>
+              <td>{{ historicoStatusColeta.observacao }}</td>
+              <td>
+                @if (historicoStatusColeta.solicitacaoColeta) {
+                  <div>
+                    <a [routerLink]="['/solicitacao-coleta', historicoStatusColeta.solicitacaoColeta.id, 'view']">{{
+                      historicoStatusColeta.solicitacaoColeta.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (historicoStatusColeta.roteirizacao) {
+                  <div>
+                    <a [routerLink]="['/roteirizacao', historicoStatusColeta.roteirizacao.id, 'view']">{{
+                      historicoStatusColeta.roteirizacao.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (historicoStatusColeta.statusColetaOrigem) {
+                  <div>
+                    <a [routerLink]="['/status-coleta', historicoStatusColeta.statusColetaOrigem.id, 'view']">{{
+                      historicoStatusColeta.statusColetaOrigem.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (historicoStatusColeta.statusColetaDestino) {
+                  <div>
+                    <a [routerLink]="['/status-coleta', historicoStatusColeta.statusColetaDestino.id, 'view']">{{
+                      historicoStatusColeta.statusColetaDestino.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/historico-status-coleta', historicoStatusColeta.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/historico-status-coleta', historicoStatusColeta.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(historicoStatusColeta)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (historicoStatusColetas && historicoStatusColetas.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

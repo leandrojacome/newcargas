@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165117"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "banco",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "codigo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique"],
+      "fieldValidateRulesMaxlength": "3",
+      "fieldValidateRulesMinlength": "3"
+    }
+  ],
+  "name": "Banco",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contaBancaria",
+      "otherEntityRelationshipName": "banco",
+      "relationshipName": "contaBancaria",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

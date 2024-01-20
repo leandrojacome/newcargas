@@ -1,0 +1,107 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (statusColeta) {
+      <div>
+        <h2 data-cy="statusColetaDetailsHeading"><span>Status Coleta</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ statusColeta.id }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ statusColeta.nome }}</span>
+          </dd>
+          <dt><span>Cor</span></dt>
+          <dd>
+            <span>{{ statusColeta.cor }}</span>
+          </dd>
+          <dt><span>Ordem</span></dt>
+          <dd>
+            <span>{{ statusColeta.ordem }}</span>
+          </dd>
+          <dt><span>Estado Inicial</span></dt>
+          <dd>
+            <span>{{ statusColeta.estadoInicial }}</span>
+          </dd>
+          <dt><span>Estado Final</span></dt>
+          <dd>
+            <span>{{ statusColeta.estadoFinal }}</span>
+          </dd>
+          <dt><span>Permite Cancelar</span></dt>
+          <dd>
+            <span>{{ statusColeta.permiteCancelar }}</span>
+          </dd>
+          <dt><span>Permite Editar</span></dt>
+          <dd>
+            <span>{{ statusColeta.permiteEditar }}</span>
+          </dd>
+          <dt><span>Permite Excluir</span></dt>
+          <dd>
+            <span>{{ statusColeta.permiteExcluir }}</span>
+          </dd>
+          <dt><span>Descricao</span></dt>
+          <dd>
+            <span>{{ statusColeta.descricao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ statusColeta.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ statusColeta.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ statusColeta.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ statusColeta.usuarioAtualizacao }}</span>
+          </dd>
+          <dt><span>Ativo</span></dt>
+          <dd>
+            <span>{{ statusColeta.ativo }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ statusColeta.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ statusColeta.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ statusColeta.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Status Coleta Origem</span></dt>
+          <dd>
+            @for (statusColetaOrigem of statusColeta.statusColetaOrigems; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/status-coleta', statusColetaOrigem.id, 'view']">{{ statusColetaOrigem.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/status-coleta', statusColeta.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

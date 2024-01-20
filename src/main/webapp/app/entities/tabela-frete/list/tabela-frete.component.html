@@ -1,0 +1,338 @@
+<div>
+  <h2 id="page-heading" data-cy="TabelaFreteHeading">
+    <span>Tabela Fretes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tabela-frete"
+        [routerLink]="['/tabela-frete/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Tabela Frete</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Tabela Frete</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (tabelaFretes?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Tabela Frete encontrado</span>
+    </div>
+  }
+
+  @if (tabelaFretes && tabelaFretes.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipo">
+              <div class="d-flex">
+                <span>Tipo</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nome">
+              <div class="d-flex">
+                <span>Nome</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descricao">
+              <div class="d-flex">
+                <span>Descricao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="leadTime">
+              <div class="d-flex">
+                <span>Lead Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="freteMinimo">
+              <div class="d-flex">
+                <span>Frete Minimo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTonelada">
+              <div class="d-flex">
+                <span>Valor Tonelada</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorMetroCubico">
+              <div class="d-flex">
+                <span>Valor Metro Cubico</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorUnidade">
+              <div class="d-flex">
+                <span>Valor Unidade</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorKm">
+              <div class="d-flex">
+                <span>Valor Km</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorAdicional">
+              <div class="d-flex">
+                <span>Valor Adicional</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorColeta">
+              <div class="d-flex">
+                <span>Valor Coleta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorEntrega">
+              <div class="d-flex">
+                <span>Valor Entrega</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorKmAdicional">
+              <div class="d-flex">
+                <span>Valor Km Adicional</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="embarcador.id">
+              <div class="d-flex">
+                <span>Embarcador</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoCarga.id">
+              <div class="d-flex">
+                <span>Tipo Carga</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoFrete.id">
+              <div class="d-flex">
+                <span>Tipo Frete</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="formaCobranca.id">
+              <div class="d-flex">
+                <span>Forma Cobranca</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="regiaoOrigem.id">
+              <div class="d-flex">
+                <span>Regiao Origem</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="regiaoDestino.id">
+              <div class="d-flex">
+                <span>Regiao Destino</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tabelaFrete of tabelaFretes; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/tabela-frete', tabelaFrete.id, 'view']">{{ tabelaFrete.id }}</a>
+              </td>
+              <td>{{ tabelaFrete.tipo }}</td>
+              <td>{{ tabelaFrete.nome }}</td>
+              <td>{{ tabelaFrete.descricao }}</td>
+              <td>{{ tabelaFrete.leadTime }}</td>
+              <td>{{ tabelaFrete.freteMinimo }}</td>
+              <td>{{ tabelaFrete.valorTonelada }}</td>
+              <td>{{ tabelaFrete.valorMetroCubico }}</td>
+              <td>{{ tabelaFrete.valorUnidade }}</td>
+              <td>{{ tabelaFrete.valorKm }}</td>
+              <td>{{ tabelaFrete.valorAdicional }}</td>
+              <td>{{ tabelaFrete.valorColeta }}</td>
+              <td>{{ tabelaFrete.valorEntrega }}</td>
+              <td>{{ tabelaFrete.valorTotal }}</td>
+              <td>{{ tabelaFrete.valorKmAdicional }}</td>
+              <td>{{ tabelaFrete.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ tabelaFrete.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>
+                @if (tabelaFrete.embarcador) {
+                  <div>
+                    <a [routerLink]="['/embarcador', tabelaFrete.embarcador.id, 'view']">{{ tabelaFrete.embarcador.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', tabelaFrete.transportadora.id, 'view']">{{ tabelaFrete.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.tipoCarga) {
+                  <div>
+                    <a [routerLink]="['/tipo-carga', tabelaFrete.tipoCarga.id, 'view']">{{ tabelaFrete.tipoCarga.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.tipoFrete) {
+                  <div>
+                    <a [routerLink]="['/tipo-frete', tabelaFrete.tipoFrete.id, 'view']">{{ tabelaFrete.tipoFrete.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.formaCobranca) {
+                  <div>
+                    <a [routerLink]="['/forma-cobranca', tabelaFrete.formaCobranca.id, 'view']">{{ tabelaFrete.formaCobranca.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.regiaoOrigem) {
+                  <div>
+                    <a [routerLink]="['/regiao', tabelaFrete.regiaoOrigem.id, 'view']">{{ tabelaFrete.regiaoOrigem.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tabelaFrete.regiaoDestino) {
+                  <div>
+                    <a [routerLink]="['/regiao', tabelaFrete.regiaoDestino.id, 'view']">{{ tabelaFrete.regiaoDestino.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/tabela-frete', tabelaFrete.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/tabela-frete', tabelaFrete.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(tabelaFrete)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (tabelaFretes && tabelaFretes.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

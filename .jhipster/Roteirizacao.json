@@ -1,0 +1,128 @@
+{
+  "annotations": {
+    "changelogDate": "20240120170317"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "roteirizacao",
+  "fields": [
+    {
+      "fieldName": "dataHoraPrimeiraColeta",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dataHoraUltimaColeta",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "dataHoraPrimeiraEntrega",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "dataHoraUltimaEntrega",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "valorTotal",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "observacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataCadastro",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "usuarioCadastro",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataAtualizacao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioAtualizacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "cancelado",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataCancelamento",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioCancelamento",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "removido",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataRemocao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioRemocao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "Roteirizacao",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "historicoStatusColeta",
+      "otherEntityRelationshipName": "roteirizacao",
+      "relationshipName": "historicoStatusColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "solicitacaoColeta",
+      "otherEntityRelationshipName": "roteirizacao",
+      "relationshipName": "solitacaoColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tomadaPreco",
+      "otherEntityRelationshipName": "roteirizacao",
+      "relationshipName": "tomadaPreco",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "statusColeta",
+      "otherEntityRelationshipName": "roteirizacao",
+      "relationshipName": "statusColeta",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,144 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165917"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "solicitacao_coleta",
+  "fields": [
+    {
+      "fieldName": "coletado",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dataHoraColeta",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "entregue",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dataHoraEntrega",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "valorTotal",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "observacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataCadastro",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dataAtualizacao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "cancelado",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataCancelamento",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioCancelamento",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "removido",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataRemocao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioRemocao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "SolicitacaoColeta",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "notaFiscalColeta",
+      "otherEntityRelationshipName": "solicitacaoColeta",
+      "relationshipName": "notaFiscalColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "endereco",
+      "otherEntityRelationshipName": "solicitacaoColetaOrigem",
+      "relationshipName": "enderecoOrigem",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "endereco",
+      "otherEntityRelationshipName": "solicitacaoColetaDestino",
+      "relationshipName": "enderecoDestino",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "historicoStatusColeta",
+      "otherEntityRelationshipName": "solicitacaoColeta",
+      "relationshipName": "historicoStatusColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "embarcador",
+      "otherEntityRelationshipName": "solitacaoColeta",
+      "relationshipName": "embarcador",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "statusColeta",
+      "otherEntityRelationshipName": "solicitacaoColeta",
+      "relationshipName": "statusColeta",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "roteirizacao",
+      "otherEntityRelationshipName": "solitacaoColeta",
+      "relationshipName": "roteirizacao",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "tipoVeiculo",
+      "otherEntityRelationshipName": "solitacaoColeta",
+      "relationshipName": "tipoVeiculo",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

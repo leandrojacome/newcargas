@@ -1,0 +1,225 @@
+<div>
+  <h2 id="page-heading" data-cy="ContaBancariaHeading">
+    <span>Conta Bancarias</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-conta-bancaria"
+        [routerLink]="['/conta-bancaria/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Conta Bancaria</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Conta Bancaria</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (contaBancarias?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Conta Bancaria encontrado</span>
+    </div>
+  }
+
+  @if (contaBancarias && contaBancarias.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="agencia">
+              <div class="d-flex">
+                <span>Agencia</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="conta">
+              <div class="d-flex">
+                <span>Conta</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipo">
+              <div class="d-flex">
+                <span>Tipo</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pix">
+              <div class="d-flex">
+                <span>Pix</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="titular">
+              <div class="d-flex">
+                <span>Titular</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="banco.id">
+              <div class="d-flex">
+                <span>Banco</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="embarcador.id">
+              <div class="d-flex">
+                <span>Embarcador</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contaBancaria of contaBancarias; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/conta-bancaria', contaBancaria.id, 'view']">{{ contaBancaria.id }}</a>
+              </td>
+              <td>{{ contaBancaria.agencia }}</td>
+              <td>{{ contaBancaria.conta }}</td>
+              <td>{{ contaBancaria.observacao }}</td>
+              <td>{{ contaBancaria.tipo }}</td>
+              <td>{{ contaBancaria.pix }}</td>
+              <td>{{ contaBancaria.titular }}</td>
+              <td>{{ contaBancaria.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ contaBancaria.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>
+                @if (contaBancaria.banco) {
+                  <div>
+                    <a [routerLink]="['/banco', contaBancaria.banco.id, 'view']">{{ contaBancaria.banco.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (contaBancaria.embarcador) {
+                  <div>
+                    <a [routerLink]="['/embarcador', contaBancaria.embarcador.id, 'view']">{{ contaBancaria.embarcador.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (contaBancaria.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', contaBancaria.transportadora.id, 'view']">{{ contaBancaria.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/conta-bancaria', contaBancaria.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/conta-bancaria', contaBancaria.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(contaBancaria)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (contaBancarias && contaBancarias.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

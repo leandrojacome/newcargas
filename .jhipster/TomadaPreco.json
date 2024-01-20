@@ -1,0 +1,131 @@
+{
+  "annotations": {
+    "changelogDate": "20240120170417"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "tomada_preco",
+  "fields": [
+    {
+      "fieldName": "dataHoraEnvio",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "prazoResposta",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "4",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorTotal",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "observacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataCadastro",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "usuarioCadastro",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataAtualizacao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioAtualizacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "aprovado",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataAprovacao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioAprovacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "cancelado",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataCancelamento",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioCancelamento",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "removido",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataRemocao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioRemocao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "TomadaPreco",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contratacao",
+      "otherEntityRelationshipName": "solicitacaoColeta",
+      "relationshipName": "contratacao",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "transportadora",
+      "otherEntityRelationshipName": "tomadaPreco",
+      "relationshipName": "transportadora",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "roteirizacao",
+      "otherEntityRelationshipName": "tomadaPreco",
+      "relationshipName": "roteirizacao",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

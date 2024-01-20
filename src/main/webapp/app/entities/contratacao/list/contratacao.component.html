@@ -1,0 +1,246 @@
+<div>
+  <h2 id="page-heading" data-cy="ContratacaoHeading">
+    <span>Contratacaos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-contratacao"
+        [routerLink]="['/contratacao/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Contratacao</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Contratacao</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (contratacaos?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Contratacao encontrado</span>
+    </div>
+  }
+
+  @if (contratacaos && contratacaos.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="validadeEmDias">
+              <div class="d-flex">
+                <span>Validade Em Dias</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataValidade">
+              <div class="d-flex">
+                <span>Data Validade</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCadastro">
+              <div class="d-flex">
+                <span>Usuario Cadastro</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioAtualizacao">
+              <div class="d-flex">
+                <span>Usuario Atualizacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cancelado">
+              <div class="d-flex">
+                <span>Cancelado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCancelamento">
+              <div class="d-flex">
+                <span>Data Cancelamento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCancelamento">
+              <div class="d-flex">
+                <span>Usuario Cancelamento</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="removido">
+              <div class="d-flex">
+                <span>Removido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRemocao">
+              <div class="d-flex">
+                <span>Data Remocao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioRemocao">
+              <div class="d-flex">
+                <span>Usuario Remocao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contratacao of contratacaos; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/contratacao', contratacao.id, 'view']">{{ contratacao.id }}</a>
+              </td>
+              <td>{{ contratacao.valorTotal }}</td>
+              <td>{{ contratacao.validadeEmDias }}</td>
+              <td>{{ contratacao.dataValidade | formatMediumDate }}</td>
+              <td>{{ contratacao.observacao }}</td>
+              <td>{{ contratacao.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ contratacao.usuarioCadastro }}</td>
+              <td>{{ contratacao.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ contratacao.usuarioAtualizacao }}</td>
+              <td>{{ contratacao.cancelado }}</td>
+              <td>{{ contratacao.dataCancelamento | formatMediumDatetime }}</td>
+              <td>{{ contratacao.usuarioCancelamento }}</td>
+              <td>{{ contratacao.removido }}</td>
+              <td>{{ contratacao.dataRemocao | formatMediumDatetime }}</td>
+              <td>{{ contratacao.usuarioRemocao }}</td>
+              <td>
+                @if (contratacao.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', contratacao.transportadora.id, 'view']">{{ contratacao.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/contratacao', contratacao.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/contratacao', contratacao.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(contratacao)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (contratacaos && contratacaos.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

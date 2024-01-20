@@ -1,0 +1,118 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (solicitacaoColeta) {
+      <div>
+        <h2 data-cy="solicitacaoColetaDetailsHeading"><span>Solicitacao Coleta</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.id }}</span>
+          </dd>
+          <dt><span>Coletado</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.coletado }}</span>
+          </dd>
+          <dt><span>Data Hora Coleta</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataHoraColeta | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Entregue</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.entregue }}</span>
+          </dd>
+          <dt><span>Data Hora Entrega</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataHoraEntrega | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.valorTotal }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Cancelado</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.cancelado }}</span>
+          </dd>
+          <dt><span>Data Cancelamento</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataCancelamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cancelamento</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.usuarioCancelamento }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ solicitacaoColeta.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (solicitacaoColeta.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', solicitacaoColeta.embarcador.id, 'view']">{{ solicitacaoColeta.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Status Coleta</span></dt>
+          <dd>
+            @if (solicitacaoColeta.statusColeta) {
+              <div>
+                <a [routerLink]="['/status-coleta', solicitacaoColeta.statusColeta.id, 'view']">{{ solicitacaoColeta.statusColeta.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Roteirizacao</span></dt>
+          <dd>
+            @if (solicitacaoColeta.roteirizacao) {
+              <div>
+                <a [routerLink]="['/roteirizacao', solicitacaoColeta.roteirizacao.id, 'view']">{{ solicitacaoColeta.roteirizacao.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tipo Veiculo</span></dt>
+          <dd>
+            @if (solicitacaoColeta.tipoVeiculo) {
+              <div>
+                <a [routerLink]="['/tipo-veiculo', solicitacaoColeta.tipoVeiculo.id, 'view']">{{ solicitacaoColeta.tipoVeiculo.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/solicitacao-coleta', solicitacaoColeta.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

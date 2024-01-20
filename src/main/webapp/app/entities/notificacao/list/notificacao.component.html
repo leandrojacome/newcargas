@@ -1,0 +1,260 @@
+<div>
+  <h2 id="page-heading" data-cy="NotificacaoHeading">
+    <span>Notificacaos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-notificacao"
+        [routerLink]="['/notificacao/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Notificacao</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Notificacao</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (notificacaos?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Notificacao encontrado</span>
+    </div>
+  }
+
+  @if (notificacaos && notificacaos.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipo">
+              <div class="d-flex">
+                <span>Tipo</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span>Email</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="telefone">
+              <div class="d-flex">
+                <span>Telefone</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="assunto">
+              <div class="d-flex">
+                <span>Assunto</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="mensagem">
+              <div class="d-flex">
+                <span>Mensagem</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraEnvio">
+              <div class="d-flex">
+                <span>Data Hora Envio</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraLeitura">
+              <div class="d-flex">
+                <span>Data Hora Leitura</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lido">
+              <div class="d-flex">
+                <span>Lido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataLeitura">
+              <div class="d-flex">
+                <span>Data Leitura</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="removido">
+              <div class="d-flex">
+                <span>Removido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRemocao">
+              <div class="d-flex">
+                <span>Data Remocao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioRemocao">
+              <div class="d-flex">
+                <span>Usuario Remocao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="embarcador.id">
+              <div class="d-flex">
+                <span>Embarcador</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (notificacao of notificacaos; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/notificacao', notificacao.id, 'view']">{{ notificacao.id }}</a>
+              </td>
+              <td>{{ notificacao.tipo }}</td>
+              <td>{{ notificacao.email }}</td>
+              <td>{{ notificacao.telefone }}</td>
+              <td>{{ notificacao.assunto }}</td>
+              <td>{{ notificacao.mensagem }}</td>
+              <td>{{ notificacao.dataHoraEnvio | formatMediumDatetime }}</td>
+              <td>{{ notificacao.dataHoraLeitura | formatMediumDatetime }}</td>
+              <td>{{ notificacao.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ notificacao.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ notificacao.lido }}</td>
+              <td>{{ notificacao.dataLeitura | formatMediumDatetime }}</td>
+              <td>{{ notificacao.removido }}</td>
+              <td>{{ notificacao.dataRemocao | formatMediumDatetime }}</td>
+              <td>{{ notificacao.usuarioRemocao }}</td>
+              <td>
+                @if (notificacao.embarcador) {
+                  <div>
+                    <a [routerLink]="['/embarcador', notificacao.embarcador.id, 'view']">{{ notificacao.embarcador.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (notificacao.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', notificacao.transportadora.id, 'view']">{{ notificacao.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/notificacao', notificacao.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/notificacao', notificacao.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(notificacao)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (notificacaos && notificacaos.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

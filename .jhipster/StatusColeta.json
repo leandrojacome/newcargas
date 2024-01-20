@@ -1,0 +1,148 @@
+{
+  "annotations": {
+    "changelogDate": "20240120170117"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "status_coleta",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "cor",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "8",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "ordem",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "4",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "estadoInicial",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "estadoFinal",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "permiteCancelar",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "permiteEditar",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "permiteExcluir",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "descricao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataCadastro",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "usuarioCadastro",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "dataAtualizacao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioAtualizacao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "ativo",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "removido",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataRemocao",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "usuarioRemocao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "StatusColeta",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "solicitacaoColeta",
+      "otherEntityRelationshipName": "statusColeta",
+      "relationshipName": "solicitacaoColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "historicoStatusColeta",
+      "otherEntityRelationshipName": "statusColetaOrigem",
+      "relationshipName": "historicoStatusColetaOrigem",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "historicoStatusColeta",
+      "otherEntityRelationshipName": "statusColetaDestino",
+      "relationshipName": "historicoStatusColetaDestino",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "roteirizacao",
+      "otherEntityRelationshipName": "statusColeta",
+      "relationshipName": "roteirizacao",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "statusColeta",
+      "otherEntityRelationshipName": "statusColetaDestino",
+      "relationshipName": "statusColetaOrigem",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "statusColeta",
+      "otherEntityRelationshipName": "statusColetaOrigem",
+      "relationshipName": "statusColetaDestino",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

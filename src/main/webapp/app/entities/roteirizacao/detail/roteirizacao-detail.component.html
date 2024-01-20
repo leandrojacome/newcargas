@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (roteirizacao) {
+      <div>
+        <h2 data-cy="roteirizacaoDetailsHeading"><span>Roteirizacao</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ roteirizacao.id }}</span>
+          </dd>
+          <dt><span>Data Hora Primeira Coleta</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataHoraPrimeiraColeta | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Hora Ultima Coleta</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataHoraUltimaColeta | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Hora Primeira Entrega</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataHoraPrimeiraEntrega | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Hora Ultima Entrega</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataHoraUltimaEntrega | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ roteirizacao.valorTotal }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ roteirizacao.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ roteirizacao.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ roteirizacao.usuarioAtualizacao }}</span>
+          </dd>
+          <dt><span>Cancelado</span></dt>
+          <dd>
+            <span>{{ roteirizacao.cancelado }}</span>
+          </dd>
+          <dt><span>Data Cancelamento</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataCancelamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cancelamento</span></dt>
+          <dd>
+            <span>{{ roteirizacao.usuarioCancelamento }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ roteirizacao.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ roteirizacao.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ roteirizacao.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Status Coleta</span></dt>
+          <dd>
+            @if (roteirizacao.statusColeta) {
+              <div>
+                <a [routerLink]="['/status-coleta', roteirizacao.statusColeta.id, 'view']">{{ roteirizacao.statusColeta.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/roteirizacao', roteirizacao.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

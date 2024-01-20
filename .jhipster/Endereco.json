@@ -1,0 +1,106 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165417"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "endereco",
+  "fields": [
+    {
+      "fieldName": "tipo",
+      "fieldType": "TipoEndereco",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "TRANSPORTADOR,EMBARCADOR,SOLICITACAO_COLETA,NOTA_FISCAL_COLETA"
+    },
+    {
+      "fieldName": "cep",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "required"],
+      "fieldValidateRulesMaxlength": "8",
+      "fieldValidateRulesMinlength": "8"
+    },
+    {
+      "fieldName": "endereco",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "numero",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "10",
+      "fieldValidateRulesMinlength": "1"
+    },
+    {
+      "fieldName": "complemento",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "bairro",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "Endereco",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "cidade",
+      "otherEntityRelationshipName": "endereco",
+      "relationshipName": "cidade",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "embarcador",
+      "otherEntityRelationshipName": "endereco",
+      "relationshipName": "embarcador",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "transportadora",
+      "otherEntityRelationshipName": "endereco",
+      "relationshipName": "transportadora",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "notaFiscalColeta",
+      "otherEntityRelationshipName": "enderecoOrigem",
+      "relationshipName": "notaFiscalColetaOrigem",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "notaFiscalColeta",
+      "otherEntityRelationshipName": "enderecoDestino",
+      "relationshipName": "notaFiscalColetaDestino",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "solicitacaoColeta",
+      "otherEntityRelationshipName": "enderecoOrigem",
+      "relationshipName": "solicitacaoColetaOrigem",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "solicitacaoColeta",
+      "otherEntityRelationshipName": "enderecoDestino",
+      "relationshipName": "solicitacaoColetaDestino",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20240120164717"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "estado",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "sigla",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "2",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "codigoIbge",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "7",
+      "fieldValidateRulesMin": "7"
+    }
+  ],
+  "name": "Estado",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "cidade",
+      "otherEntityRelationshipName": "estado",
+      "relationshipName": "cidade",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,378 @@
+application {
+    config {
+        baseName newcargas
+        packageName br.com.revenuebrasil.newcargas
+        applicationType monolith
+        searchEngine no
+        messageBroker no
+        nativeLanguage pt-br
+        testFrameworks [cypress, gatling, cucumber]
+        cacheProvider ehcache
+        blueprints [entity-audit, native]
+        databaseType sql
+        devDatabaseType postgresql
+        prodDatabaseType postgresql
+        enableHibernateCache true
+        enableTranslation false
+        clientTheme spacelab
+        clientThemeVariant primary
+        serverPort 8080
+        clientFramework angular
+        buildTool maven
+    }
+    entities *
+}
+
+entity Estado {
+    nome String maxlength(150) minlength(2) unique required
+    sigla String maxlength(2) minlength(2) unique required
+    codigoIbge Integer max(7) min(7)
+}
+
+entity Cidade {
+    nome String maxlength(150) minlength(2) unique required
+    codigoIbge Integer max(7) min(7)
+}
+
+entity Embarcador {
+    nome String maxlength(150) minlength(2) unique required
+    cnpj String maxlength(14) minlength(14) unique required
+    razaoSocial String maxlength(150) minlength(2) unique
+    inscricaoEstadual String maxlength(20) minlength(2) unique
+    inscricaoMunicipal String maxlength(20) minlength(2) unique
+    responsavel String maxlength(150) minlength(2)
+    cep String maxlength(8) minlength(8)
+    endereco String maxlength(150) minlength(2)
+    numero String maxlength(10) minlength(1)
+    complemento String maxlength(150) minlength(2)
+    bairro String maxlength(150) minlength(2)
+    telefone String maxlength(11) minlength(10)
+    email String maxlength(150) minlength(2)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+}
+
+entity Transportadora {
+    nome String maxlength(150) minlength(2) unique required
+    cnpj String maxlength(14) minlength(14) unique required
+    razaoSocial String maxlength(150) minlength(2) unique
+    inscricaoEstadual String maxlength(20) minlength(2) unique
+    inscricaoMunicipal String maxlength(20) minlength(2) unique
+    responsavel String maxlength(150) minlength(2)
+    cep String maxlength(8) minlength(8)
+    endereco String maxlength(150) minlength(2)
+    numero String maxlength(10) minlength(1)
+    complemento String maxlength(150) minlength(2)
+    bairro String maxlength(150) minlength(2)
+    telefone String maxlength(11) minlength(10)
+    email String maxlength(150) minlength(2)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+}
+
+entity Banco {
+    nome String maxlength(150) minlength(2) unique required
+    codigo String maxlength(3) minlength(3) unique
+}
+
+entity ContaBancaria {
+    agencia String maxlength(10) minlength(1) required
+    conta String maxlength(10) minlength(1) required
+    observacao String maxlength(500) minlength(2)
+    tipo String maxlength(150) minlength(2)
+    pix String maxlength(150) minlength(2)
+    titular String maxlength(150) minlength(2)
+    dataCadastro ZonedDateTime required
+    dataAtualizacao ZonedDateTime
+}
+
+enum TipoTabelaFrete {
+    EMBARCADOR,
+    TRANSPORTADOR
+}
+
+entity TabelaFrete {
+    tipo TipoTabelaFrete required
+    nome String maxlength(150) minlength(2) unique required
+    descricao String maxlength(500) minlength(2)
+    leadTime Integer max(4) min(1)
+    freteMinimo Double max(10) min(1)
+    valorTonelada Double max(10) min(1)
+    valorMetroCubico Double max(10) min(1)
+    valorUnidade Double max(10) min(1)
+    valorKm Double max(10) min(1)
+    valorAdicional Double max(10) min(1)
+    valorColeta Double max(10) min(1)
+    valorEntrega Double max(10) min(1)
+    valorTotal Double max(10) min(1)
+    valorKmAdicional Double max(10) min(1)
+    dataCadastro ZonedDateTime required
+    dataAtualizacao ZonedDateTime
+}
+
+enum TipoEndereco {
+    TRANSPORTADOR,
+    EMBARCADOR,
+    SOLICITACAO_COLETA,
+    NOTA_FISCAL_COLETA
+}
+
+entity Endereco {
+    tipo TipoEndereco required
+    cep String maxlength(8) minlength(8) required
+    endereco String maxlength(150) minlength(2) required
+    numero String maxlength(10) minlength(1)
+    complemento String maxlength(150) minlength(2)
+    bairro String maxlength(150) minlength(2) required
+}
+
+entity FormaCobranca {
+    nome String maxlength(150) minlength(2) unique required
+    descricao String maxlength(500) minlength(2)
+}
+
+entity TipoFrete {
+    nome String maxlength(150) minlength(2) unique required
+    descricao String maxlength(500) minlength(2)
+}
+
+entity TipoVeiculo {
+    nome String maxlength(150) minlength(2) unique required
+    descricao String maxlength(500) minlength(2)
+}
+
+entity TipoCarga {
+    nome String maxlength(150) minlength(2) unique required
+    descricao String maxlength(500) minlength(2)
+}
+
+entity SolicitacaoColeta {
+    coletado Boolean required
+    dataHoraColeta ZonedDateTime required
+    entregue Boolean required
+    dataHoraEntrega ZonedDateTime
+    valorTotal Double max(10) min(1)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    dataAtualizacao ZonedDateTime
+    cancelado Boolean
+    dataCancelamento ZonedDateTime
+    usuarioCancelamento String maxlength(150) minlength(2)
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+entity NotaFiscalColeta {
+    numero String maxlength(20) minlength(2) unique required
+    serie String maxlength(20) minlength(2) unique required
+    remetente String maxlength(150) minlength(2)
+    destinatario String maxlength(150) minlength(2)
+    metroCubico Double max(10) min(1)
+    quantidade Double max(10) min(1)
+    peso Double max(10) min(1)
+    dataEmissao ZonedDateTime
+    dataSaida ZonedDateTime
+    valorTotal Double max(10) min(1)
+    pesoTotal Double max(10) min(1)
+    quantidadeTotal Integer max(4) min(1)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime
+    dataAtualizacao ZonedDateTime
+}
+
+entity StatusColeta {
+    nome String maxlength(150) minlength(2) unique required
+    cor String maxlength(8) minlength(2)
+    ordem Integer max(4) min(1)
+    estadoInicial Boolean
+    estadoFinal Boolean
+    permiteCancelar Boolean
+    permiteEditar Boolean
+    permiteExcluir Boolean
+    descricao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+    ativo Boolean
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+entity HistoricoStatusColeta {
+    dataCriacao ZonedDateTime required
+    observacao String maxlength(500) minlength(2)
+}
+
+entity Roteirizacao {
+    dataHoraPrimeiraColeta ZonedDateTime required
+    dataHoraUltimaColeta ZonedDateTime
+    dataHoraPrimeiraEntrega ZonedDateTime
+    dataHoraUltimaEntrega ZonedDateTime
+    valorTotal Double max(10) min(1)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+    cancelado Boolean
+    dataCancelamento ZonedDateTime
+    usuarioCancelamento String maxlength(150) minlength(2)
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+entity TomadaPreco {
+    dataHoraEnvio ZonedDateTime required
+    prazoResposta Integer max(4) min(1)
+    valorTotal Double max(10) min(1)
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+    aprovado Boolean
+    dataAprovacao ZonedDateTime
+    usuarioAprovacao String maxlength(150) minlength(2)
+    cancelado Boolean
+    dataCancelamento ZonedDateTime
+    usuarioCancelamento String maxlength(150) minlength(2)
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+enum TipoNotificacao {
+    EMBARCADOR,
+    TRANSPORTADORA
+}
+
+entity Notificacao {
+    tipo TipoNotificacao required
+    email String maxlength(150) minlength(2)
+    telefone String maxlength(11) minlength(10)
+    assunto String maxlength(150) minlength(2) required
+    mensagem String maxlength(500) minlength(2) required
+    dataHoraEnvio ZonedDateTime required
+    dataHoraLeitura ZonedDateTime
+    dataCadastro ZonedDateTime required
+    dataAtualizacao ZonedDateTime
+    lido Boolean
+    dataLeitura ZonedDateTime
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+entity Contratacao {
+    valorTotal Double max(10) min(1) required
+    validadeEmDias Integer max(4) min(1) required
+    dataValidade LocalDate required
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+    cancelado Boolean
+    dataCancelamento ZonedDateTime
+    usuarioCancelamento String maxlength(150) minlength(2)
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+enum TipoFatura {
+    EMBARCADOR,
+    TRANSPORTADORA
+}
+
+entity Fatura {
+    tipo TipoFatura required
+    dataFatura ZonedDateTime required
+    dataVencimento ZonedDateTime required
+    dataPagamento ZonedDateTime
+    numeroParcela Integer max(4) min(1)
+    valorTotal Double max(10) min(1) required
+    observacao String maxlength(500) minlength(2)
+    dataCadastro ZonedDateTime required
+    usuarioCadastro String maxlength(150) minlength(2)
+    dataAtualizacao ZonedDateTime
+    usuarioAtualizacao String maxlength(150) minlength(2)
+    cancelado Boolean
+    dataCancelamento ZonedDateTime
+    usuarioCancelamento String maxlength(150) minlength(2)
+    removido Boolean
+    dataRemocao ZonedDateTime
+    usuarioRemocao String maxlength(150) minlength(2)
+}
+
+entity Regiao {
+    nome String maxlength(150) minlength(2) unique required
+    sigla String maxlength(5) minlength(2) unique
+    descricao String maxlength(500) minlength(2)
+}
+
+relationship OneToMany {
+    Estado{cidade} to Cidade{estado}
+    Cidade{endereco} to Endereco{cidade}
+    Banco{contaBancaria} to ContaBancaria{banco}
+    Embarcador{endereco} to Endereco{embarcador}
+    Embarcador{cidade} to Cidade{embarcador}
+    Embarcador{contaBancaria} to ContaBancaria{embarcador}
+    Embarcador{tabelaFrete} to TabelaFrete{embarcador}
+    Embarcador{solitacaoColeta} to SolicitacaoColeta{embarcador}
+    Embarcador{notificacao} to Notificacao{embarcador}
+    Embarcador{fatura} to Fatura{embarcador}
+    Transportadora{endereco} to Endereco{transportadora}
+    Transportadora{cidade} to Cidade{transportadora}
+    Transportadora{contaBancaria} to ContaBancaria{transportadora}
+    Transportadora{tabelaFrete} to TabelaFrete{transportadora}
+    Transportadora{tomadaPreco} to TomadaPreco{transportadora}
+    Transportadora{contratacao} to Contratacao{transportadora}
+    Transportadora{notificacao} to Notificacao{transportadora}
+    Transportadora{fatura} to Fatura{transportadora}
+    TipoCarga{tabelaFrete} to TabelaFrete{tipoCarga}
+    TipoFrete{tabelaFrete} to TabelaFrete{tipoFrete}
+    FormaCobranca{tabelaFrete} to TabelaFrete{formaCobranca}
+    Regiao{tabelaFreteOrigem} to TabelaFrete{regiaoOrigem}
+    Regiao{tabelaFreteDestino} to TabelaFrete{regiaoDestino}
+    SolicitacaoColeta{notaFiscalColeta} to NotaFiscalColeta{solicitacaoColeta}
+    NotaFiscalColeta{enderecoOrigem} to Endereco{notaFiscalColetaOrigem}
+    NotaFiscalColeta{enderecoDestino} to Endereco{notaFiscalColetaDestino}
+    SolicitacaoColeta{enderecoOrigem} to Endereco{solicitacaoColetaOrigem}
+    SolicitacaoColeta{enderecoDestino} to Endereco{solicitacaoColetaDestino}
+    StatusColeta{solicitacaoColeta} to SolicitacaoColeta{statusColeta}
+    SolicitacaoColeta{historicoStatusColeta} to HistoricoStatusColeta{solicitacaoColeta}
+    Roteirizacao{historicoStatusColeta} to HistoricoStatusColeta{roteirizacao}
+    StatusColeta{historicoStatusColetaOrigem} to HistoricoStatusColeta{statusColetaOrigem}
+    StatusColeta{historicoStatusColetaDestino} to HistoricoStatusColeta{statusColetaDestino}
+    StatusColeta{roteirizacao} to Roteirizacao{statusColeta}
+    Roteirizacao{solitacaoColeta} to SolicitacaoColeta{roteirizacao}
+    Roteirizacao{tomadaPreco} to TomadaPreco{roteirizacao}
+    Contratacao{fatura} to Fatura{contratacao}
+    FormaCobranca{fatuta} to Fatura{formaCobranca}
+    TipoVeiculo{solitacaoColeta} to SolicitacaoColeta{tipoVeiculo}
+}
+
+relationship OneToOne {
+    TomadaPreco{contratacao} to Contratacao{solicitacaoColeta}
+}
+
+relationship ManyToMany {
+    StatusColeta{statusColetaOrigem} to StatusColeta{statusColetaDestino}
+}
+
+dto all with mapstruct
+paginate all with pagination
+service all with serviceImpl
+search all with elasticsearch
+

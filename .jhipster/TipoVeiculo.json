@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165717"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "tipo_veiculo",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "descricao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "TipoVeiculo",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "solicitacaoColeta",
+      "otherEntityRelationshipName": "tipoVeiculo",
+      "relationshipName": "solitacaoColeta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,264 @@
+<div>
+  <h2 id="page-heading" data-cy="NotaFiscalColetaHeading">
+    <span>Nota Fiscal Coletas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-nota-fiscal-coleta"
+        [routerLink]="['/nota-fiscal-coleta/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Nota Fiscal Coleta</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Nota Fiscal Coleta</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (notaFiscalColetas?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Nota Fiscal Coleta encontrado</span>
+    </div>
+  }
+
+  @if (notaFiscalColetas && notaFiscalColetas.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numero">
+              <div class="d-flex">
+                <span>Numero</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="serie">
+              <div class="d-flex">
+                <span>Serie</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="remetente">
+              <div class="d-flex">
+                <span>Remetente</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="destinatario">
+              <div class="d-flex">
+                <span>Destinatario</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="metroCubico">
+              <div class="d-flex">
+                <span>Metro Cubico</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="quantidade">
+              <div class="d-flex">
+                <span>Quantidade</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="peso">
+              <div class="d-flex">
+                <span>Peso</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataEmissao">
+              <div class="d-flex">
+                <span>Data Emissao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataSaida">
+              <div class="d-flex">
+                <span>Data Saida</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pesoTotal">
+              <div class="d-flex">
+                <span>Peso Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="quantidadeTotal">
+              <div class="d-flex">
+                <span>Quantidade Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="solicitacaoColeta.id">
+              <div class="d-flex">
+                <span>Solicitacao Coleta</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (notaFiscalColeta of notaFiscalColetas; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/nota-fiscal-coleta', notaFiscalColeta.id, 'view']">{{ notaFiscalColeta.id }}</a>
+              </td>
+              <td>{{ notaFiscalColeta.numero }}</td>
+              <td>{{ notaFiscalColeta.serie }}</td>
+              <td>{{ notaFiscalColeta.remetente }}</td>
+              <td>{{ notaFiscalColeta.destinatario }}</td>
+              <td>{{ notaFiscalColeta.metroCubico }}</td>
+              <td>{{ notaFiscalColeta.quantidade }}</td>
+              <td>{{ notaFiscalColeta.peso }}</td>
+              <td>{{ notaFiscalColeta.dataEmissao | formatMediumDatetime }}</td>
+              <td>{{ notaFiscalColeta.dataSaida | formatMediumDatetime }}</td>
+              <td>{{ notaFiscalColeta.valorTotal }}</td>
+              <td>{{ notaFiscalColeta.pesoTotal }}</td>
+              <td>{{ notaFiscalColeta.quantidadeTotal }}</td>
+              <td>{{ notaFiscalColeta.observacao }}</td>
+              <td>{{ notaFiscalColeta.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ notaFiscalColeta.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>
+                @if (notaFiscalColeta.solicitacaoColeta) {
+                  <div>
+                    <a [routerLink]="['/solicitacao-coleta', notaFiscalColeta.solicitacaoColeta.id, 'view']">{{
+                      notaFiscalColeta.solicitacaoColeta.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/nota-fiscal-coleta', notaFiscalColeta.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/nota-fiscal-coleta', notaFiscalColeta.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(notaFiscalColeta)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (notaFiscalColetas && notaFiscalColetas.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

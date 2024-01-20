@@ -1,0 +1,262 @@
+<div>
+  <h2 id="page-heading" data-cy="RoteirizacaoHeading">
+    <span>Roteirizacaos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-roteirizacao"
+        [routerLink]="['/roteirizacao/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Roteirizacao</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Roteirizacao</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (roteirizacaos?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Roteirizacao encontrado</span>
+    </div>
+  }
+
+  @if (roteirizacaos && roteirizacaos.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraPrimeiraColeta">
+              <div class="d-flex">
+                <span>Data Hora Primeira Coleta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraUltimaColeta">
+              <div class="d-flex">
+                <span>Data Hora Ultima Coleta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraPrimeiraEntrega">
+              <div class="d-flex">
+                <span>Data Hora Primeira Entrega</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraUltimaEntrega">
+              <div class="d-flex">
+                <span>Data Hora Ultima Entrega</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCadastro">
+              <div class="d-flex">
+                <span>Usuario Cadastro</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioAtualizacao">
+              <div class="d-flex">
+                <span>Usuario Atualizacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cancelado">
+              <div class="d-flex">
+                <span>Cancelado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCancelamento">
+              <div class="d-flex">
+                <span>Data Cancelamento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCancelamento">
+              <div class="d-flex">
+                <span>Usuario Cancelamento</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="removido">
+              <div class="d-flex">
+                <span>Removido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRemocao">
+              <div class="d-flex">
+                <span>Data Remocao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioRemocao">
+              <div class="d-flex">
+                <span>Usuario Remocao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="statusColeta.id">
+              <div class="d-flex">
+                <span>Status Coleta</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (roteirizacao of roteirizacaos; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/roteirizacao', roteirizacao.id, 'view']">{{ roteirizacao.id }}</a>
+              </td>
+              <td>{{ roteirizacao.dataHoraPrimeiraColeta | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.dataHoraUltimaColeta | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.dataHoraPrimeiraEntrega | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.dataHoraUltimaEntrega | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.valorTotal }}</td>
+              <td>{{ roteirizacao.observacao }}</td>
+              <td>{{ roteirizacao.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.usuarioCadastro }}</td>
+              <td>{{ roteirizacao.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.usuarioAtualizacao }}</td>
+              <td>{{ roteirizacao.cancelado }}</td>
+              <td>{{ roteirizacao.dataCancelamento | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.usuarioCancelamento }}</td>
+              <td>{{ roteirizacao.removido }}</td>
+              <td>{{ roteirizacao.dataRemocao | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.usuarioRemocao }}</td>
+              <td>
+                @if (roteirizacao.statusColeta) {
+                  <div>
+                    <a [routerLink]="['/status-coleta', roteirizacao.statusColeta.id, 'view']">{{ roteirizacao.statusColeta.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/roteirizacao', roteirizacao.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/roteirizacao', roteirizacao.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(roteirizacao)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (roteirizacaos && roteirizacaos.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

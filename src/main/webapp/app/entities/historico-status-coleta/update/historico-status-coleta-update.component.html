@@ -1,0 +1,151 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-historico-status-coleta-heading" data-cy="HistoricoStatusColetaCreateUpdateHeading">
+        Criar ou editar Historico Status Coleta
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCriacao">Data Criacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCriacao"
+              data-cy="dataCriacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataCriacao"
+              formControlName="dataCriacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataCriacao')!.invalid && (editForm.get('dataCriacao')!.dirty || editForm.get('dataCriacao')!.touched)) {
+            <div>
+              @if (editForm.get('dataCriacao')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataCriacao')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observacao">Observacao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observacao"
+            id="field_observacao"
+            data-cy="observacao"
+            formControlName="observacao"
+          />
+          @if (editForm.get('observacao')!.invalid && (editForm.get('observacao')!.dirty || editForm.get('observacao')!.touched)) {
+            <div>
+              @if (editForm.get('observacao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('observacao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_solicitacaoColeta">Solicitacao Coleta</label>
+          <select
+            class="form-control"
+            id="field_solicitacaoColeta"
+            data-cy="solicitacaoColeta"
+            name="solicitacaoColeta"
+            formControlName="solicitacaoColeta"
+            [compareWith]="compareSolicitacaoColeta"
+          >
+            <option [ngValue]="null"></option>
+            @for (solicitacaoColetaOption of solicitacaoColetasSharedCollection; track $index) {
+              <option [ngValue]="solicitacaoColetaOption">{{ solicitacaoColetaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_roteirizacao">Roteirizacao</label>
+          <select
+            class="form-control"
+            id="field_roteirizacao"
+            data-cy="roteirizacao"
+            name="roteirizacao"
+            formControlName="roteirizacao"
+            [compareWith]="compareRoteirizacao"
+          >
+            <option [ngValue]="null"></option>
+            @for (roteirizacaoOption of roteirizacaosSharedCollection; track $index) {
+              <option [ngValue]="roteirizacaoOption">{{ roteirizacaoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_statusColetaOrigem">Status Coleta Origem</label>
+          <select
+            class="form-control"
+            id="field_statusColetaOrigem"
+            data-cy="statusColetaOrigem"
+            name="statusColetaOrigem"
+            formControlName="statusColetaOrigem"
+            [compareWith]="compareStatusColeta"
+          >
+            <option [ngValue]="null"></option>
+            @for (statusColetaOption of statusColetasSharedCollection; track $index) {
+              <option [ngValue]="statusColetaOption">{{ statusColetaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_statusColetaDestino">Status Coleta Destino</label>
+          <select
+            class="form-control"
+            id="field_statusColetaDestino"
+            data-cy="statusColetaDestino"
+            name="statusColetaDestino"
+            formControlName="statusColetaDestino"
+            [compareWith]="compareStatusColeta"
+          >
+            <option [ngValue]="null"></option>
+            @for (statusColetaOption of statusColetasSharedCollection; track $index) {
+              <option [ngValue]="statusColetaOption">{{ statusColetaOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

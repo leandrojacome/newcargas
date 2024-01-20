@@ -1,0 +1,171 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165317"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "tabela_frete",
+  "fields": [
+    {
+      "fieldName": "tipo",
+      "fieldType": "TipoTabelaFrete",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EMBARCADOR,TRANSPORTADOR"
+    },
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "descricao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "leadTime",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "4",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "freteMinimo",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorTonelada",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorMetroCubico",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorUnidade",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorKm",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorAdicional",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorColeta",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorEntrega",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorTotal",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "valorKmAdicional",
+      "fieldType": "Double",
+      "fieldValidateRules": ["max", "min"],
+      "fieldValidateRulesMax": "10",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "dataCadastro",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dataAtualizacao",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "name": "TabelaFrete",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "embarcador",
+      "otherEntityRelationshipName": "tabelaFrete",
+      "relationshipName": "embarcador",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "transportadora",
+      "otherEntityRelationshipName": "tabelaFrete",
+      "relationshipName": "transportadora",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "tipoCarga",
+      "otherEntityRelationshipName": "tabelaFrete",
+      "relationshipName": "tipoCarga",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "tipoFrete",
+      "otherEntityRelationshipName": "tabelaFrete",
+      "relationshipName": "tipoFrete",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "formaCobranca",
+      "otherEntityRelationshipName": "tabelaFrete",
+      "relationshipName": "formaCobranca",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "regiao",
+      "otherEntityRelationshipName": "tabelaFreteOrigem",
+      "relationshipName": "regiaoOrigem",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "regiao",
+      "otherEntityRelationshipName": "tabelaFreteDestino",
+      "relationshipName": "regiaoDestino",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

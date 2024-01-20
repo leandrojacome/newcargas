@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity ContaBancaria.
+    -->
+    <changeSet id="20240120165217-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="banco_id"
+                                 baseTableName="conta_bancaria"
+                                 constraintName="fk_conta_bancaria__banco_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="banco"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="embarcador_id"
+                                 baseTableName="conta_bancaria"
+                                 constraintName="fk_conta_bancaria__embarcador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="embarcador"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="transportadora_id"
+                                 baseTableName="conta_bancaria"
+                                 constraintName="fk_conta_bancaria__transportadora_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transportadora"
+                                 />
+    </changeSet>
+</databaseChangeLog>

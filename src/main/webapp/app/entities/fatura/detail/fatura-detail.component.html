@@ -1,0 +1,130 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (fatura) {
+      <div>
+        <h2 data-cy="faturaDetailsHeading"><span>Fatura</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ fatura.id }}</span>
+          </dd>
+          <dt><span>Tipo</span></dt>
+          <dd>
+            <span>{{ fatura.tipo }}</span>
+          </dd>
+          <dt><span>Data Fatura</span></dt>
+          <dd>
+            <span>{{ fatura.dataFatura | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Vencimento</span></dt>
+          <dd>
+            <span>{{ fatura.dataVencimento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Pagamento</span></dt>
+          <dd>
+            <span>{{ fatura.dataPagamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Numero Parcela</span></dt>
+          <dd>
+            <span>{{ fatura.numeroParcela }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ fatura.valorTotal }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ fatura.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ fatura.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ fatura.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ fatura.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ fatura.usuarioAtualizacao }}</span>
+          </dd>
+          <dt><span>Cancelado</span></dt>
+          <dd>
+            <span>{{ fatura.cancelado }}</span>
+          </dd>
+          <dt><span>Data Cancelamento</span></dt>
+          <dd>
+            <span>{{ fatura.dataCancelamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cancelamento</span></dt>
+          <dd>
+            <span>{{ fatura.usuarioCancelamento }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ fatura.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ fatura.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ fatura.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (fatura.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', fatura.embarcador.id, 'view']">{{ fatura.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (fatura.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', fatura.transportadora.id, 'view']">{{ fatura.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Contratacao</span></dt>
+          <dd>
+            @if (fatura.contratacao) {
+              <div>
+                <a [routerLink]="['/contratacao', fatura.contratacao.id, 'view']">{{ fatura.contratacao.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Forma Cobranca</span></dt>
+          <dd>
+            @if (fatura.formaCobranca) {
+              <div>
+                <a [routerLink]="['/forma-cobranca', fatura.formaCobranca.id, 'view']">{{ fatura.formaCobranca.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/fatura', fatura.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

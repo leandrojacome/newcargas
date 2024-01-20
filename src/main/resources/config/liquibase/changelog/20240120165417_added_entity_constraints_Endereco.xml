@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Endereco.
+    -->
+    <changeSet id="20240120165417-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="cidade_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__cidade_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cidade"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="embarcador_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__embarcador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="embarcador"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="transportadora_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__transportadora_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transportadora"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="nota_fiscal_coleta_origem_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__nota_fiscal_coleta_origem_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nota_fiscal_coleta"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="nota_fiscal_coleta_destino_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__nota_fiscal_coleta_destino_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nota_fiscal_coleta"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="solicitacao_coleta_origem_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__solicitacao_coleta_origem_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="solicitacao_coleta"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="solicitacao_coleta_destino_id"
+                                 baseTableName="endereco"
+                                 constraintName="fk_endereco__solicitacao_coleta_destino_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="solicitacao_coleta"
+                                 />
+    </changeSet>
+</databaseChangeLog>

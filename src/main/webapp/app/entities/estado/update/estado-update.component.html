@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-estado-heading" data-cy="EstadoCreateUpdateHeading">Criar ou editar Estado</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nome">Nome</label>
+          <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
+          @if (editForm.get('nome')!.invalid && (editForm.get('nome')!.dirty || editForm.get('nome')!.touched)) {
+            <div>
+              @if (editForm.get('nome')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('nome')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('nome')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sigla">Sigla</label>
+          <input type="text" class="form-control" name="sigla" id="field_sigla" data-cy="sigla" formControlName="sigla" />
+          @if (editForm.get('sigla')!.invalid && (editForm.get('sigla')!.dirty || editForm.get('sigla')!.touched)) {
+            <div>
+              @if (editForm.get('sigla')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('sigla')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('sigla')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 2 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_codigoIbge">Codigo Ibge</label>
+          <input
+            type="number"
+            class="form-control"
+            name="codigoIbge"
+            id="field_codigoIbge"
+            data-cy="codigoIbge"
+            formControlName="codigoIbge"
+          />
+          @if (editForm.get('codigoIbge')!.invalid && (editForm.get('codigoIbge')!.dirty || editForm.get('codigoIbge')!.touched)) {
+            <div>
+              @if (editForm.get('codigoIbge')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 7.</small>
+              }
+              @if (editForm.get('codigoIbge')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 7.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('codigoIbge')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (embarcador) {
+      <div>
+        <h2 data-cy="embarcadorDetailsHeading"><span>Embarcador</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ embarcador.id }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ embarcador.nome }}</span>
+          </dd>
+          <dt><span>Cnpj</span></dt>
+          <dd>
+            <span>{{ embarcador.cnpj }}</span>
+          </dd>
+          <dt><span>Razao Social</span></dt>
+          <dd>
+            <span>{{ embarcador.razaoSocial }}</span>
+          </dd>
+          <dt><span>Inscricao Estadual</span></dt>
+          <dd>
+            <span>{{ embarcador.inscricaoEstadual }}</span>
+          </dd>
+          <dt><span>Inscricao Municipal</span></dt>
+          <dd>
+            <span>{{ embarcador.inscricaoMunicipal }}</span>
+          </dd>
+          <dt><span>Responsavel</span></dt>
+          <dd>
+            <span>{{ embarcador.responsavel }}</span>
+          </dd>
+          <dt><span>Cep</span></dt>
+          <dd>
+            <span>{{ embarcador.cep }}</span>
+          </dd>
+          <dt><span>Endereco</span></dt>
+          <dd>
+            <span>{{ embarcador.endereco }}</span>
+          </dd>
+          <dt><span>Numero</span></dt>
+          <dd>
+            <span>{{ embarcador.numero }}</span>
+          </dd>
+          <dt><span>Complemento</span></dt>
+          <dd>
+            <span>{{ embarcador.complemento }}</span>
+          </dd>
+          <dt><span>Bairro</span></dt>
+          <dd>
+            <span>{{ embarcador.bairro }}</span>
+          </dd>
+          <dt><span>Telefone</span></dt>
+          <dd>
+            <span>{{ embarcador.telefone }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ embarcador.email }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ embarcador.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ embarcador.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ embarcador.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ embarcador.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ embarcador.usuarioAtualizacao }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/embarcador', embarcador.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

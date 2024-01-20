@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20240120165517"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "forma_cobranca",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "descricao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "FormaCobranca",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "tabelaFrete",
+      "otherEntityRelationshipName": "formaCobranca",
+      "relationshipName": "tabelaFrete",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "fatura",
+      "otherEntityRelationshipName": "formaCobranca",
+      "relationshipName": "fatuta",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

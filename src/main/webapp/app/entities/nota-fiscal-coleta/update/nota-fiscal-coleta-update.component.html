@@ -1,0 +1,342 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-nota-fiscal-coleta-heading" data-cy="NotaFiscalColetaCreateUpdateHeading">Criar ou editar Nota Fiscal Coleta</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numero">Numero</label>
+          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
+          @if (editForm.get('numero')!.invalid && (editForm.get('numero')!.dirty || editForm.get('numero')!.touched)) {
+            <div>
+              @if (editForm.get('numero')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('numero')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('numero')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_serie">Serie</label>
+          <input type="text" class="form-control" name="serie" id="field_serie" data-cy="serie" formControlName="serie" />
+          @if (editForm.get('serie')!.invalid && (editForm.get('serie')!.dirty || editForm.get('serie')!.touched)) {
+            <div>
+              @if (editForm.get('serie')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('serie')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('serie')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_remetente">Remetente</label>
+          <input type="text" class="form-control" name="remetente" id="field_remetente" data-cy="remetente" formControlName="remetente" />
+          @if (editForm.get('remetente')!.invalid && (editForm.get('remetente')!.dirty || editForm.get('remetente')!.touched)) {
+            <div>
+              @if (editForm.get('remetente')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('remetente')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_destinatario">Destinatario</label>
+          <input
+            type="text"
+            class="form-control"
+            name="destinatario"
+            id="field_destinatario"
+            data-cy="destinatario"
+            formControlName="destinatario"
+          />
+          @if (editForm.get('destinatario')!.invalid && (editForm.get('destinatario')!.dirty || editForm.get('destinatario')!.touched)) {
+            <div>
+              @if (editForm.get('destinatario')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('destinatario')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_metroCubico">Metro Cubico</label>
+          <input
+            type="number"
+            class="form-control"
+            name="metroCubico"
+            id="field_metroCubico"
+            data-cy="metroCubico"
+            formControlName="metroCubico"
+          />
+          @if (editForm.get('metroCubico')!.invalid && (editForm.get('metroCubico')!.dirty || editForm.get('metroCubico')!.touched)) {
+            <div>
+              @if (editForm.get('metroCubico')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('metroCubico')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('metroCubico')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_quantidade">Quantidade</label>
+          <input
+            type="number"
+            class="form-control"
+            name="quantidade"
+            id="field_quantidade"
+            data-cy="quantidade"
+            formControlName="quantidade"
+          />
+          @if (editForm.get('quantidade')!.invalid && (editForm.get('quantidade')!.dirty || editForm.get('quantidade')!.touched)) {
+            <div>
+              @if (editForm.get('quantidade')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('quantidade')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('quantidade')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_peso">Peso</label>
+          <input type="number" class="form-control" name="peso" id="field_peso" data-cy="peso" formControlName="peso" />
+          @if (editForm.get('peso')!.invalid && (editForm.get('peso')!.dirty || editForm.get('peso')!.touched)) {
+            <div>
+              @if (editForm.get('peso')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('peso')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('peso')?.errors?.number">Este campo é do tipo numérico.</small>
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataEmissao">Data Emissao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataEmissao"
+              data-cy="dataEmissao"
+              type="datetime-local"
+              class="form-control"
+              name="dataEmissao"
+              formControlName="dataEmissao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataSaida">Data Saida</label>
+          <div class="d-flex">
+            <input
+              id="field_dataSaida"
+              data-cy="dataSaida"
+              type="datetime-local"
+              class="form-control"
+              name="dataSaida"
+              formControlName="dataSaida"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorTotal">Valor Total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorTotal"
+            id="field_valorTotal"
+            data-cy="valorTotal"
+            formControlName="valorTotal"
+          />
+          @if (editForm.get('valorTotal')!.invalid && (editForm.get('valorTotal')!.dirty || editForm.get('valorTotal')!.touched)) {
+            <div>
+              @if (editForm.get('valorTotal')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorTotal')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorTotal')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pesoTotal">Peso Total</label>
+          <input type="number" class="form-control" name="pesoTotal" id="field_pesoTotal" data-cy="pesoTotal" formControlName="pesoTotal" />
+          @if (editForm.get('pesoTotal')!.invalid && (editForm.get('pesoTotal')!.dirty || editForm.get('pesoTotal')!.touched)) {
+            <div>
+              @if (editForm.get('pesoTotal')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('pesoTotal')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('pesoTotal')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_quantidadeTotal">Quantidade Total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="quantidadeTotal"
+            id="field_quantidadeTotal"
+            data-cy="quantidadeTotal"
+            formControlName="quantidadeTotal"
+          />
+          @if (
+            editForm.get('quantidadeTotal')!.invalid && (editForm.get('quantidadeTotal')!.dirty || editForm.get('quantidadeTotal')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('quantidadeTotal')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('quantidadeTotal')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 4.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('quantidadeTotal')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observacao">Observacao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observacao"
+            id="field_observacao"
+            data-cy="observacao"
+            formControlName="observacao"
+          />
+          @if (editForm.get('observacao')!.invalid && (editForm.get('observacao')!.dirty || editForm.get('observacao')!.touched)) {
+            <div>
+              @if (editForm.get('observacao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('observacao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="datetime-local"
+              class="form-control"
+              name="dataCadastro"
+              formControlName="dataCadastro"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataAtualizacao"
+              data-cy="dataAtualizacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataAtualizacao"
+              formControlName="dataAtualizacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_solicitacaoColeta">Solicitacao Coleta</label>
+          <select
+            class="form-control"
+            id="field_solicitacaoColeta"
+            data-cy="solicitacaoColeta"
+            name="solicitacaoColeta"
+            formControlName="solicitacaoColeta"
+            [compareWith]="compareSolicitacaoColeta"
+          >
+            <option [ngValue]="null"></option>
+            @for (solicitacaoColetaOption of solicitacaoColetasSharedCollection; track $index) {
+              <option [ngValue]="solicitacaoColetaOption">{{ solicitacaoColetaOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

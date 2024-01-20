@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (historicoStatusColeta) {
+      <div>
+        <h2 data-cy="historicoStatusColetaDetailsHeading"><span>Historico Status Coleta</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.id }}</span>
+          </dd>
+          <dt><span>Data Criacao</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.dataCriacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.observacao }}</span>
+          </dd>
+          <dt><span>Solicitacao Coleta</span></dt>
+          <dd>
+            @if (historicoStatusColeta.solicitacaoColeta) {
+              <div>
+                <a [routerLink]="['/solicitacao-coleta', historicoStatusColeta.solicitacaoColeta.id, 'view']">{{
+                  historicoStatusColeta.solicitacaoColeta.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Roteirizacao</span></dt>
+          <dd>
+            @if (historicoStatusColeta.roteirizacao) {
+              <div>
+                <a [routerLink]="['/roteirizacao', historicoStatusColeta.roteirizacao.id, 'view']">{{
+                  historicoStatusColeta.roteirizacao.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Status Coleta Origem</span></dt>
+          <dd>
+            @if (historicoStatusColeta.statusColetaOrigem) {
+              <div>
+                <a [routerLink]="['/status-coleta', historicoStatusColeta.statusColetaOrigem.id, 'view']">{{
+                  historicoStatusColeta.statusColetaOrigem.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Status Coleta Destino</span></dt>
+          <dd>
+            @if (historicoStatusColeta.statusColetaDestino) {
+              <div>
+                <a [routerLink]="['/status-coleta', historicoStatusColeta.statusColetaDestino.id, 'view']">{{
+                  historicoStatusColeta.statusColetaDestino.id
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/historico-status-coleta', historicoStatusColeta.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

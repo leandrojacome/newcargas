@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity SolicitacaoColeta.
+    -->
+    <changeSet id="20240120165917-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="embarcador_id"
+                                 baseTableName="solicitacao_coleta"
+                                 constraintName="fk_solicitacao_coleta__embarcador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="embarcador"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="status_coleta_id"
+                                 baseTableName="solicitacao_coleta"
+                                 constraintName="fk_solicitacao_coleta__status_coleta_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_coleta"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="roteirizacao_id"
+                                 baseTableName="solicitacao_coleta"
+                                 constraintName="fk_solicitacao_coleta__roteirizacao_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roteirizacao"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="tipo_veiculo_id"
+                                 baseTableName="solicitacao_coleta"
+                                 constraintName="fk_solicitacao_coleta__tipo_veiculo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_veiculo"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity NotaFiscalColeta.
+    -->
+    <changeSet id="20240120170017-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="solicitacao_coleta_id"
+                                 baseTableName="nota_fiscal_coleta"
+                                 constraintName="fk_nota_fiscal_coleta__solicitacao_coleta_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="solicitacao_coleta"
+                                 />
+    </changeSet>
+</databaseChangeLog>

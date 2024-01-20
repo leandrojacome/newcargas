@@ -1,0 +1,60 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 0,
+    "applicationType": "monolith",
+    "baseName": "newcargas",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-entity-audit"
+      },
+      {
+        "name": "generator-jhipster-native"
+      }
+    ],
+    "buildTool": "maven",
+    "cacheProvider": "ehcache",
+    "clientFramework": "angular",
+    "clientTheme": "spacelab",
+    "clientThemeVariant": "primary",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "devServerPort": 4200,
+    "enableHibernateCache": true,
+    "enableTranslation": false,
+    "entities": [
+      "Estado",
+      "Cidade",
+      "Embarcador",
+      "Transportadora",
+      "Banco",
+      "ContaBancaria",
+      "TabelaFrete",
+      "Endereco",
+      "FormaCobranca",
+      "TipoFrete",
+      "TipoVeiculo",
+      "TipoCarga",
+      "SolicitacaoColeta",
+      "NotaFiscalColeta",
+      "StatusColeta",
+      "HistoricoStatusColeta",
+      "Roteirizacao",
+      "TomadaPreco",
+      "Notificacao",
+      "Contratacao",
+      "Fatura",
+      "Regiao"
+    ],
+    "jhipsterVersion": "8.1.0",
+    "jwtSecretKey": "YjM1YTVhYmE5ZTcyM2JiOWVmYThlNGVmMjI2ZTU0MTBkODc5MGFmNmFhZjJmMGVkOGExM2JiNmQ3NTk4ZTM2ODQ0NjViNmU1NWYzMWVhNzU5NTIwNTM0OTc1MGE2YjY5N2RjM2U2NGM3NTU5YmUxMWViYWE0YzY4NWQ1YTk2Y2I=",
+    "lastLiquibaseTimestamp": 1705770497000,
+    "messageBroker": "no",
+    "nativeLanguage": "pt-br",
+    "packageFolder": "br/com/revenuebrasil/newcargas",
+    "packageName": "br.com.revenuebrasil.newcargas",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "no",
+    "serverPort": "8080",
+    "testFrameworks": ["cypress", "gatling", "cucumber"]
+  }
+}

@@ -1,0 +1,118 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (endereco) {
+      <div>
+        <h2 data-cy="enderecoDetailsHeading"><span>Endereco</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ endereco.id }}</span>
+          </dd>
+          <dt><span>Tipo</span></dt>
+          <dd>
+            <span>{{ endereco.tipo }}</span>
+          </dd>
+          <dt><span>Cep</span></dt>
+          <dd>
+            <span>{{ endereco.cep }}</span>
+          </dd>
+          <dt><span>Endereco</span></dt>
+          <dd>
+            <span>{{ endereco.endereco }}</span>
+          </dd>
+          <dt><span>Numero</span></dt>
+          <dd>
+            <span>{{ endereco.numero }}</span>
+          </dd>
+          <dt><span>Complemento</span></dt>
+          <dd>
+            <span>{{ endereco.complemento }}</span>
+          </dd>
+          <dt><span>Bairro</span></dt>
+          <dd>
+            <span>{{ endereco.bairro }}</span>
+          </dd>
+          <dt><span>Cidade</span></dt>
+          <dd>
+            @if (endereco.cidade) {
+              <div>
+                <a [routerLink]="['/cidade', endereco.cidade.id, 'view']">{{ endereco.cidade.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (endereco.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', endereco.embarcador.id, 'view']">{{ endereco.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (endereco.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', endereco.transportadora.id, 'view']">{{ endereco.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Nota Fiscal Coleta Origem</span></dt>
+          <dd>
+            @if (endereco.notaFiscalColetaOrigem) {
+              <div>
+                <a [routerLink]="['/nota-fiscal-coleta', endereco.notaFiscalColetaOrigem.id, 'view']">{{
+                  endereco.notaFiscalColetaOrigem.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Nota Fiscal Coleta Destino</span></dt>
+          <dd>
+            @if (endereco.notaFiscalColetaDestino) {
+              <div>
+                <a [routerLink]="['/nota-fiscal-coleta', endereco.notaFiscalColetaDestino.id, 'view']">{{
+                  endereco.notaFiscalColetaDestino.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Solicitacao Coleta Origem</span></dt>
+          <dd>
+            @if (endereco.solicitacaoColetaOrigem) {
+              <div>
+                <a [routerLink]="['/solicitacao-coleta', endereco.solicitacaoColetaOrigem.id, 'view']">{{
+                  endereco.solicitacaoColetaOrigem.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Solicitacao Coleta Destino</span></dt>
+          <dd>
+            @if (endereco.solicitacaoColetaDestino) {
+              <div>
+                <a [routerLink]="['/solicitacao-coleta', endereco.solicitacaoColetaDestino.id, 'view']">{{
+                  endereco.solicitacaoColetaDestino.id
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/endereco', endereco.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cidade-heading" data-cy="CidadeCreateUpdateHeading">Criar ou editar Cidade</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nome">Nome</label>
+          <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
+          @if (editForm.get('nome')!.invalid && (editForm.get('nome')!.dirty || editForm.get('nome')!.touched)) {
+            <div>
+              @if (editForm.get('nome')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('nome')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('nome')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_codigoIbge">Codigo Ibge</label>
+          <input
+            type="number"
+            class="form-control"
+            name="codigoIbge"
+            id="field_codigoIbge"
+            data-cy="codigoIbge"
+            formControlName="codigoIbge"
+          />
+          @if (editForm.get('codigoIbge')!.invalid && (editForm.get('codigoIbge')!.dirty || editForm.get('codigoIbge')!.touched)) {
+            <div>
+              @if (editForm.get('codigoIbge')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 7.</small>
+              }
+              @if (editForm.get('codigoIbge')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 7.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('codigoIbge')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_estado">Estado</label>
+          <select
+            class="form-control"
+            id="field_estado"
+            data-cy="estado"
+            name="estado"
+            formControlName="estado"
+            [compareWith]="compareEstado"
+          >
+            <option [ngValue]="null"></option>
+            @for (estadoOption of estadosSharedCollection; track $index) {
+              <option [ngValue]="estadoOption">{{ estadoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_embarcador">Embarcador</label>
+          <select
+            class="form-control"
+            id="field_embarcador"
+            data-cy="embarcador"
+            name="embarcador"
+            formControlName="embarcador"
+            [compareWith]="compareEmbarcador"
+          >
+            <option [ngValue]="null"></option>
+            @for (embarcadorOption of embarcadorsSharedCollection; track $index) {
+              <option [ngValue]="embarcadorOption">{{ embarcadorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transportadora">Transportadora</label>
+          <select
+            class="form-control"
+            id="field_transportadora"
+            data-cy="transportadora"
+            name="transportadora"
+            formControlName="transportadora"
+            [compareWith]="compareTransportadora"
+          >
+            <option [ngValue]="null"></option>
+            @for (transportadoraOption of transportadorasSharedCollection; track $index) {
+              <option [ngValue]="transportadoraOption">{{ transportadoraOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

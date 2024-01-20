@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity TomadaPreco.
+    -->
+    <changeSet id="20240120170417-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="contratacao_id"
+                                 baseTableName="tomada_preco"
+                                 constraintName="fk_tomada_preco__contratacao_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contratacao"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="transportadora_id"
+                                 baseTableName="tomada_preco"
+                                 constraintName="fk_tomada_preco__transportadora_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transportadora"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="roteirizacao_id"
+                                 baseTableName="tomada_preco"
+                                 constraintName="fk_tomada_preco__roteirizacao_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roteirizacao"
+                                 />
+    </changeSet>
+</databaseChangeLog>

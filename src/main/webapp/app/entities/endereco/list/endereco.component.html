@@ -1,0 +1,269 @@
+<div>
+  <h2 id="page-heading" data-cy="EnderecoHeading">
+    <span>Enderecos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-endereco"
+        [routerLink]="['/endereco/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Endereco</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Endereco</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (enderecos?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Endereco encontrado</span>
+    </div>
+  }
+
+  @if (enderecos && enderecos.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipo">
+              <div class="d-flex">
+                <span>Tipo</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cep">
+              <div class="d-flex">
+                <span>Cep</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="endereco">
+              <div class="d-flex">
+                <span>Endereco</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numero">
+              <div class="d-flex">
+                <span>Numero</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="complemento">
+              <div class="d-flex">
+                <span>Complemento</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bairro">
+              <div class="d-flex">
+                <span>Bairro</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cidade.id">
+              <div class="d-flex">
+                <span>Cidade</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="embarcador.id">
+              <div class="d-flex">
+                <span>Embarcador</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notaFiscalColetaOrigem.id">
+              <div class="d-flex">
+                <span>Nota Fiscal Coleta Origem</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notaFiscalColetaDestino.id">
+              <div class="d-flex">
+                <span>Nota Fiscal Coleta Destino</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="solicitacaoColetaOrigem.id">
+              <div class="d-flex">
+                <span>Solicitacao Coleta Origem</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="solicitacaoColetaDestino.id">
+              <div class="d-flex">
+                <span>Solicitacao Coleta Destino</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (endereco of enderecos; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/endereco', endereco.id, 'view']">{{ endereco.id }}</a>
+              </td>
+              <td>{{ endereco.tipo }}</td>
+              <td>{{ endereco.cep }}</td>
+              <td>{{ endereco.endereco }}</td>
+              <td>{{ endereco.numero }}</td>
+              <td>{{ endereco.complemento }}</td>
+              <td>{{ endereco.bairro }}</td>
+              <td>
+                @if (endereco.cidade) {
+                  <div>
+                    <a [routerLink]="['/cidade', endereco.cidade.id, 'view']">{{ endereco.cidade.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.embarcador) {
+                  <div>
+                    <a [routerLink]="['/embarcador', endereco.embarcador.id, 'view']">{{ endereco.embarcador.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', endereco.transportadora.id, 'view']">{{ endereco.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.notaFiscalColetaOrigem) {
+                  <div>
+                    <a [routerLink]="['/nota-fiscal-coleta', endereco.notaFiscalColetaOrigem.id, 'view']">{{
+                      endereco.notaFiscalColetaOrigem.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.notaFiscalColetaDestino) {
+                  <div>
+                    <a [routerLink]="['/nota-fiscal-coleta', endereco.notaFiscalColetaDestino.id, 'view']">{{
+                      endereco.notaFiscalColetaDestino.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.solicitacaoColetaOrigem) {
+                  <div>
+                    <a [routerLink]="['/solicitacao-coleta', endereco.solicitacaoColetaOrigem.id, 'view']">{{
+                      endereco.solicitacaoColetaOrigem.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (endereco.solicitacaoColetaDestino) {
+                  <div>
+                    <a [routerLink]="['/solicitacao-coleta', endereco.solicitacaoColetaDestino.id, 'view']">{{
+                      endereco.solicitacaoColetaDestino.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/endereco', endereco.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/endereco', endereco.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(endereco)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (enderecos && enderecos.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

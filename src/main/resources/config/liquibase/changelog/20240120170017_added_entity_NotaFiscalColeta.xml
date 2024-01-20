@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity NotaFiscalColeta.
+    -->
+    <changeSet id="20240120170017-1" author="jhipster">
+        <createTable tableName="nota_fiscal_coleta">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="numero" type="varchar(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_nota_fiscal_coleta__numero" />
+            </column>
+            <column name="serie" type="varchar(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_nota_fiscal_coleta__serie" />
+            </column>
+            <column name="remetente" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="destinatario" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="metro_cubico" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="quantidade" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="peso" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_emissao" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_saida" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="valor_total" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="peso_total" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="quantidade_total" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="observacao" type="varchar(500)">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_cadastro" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_atualizacao" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="solicitacao_coleta_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="nota_fiscal_coleta" columnName="data_emissao" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="nota_fiscal_coleta" columnName="data_saida" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="nota_fiscal_coleta" columnName="data_cadastro" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="nota_fiscal_coleta" columnName="data_atualizacao" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20240120170017-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/nota_fiscal_coleta.csv"
+                  separator=";"
+                  tableName="nota_fiscal_coleta"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="numero" type="string"/>
+            <column name="serie" type="string"/>
+            <column name="remetente" type="string"/>
+            <column name="destinatario" type="string"/>
+            <column name="metro_cubico" type="numeric"/>
+            <column name="quantidade" type="numeric"/>
+            <column name="peso" type="numeric"/>
+            <column name="data_emissao" type="date"/>
+            <column name="data_saida" type="date"/>
+            <column name="valor_total" type="numeric"/>
+            <column name="peso_total" type="numeric"/>
+            <column name="quantidade_total" type="numeric"/>
+            <column name="observacao" type="string"/>
+            <column name="data_cadastro" type="date"/>
+            <column name="data_atualizacao" type="date"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

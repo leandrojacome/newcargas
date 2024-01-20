@@ -1,0 +1,310 @@
+<div>
+  <h2 id="page-heading" data-cy="FaturaHeading">
+    <span>Faturas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-fatura"
+        [routerLink]="['/fatura/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Fatura</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Fatura</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (faturas?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Fatura encontrado</span>
+    </div>
+  }
+
+  @if (faturas && faturas.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipo">
+              <div class="d-flex">
+                <span>Tipo</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataFatura">
+              <div class="d-flex">
+                <span>Data Fatura</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataVencimento">
+              <div class="d-flex">
+                <span>Data Vencimento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataPagamento">
+              <div class="d-flex">
+                <span>Data Pagamento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="numeroParcela">
+              <div class="d-flex">
+                <span>Numero Parcela</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCadastro">
+              <div class="d-flex">
+                <span>Usuario Cadastro</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioAtualizacao">
+              <div class="d-flex">
+                <span>Usuario Atualizacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cancelado">
+              <div class="d-flex">
+                <span>Cancelado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCancelamento">
+              <div class="d-flex">
+                <span>Data Cancelamento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCancelamento">
+              <div class="d-flex">
+                <span>Usuario Cancelamento</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="removido">
+              <div class="d-flex">
+                <span>Removido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRemocao">
+              <div class="d-flex">
+                <span>Data Remocao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioRemocao">
+              <div class="d-flex">
+                <span>Usuario Remocao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="embarcador.id">
+              <div class="d-flex">
+                <span>Embarcador</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contratacao.id">
+              <div class="d-flex">
+                <span>Contratacao</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="formaCobranca.id">
+              <div class="d-flex">
+                <span>Forma Cobranca</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (fatura of faturas; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/fatura', fatura.id, 'view']">{{ fatura.id }}</a>
+              </td>
+              <td>{{ fatura.tipo }}</td>
+              <td>{{ fatura.dataFatura | formatMediumDatetime }}</td>
+              <td>{{ fatura.dataVencimento | formatMediumDatetime }}</td>
+              <td>{{ fatura.dataPagamento | formatMediumDatetime }}</td>
+              <td>{{ fatura.numeroParcela }}</td>
+              <td>{{ fatura.valorTotal }}</td>
+              <td>{{ fatura.observacao }}</td>
+              <td>{{ fatura.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ fatura.usuarioCadastro }}</td>
+              <td>{{ fatura.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ fatura.usuarioAtualizacao }}</td>
+              <td>{{ fatura.cancelado }}</td>
+              <td>{{ fatura.dataCancelamento | formatMediumDatetime }}</td>
+              <td>{{ fatura.usuarioCancelamento }}</td>
+              <td>{{ fatura.removido }}</td>
+              <td>{{ fatura.dataRemocao | formatMediumDatetime }}</td>
+              <td>{{ fatura.usuarioRemocao }}</td>
+              <td>
+                @if (fatura.embarcador) {
+                  <div>
+                    <a [routerLink]="['/embarcador', fatura.embarcador.id, 'view']">{{ fatura.embarcador.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (fatura.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', fatura.transportadora.id, 'view']">{{ fatura.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (fatura.contratacao) {
+                  <div>
+                    <a [routerLink]="['/contratacao', fatura.contratacao.id, 'view']">{{ fatura.contratacao.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (fatura.formaCobranca) {
+                  <div>
+                    <a [routerLink]="['/forma-cobranca', fatura.formaCobranca.id, 'view']">{{ fatura.formaCobranca.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/fatura', fatura.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/fatura', fatura.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(fatura)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (faturas && faturas.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

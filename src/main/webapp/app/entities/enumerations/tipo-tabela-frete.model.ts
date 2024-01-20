@@ -1,0 +1,5 @@
+export enum TipoTabelaFrete {
+  EMBARCADOR = 'EMBARCADOR',
+
+  TRANSPORTADOR = 'TRANSPORTADOR',
+}

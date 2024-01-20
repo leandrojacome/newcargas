@@ -1,0 +1,51 @@
+{
+  "annotations": {
+    "changelogDate": "20240120170817"
+  },
+  "applications": ["newcargas"],
+  "dto": "mapstruct",
+  "entityTableName": "regiao",
+  "fields": [
+    {
+      "fieldName": "nome",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique", "required"],
+      "fieldValidateRulesMaxlength": "150",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "sigla",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength", "unique"],
+      "fieldValidateRulesMaxlength": "5",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "descricao",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "minlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "name": "Regiao",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "tabelaFrete",
+      "otherEntityRelationshipName": "regiaoOrigem",
+      "relationshipName": "tabelaFreteOrigem",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tabelaFrete",
+      "otherEntityRelationshipName": "regiaoDestino",
+      "relationshipName": "tabelaFreteDestino",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceImpl"
+}

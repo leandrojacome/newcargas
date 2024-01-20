@@ -1,0 +1,122 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tomadaPreco) {
+      <div>
+        <h2 data-cy="tomadaPrecoDetailsHeading"><span>Tomada Preco</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.id }}</span>
+          </dd>
+          <dt><span>Data Hora Envio</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataHoraEnvio | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Prazo Resposta</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.prazoResposta }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.valorTotal }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.usuarioAtualizacao }}</span>
+          </dd>
+          <dt><span>Aprovado</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.aprovado }}</span>
+          </dd>
+          <dt><span>Data Aprovacao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataAprovacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Aprovacao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.usuarioAprovacao }}</span>
+          </dd>
+          <dt><span>Cancelado</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.cancelado }}</span>
+          </dd>
+          <dt><span>Data Cancelamento</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataCancelamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cancelamento</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.usuarioCancelamento }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ tomadaPreco.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Contratacao</span></dt>
+          <dd>
+            @if (tomadaPreco.contratacao) {
+              <div>
+                <a [routerLink]="['/contratacao', tomadaPreco.contratacao.id, 'view']">{{ tomadaPreco.contratacao.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (tomadaPreco.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', tomadaPreco.transportadora.id, 'view']">{{ tomadaPreco.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Roteirizacao</span></dt>
+          <dd>
+            @if (tomadaPreco.roteirizacao) {
+              <div>
+                <a [routerLink]="['/roteirizacao', tomadaPreco.roteirizacao.id, 'view']">{{ tomadaPreco.roteirizacao.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tomada-preco', tomadaPreco.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

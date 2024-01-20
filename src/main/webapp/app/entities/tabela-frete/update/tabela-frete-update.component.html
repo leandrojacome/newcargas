@@ -1,0 +1,512 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-tabela-frete-heading" data-cy="TabelaFreteCreateUpdateHeading">Criar ou editar Tabela Frete</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipo">Tipo</label>
+          <select class="form-control" name="tipo" formControlName="tipo" id="field_tipo" data-cy="tipo">
+            <option [ngValue]="null"></option>
+            @for (tipoTabelaFrete of tipoTabelaFreteValues; track $index) {
+              <option [value]="tipoTabelaFrete">{{ tipoTabelaFrete }}</option>
+            }
+          </select>
+          @if (editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)) {
+            <div>
+              @if (editForm.get('tipo')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nome">Nome</label>
+          <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
+          @if (editForm.get('nome')!.invalid && (editForm.get('nome')!.dirty || editForm.get('nome')!.touched)) {
+            <div>
+              @if (editForm.get('nome')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('nome')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('nome')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descricao">Descricao</label>
+          <input type="text" class="form-control" name="descricao" id="field_descricao" data-cy="descricao" formControlName="descricao" />
+          @if (editForm.get('descricao')!.invalid && (editForm.get('descricao')!.dirty || editForm.get('descricao')!.touched)) {
+            <div>
+              @if (editForm.get('descricao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('descricao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_leadTime">Lead Time</label>
+          <input type="number" class="form-control" name="leadTime" id="field_leadTime" data-cy="leadTime" formControlName="leadTime" />
+          @if (editForm.get('leadTime')!.invalid && (editForm.get('leadTime')!.dirty || editForm.get('leadTime')!.touched)) {
+            <div>
+              @if (editForm.get('leadTime')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('leadTime')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 4.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('leadTime')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_freteMinimo">Frete Minimo</label>
+          <input
+            type="number"
+            class="form-control"
+            name="freteMinimo"
+            id="field_freteMinimo"
+            data-cy="freteMinimo"
+            formControlName="freteMinimo"
+          />
+          @if (editForm.get('freteMinimo')!.invalid && (editForm.get('freteMinimo')!.dirty || editForm.get('freteMinimo')!.touched)) {
+            <div>
+              @if (editForm.get('freteMinimo')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('freteMinimo')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('freteMinimo')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorTonelada">Valor Tonelada</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorTonelada"
+            id="field_valorTonelada"
+            data-cy="valorTonelada"
+            formControlName="valorTonelada"
+          />
+          @if (editForm.get('valorTonelada')!.invalid && (editForm.get('valorTonelada')!.dirty || editForm.get('valorTonelada')!.touched)) {
+            <div>
+              @if (editForm.get('valorTonelada')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorTonelada')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorTonelada')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorMetroCubico">Valor Metro Cubico</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorMetroCubico"
+            id="field_valorMetroCubico"
+            data-cy="valorMetroCubico"
+            formControlName="valorMetroCubico"
+          />
+          @if (
+            editForm.get('valorMetroCubico')!.invalid &&
+            (editForm.get('valorMetroCubico')!.dirty || editForm.get('valorMetroCubico')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('valorMetroCubico')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorMetroCubico')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorMetroCubico')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorUnidade">Valor Unidade</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorUnidade"
+            id="field_valorUnidade"
+            data-cy="valorUnidade"
+            formControlName="valorUnidade"
+          />
+          @if (editForm.get('valorUnidade')!.invalid && (editForm.get('valorUnidade')!.dirty || editForm.get('valorUnidade')!.touched)) {
+            <div>
+              @if (editForm.get('valorUnidade')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorUnidade')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorUnidade')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorKm">Valor Km</label>
+          <input type="number" class="form-control" name="valorKm" id="field_valorKm" data-cy="valorKm" formControlName="valorKm" />
+          @if (editForm.get('valorKm')!.invalid && (editForm.get('valorKm')!.dirty || editForm.get('valorKm')!.touched)) {
+            <div>
+              @if (editForm.get('valorKm')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorKm')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorKm')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorAdicional">Valor Adicional</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorAdicional"
+            id="field_valorAdicional"
+            data-cy="valorAdicional"
+            formControlName="valorAdicional"
+          />
+          @if (
+            editForm.get('valorAdicional')!.invalid && (editForm.get('valorAdicional')!.dirty || editForm.get('valorAdicional')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('valorAdicional')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorAdicional')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorAdicional')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorColeta">Valor Coleta</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorColeta"
+            id="field_valorColeta"
+            data-cy="valorColeta"
+            formControlName="valorColeta"
+          />
+          @if (editForm.get('valorColeta')!.invalid && (editForm.get('valorColeta')!.dirty || editForm.get('valorColeta')!.touched)) {
+            <div>
+              @if (editForm.get('valorColeta')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorColeta')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorColeta')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorEntrega">Valor Entrega</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorEntrega"
+            id="field_valorEntrega"
+            data-cy="valorEntrega"
+            formControlName="valorEntrega"
+          />
+          @if (editForm.get('valorEntrega')!.invalid && (editForm.get('valorEntrega')!.dirty || editForm.get('valorEntrega')!.touched)) {
+            <div>
+              @if (editForm.get('valorEntrega')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorEntrega')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorEntrega')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorTotal">Valor Total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorTotal"
+            id="field_valorTotal"
+            data-cy="valorTotal"
+            formControlName="valorTotal"
+          />
+          @if (editForm.get('valorTotal')!.invalid && (editForm.get('valorTotal')!.dirty || editForm.get('valorTotal')!.touched)) {
+            <div>
+              @if (editForm.get('valorTotal')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorTotal')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorTotal')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorKmAdicional">Valor Km Adicional</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorKmAdicional"
+            id="field_valorKmAdicional"
+            data-cy="valorKmAdicional"
+            formControlName="valorKmAdicional"
+          />
+          @if (
+            editForm.get('valorKmAdicional')!.invalid &&
+            (editForm.get('valorKmAdicional')!.dirty || editForm.get('valorKmAdicional')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('valorKmAdicional')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorKmAdicional')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorKmAdicional')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="datetime-local"
+              class="form-control"
+              name="dataCadastro"
+              formControlName="dataCadastro"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)) {
+            <div>
+              @if (editForm.get('dataCadastro')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataCadastro')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataAtualizacao"
+              data-cy="dataAtualizacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataAtualizacao"
+              formControlName="dataAtualizacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_embarcador">Embarcador</label>
+          <select
+            class="form-control"
+            id="field_embarcador"
+            data-cy="embarcador"
+            name="embarcador"
+            formControlName="embarcador"
+            [compareWith]="compareEmbarcador"
+          >
+            <option [ngValue]="null"></option>
+            @for (embarcadorOption of embarcadorsSharedCollection; track $index) {
+              <option [ngValue]="embarcadorOption">{{ embarcadorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transportadora">Transportadora</label>
+          <select
+            class="form-control"
+            id="field_transportadora"
+            data-cy="transportadora"
+            name="transportadora"
+            formControlName="transportadora"
+            [compareWith]="compareTransportadora"
+          >
+            <option [ngValue]="null"></option>
+            @for (transportadoraOption of transportadorasSharedCollection; track $index) {
+              <option [ngValue]="transportadoraOption">{{ transportadoraOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoCarga">Tipo Carga</label>
+          <select
+            class="form-control"
+            id="field_tipoCarga"
+            data-cy="tipoCarga"
+            name="tipoCarga"
+            formControlName="tipoCarga"
+            [compareWith]="compareTipoCarga"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoCargaOption of tipoCargasSharedCollection; track $index) {
+              <option [ngValue]="tipoCargaOption">{{ tipoCargaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoFrete">Tipo Frete</label>
+          <select
+            class="form-control"
+            id="field_tipoFrete"
+            data-cy="tipoFrete"
+            name="tipoFrete"
+            formControlName="tipoFrete"
+            [compareWith]="compareTipoFrete"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoFreteOption of tipoFretesSharedCollection; track $index) {
+              <option [ngValue]="tipoFreteOption">{{ tipoFreteOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_formaCobranca">Forma Cobranca</label>
+          <select
+            class="form-control"
+            id="field_formaCobranca"
+            data-cy="formaCobranca"
+            name="formaCobranca"
+            formControlName="formaCobranca"
+            [compareWith]="compareFormaCobranca"
+          >
+            <option [ngValue]="null"></option>
+            @for (formaCobrancaOption of formaCobrancasSharedCollection; track $index) {
+              <option [ngValue]="formaCobrancaOption">{{ formaCobrancaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_regiaoOrigem">Regiao Origem</label>
+          <select
+            class="form-control"
+            id="field_regiaoOrigem"
+            data-cy="regiaoOrigem"
+            name="regiaoOrigem"
+            formControlName="regiaoOrigem"
+            [compareWith]="compareRegiao"
+          >
+            <option [ngValue]="null"></option>
+            @for (regiaoOption of regiaosSharedCollection; track $index) {
+              <option [ngValue]="regiaoOption">{{ regiaoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_regiaoDestino">Regiao Destino</label>
+          <select
+            class="form-control"
+            id="field_regiaoDestino"
+            data-cy="regiaoDestino"
+            name="regiaoDestino"
+            formControlName="regiaoDestino"
+            [compareWith]="compareRegiao"
+          >
+            <option [ngValue]="null"></option>
+            @for (regiaoOption of regiaosSharedCollection; track $index) {
+              <option [ngValue]="regiaoOption">{{ regiaoOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

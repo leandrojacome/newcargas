@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (contaBancaria) {
+      <div>
+        <h2 data-cy="contaBancariaDetailsHeading"><span>Conta Bancaria</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ contaBancaria.id }}</span>
+          </dd>
+          <dt><span>Agencia</span></dt>
+          <dd>
+            <span>{{ contaBancaria.agencia }}</span>
+          </dd>
+          <dt><span>Conta</span></dt>
+          <dd>
+            <span>{{ contaBancaria.conta }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ contaBancaria.observacao }}</span>
+          </dd>
+          <dt><span>Tipo</span></dt>
+          <dd>
+            <span>{{ contaBancaria.tipo }}</span>
+          </dd>
+          <dt><span>Pix</span></dt>
+          <dd>
+            <span>{{ contaBancaria.pix }}</span>
+          </dd>
+          <dt><span>Titular</span></dt>
+          <dd>
+            <span>{{ contaBancaria.titular }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ contaBancaria.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ contaBancaria.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Banco</span></dt>
+          <dd>
+            @if (contaBancaria.banco) {
+              <div>
+                <a [routerLink]="['/banco', contaBancaria.banco.id, 'view']">{{ contaBancaria.banco.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (contaBancaria.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', contaBancaria.embarcador.id, 'view']">{{ contaBancaria.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (contaBancaria.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', contaBancaria.transportadora.id, 'view']">{{ contaBancaria.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/conta-bancaria', contaBancaria.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

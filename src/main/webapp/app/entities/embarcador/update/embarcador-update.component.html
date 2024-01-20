@@ -1,0 +1,387 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-embarcador-heading" data-cy="EmbarcadorCreateUpdateHeading">Criar ou editar Embarcador</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nome">Nome</label>
+          <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
+          @if (editForm.get('nome')!.invalid && (editForm.get('nome')!.dirty || editForm.get('nome')!.touched)) {
+            <div>
+              @if (editForm.get('nome')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('nome')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('nome')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cnpj">Cnpj</label>
+          <input type="text" class="form-control" name="cnpj" id="field_cnpj" data-cy="cnpj" formControlName="cnpj" />
+          @if (editForm.get('cnpj')!.invalid && (editForm.get('cnpj')!.dirty || editForm.get('cnpj')!.touched)) {
+            <div>
+              @if (editForm.get('cnpj')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('cnpj')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 14 caracteres.</small>
+              }
+              @if (editForm.get('cnpj')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 14 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_razaoSocial">Razao Social</label>
+          <input
+            type="text"
+            class="form-control"
+            name="razaoSocial"
+            id="field_razaoSocial"
+            data-cy="razaoSocial"
+            formControlName="razaoSocial"
+          />
+          @if (editForm.get('razaoSocial')!.invalid && (editForm.get('razaoSocial')!.dirty || editForm.get('razaoSocial')!.touched)) {
+            <div>
+              @if (editForm.get('razaoSocial')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('razaoSocial')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_inscricaoEstadual">Inscricao Estadual</label>
+          <input
+            type="text"
+            class="form-control"
+            name="inscricaoEstadual"
+            id="field_inscricaoEstadual"
+            data-cy="inscricaoEstadual"
+            formControlName="inscricaoEstadual"
+          />
+          @if (
+            editForm.get('inscricaoEstadual')!.invalid &&
+            (editForm.get('inscricaoEstadual')!.dirty || editForm.get('inscricaoEstadual')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('inscricaoEstadual')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('inscricaoEstadual')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_inscricaoMunicipal">Inscricao Municipal</label>
+          <input
+            type="text"
+            class="form-control"
+            name="inscricaoMunicipal"
+            id="field_inscricaoMunicipal"
+            data-cy="inscricaoMunicipal"
+            formControlName="inscricaoMunicipal"
+          />
+          @if (
+            editForm.get('inscricaoMunicipal')!.invalid &&
+            (editForm.get('inscricaoMunicipal')!.dirty || editForm.get('inscricaoMunicipal')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('inscricaoMunicipal')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('inscricaoMunicipal')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_responsavel">Responsavel</label>
+          <input
+            type="text"
+            class="form-control"
+            name="responsavel"
+            id="field_responsavel"
+            data-cy="responsavel"
+            formControlName="responsavel"
+          />
+          @if (editForm.get('responsavel')!.invalid && (editForm.get('responsavel')!.dirty || editForm.get('responsavel')!.touched)) {
+            <div>
+              @if (editForm.get('responsavel')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('responsavel')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cep">Cep</label>
+          <input type="text" class="form-control" name="cep" id="field_cep" data-cy="cep" formControlName="cep" />
+          @if (editForm.get('cep')!.invalid && (editForm.get('cep')!.dirty || editForm.get('cep')!.touched)) {
+            <div>
+              @if (editForm.get('cep')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 8 caracteres.</small>
+              }
+              @if (editForm.get('cep')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 8 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_endereco">Endereco</label>
+          <input type="text" class="form-control" name="endereco" id="field_endereco" data-cy="endereco" formControlName="endereco" />
+          @if (editForm.get('endereco')!.invalid && (editForm.get('endereco')!.dirty || editForm.get('endereco')!.touched)) {
+            <div>
+              @if (editForm.get('endereco')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('endereco')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numero">Numero</label>
+          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
+          @if (editForm.get('numero')!.invalid && (editForm.get('numero')!.dirty || editForm.get('numero')!.touched)) {
+            <div>
+              @if (editForm.get('numero')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 1 caracteres.</small>
+              }
+              @if (editForm.get('numero')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 10 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_complemento">Complemento</label>
+          <input
+            type="text"
+            class="form-control"
+            name="complemento"
+            id="field_complemento"
+            data-cy="complemento"
+            formControlName="complemento"
+          />
+          @if (editForm.get('complemento')!.invalid && (editForm.get('complemento')!.dirty || editForm.get('complemento')!.touched)) {
+            <div>
+              @if (editForm.get('complemento')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('complemento')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bairro">Bairro</label>
+          <input type="text" class="form-control" name="bairro" id="field_bairro" data-cy="bairro" formControlName="bairro" />
+          @if (editForm.get('bairro')!.invalid && (editForm.get('bairro')!.dirty || editForm.get('bairro')!.touched)) {
+            <div>
+              @if (editForm.get('bairro')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('bairro')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_telefone">Telefone</label>
+          <input type="text" class="form-control" name="telefone" id="field_telefone" data-cy="telefone" formControlName="telefone" />
+          @if (editForm.get('telefone')!.invalid && (editForm.get('telefone')!.dirty || editForm.get('telefone')!.touched)) {
+            <div>
+              @if (editForm.get('telefone')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 10 caracteres.</small>
+              }
+              @if (editForm.get('telefone')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 11 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('email')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observacao">Observacao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observacao"
+            id="field_observacao"
+            data-cy="observacao"
+            formControlName="observacao"
+          />
+          @if (editForm.get('observacao')!.invalid && (editForm.get('observacao')!.dirty || editForm.get('observacao')!.touched)) {
+            <div>
+              @if (editForm.get('observacao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('observacao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="datetime-local"
+              class="form-control"
+              name="dataCadastro"
+              formControlName="dataCadastro"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)) {
+            <div>
+              @if (editForm.get('dataCadastro')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataCadastro')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usuarioCadastro">Usuario Cadastro</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usuarioCadastro"
+            id="field_usuarioCadastro"
+            data-cy="usuarioCadastro"
+            formControlName="usuarioCadastro"
+          />
+          @if (
+            editForm.get('usuarioCadastro')!.invalid && (editForm.get('usuarioCadastro')!.dirty || editForm.get('usuarioCadastro')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('usuarioCadastro')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('usuarioCadastro')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataAtualizacao"
+              data-cy="dataAtualizacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataAtualizacao"
+              formControlName="dataAtualizacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usuarioAtualizacao">Usuario Atualizacao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usuarioAtualizacao"
+            id="field_usuarioAtualizacao"
+            data-cy="usuarioAtualizacao"
+            formControlName="usuarioAtualizacao"
+          />
+          @if (
+            editForm.get('usuarioAtualizacao')!.invalid &&
+            (editForm.get('usuarioAtualizacao')!.dirty || editForm.get('usuarioAtualizacao')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('usuarioAtualizacao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('usuarioAtualizacao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

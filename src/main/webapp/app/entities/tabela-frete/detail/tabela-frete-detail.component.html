@@ -1,0 +1,150 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tabelaFrete) {
+      <div>
+        <h2 data-cy="tabelaFreteDetailsHeading"><span>Tabela Frete</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.id }}</span>
+          </dd>
+          <dt><span>Tipo</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.tipo }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.nome }}</span>
+          </dd>
+          <dt><span>Descricao</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.descricao }}</span>
+          </dd>
+          <dt><span>Lead Time</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.leadTime }}</span>
+          </dd>
+          <dt><span>Frete Minimo</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.freteMinimo }}</span>
+          </dd>
+          <dt><span>Valor Tonelada</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorTonelada }}</span>
+          </dd>
+          <dt><span>Valor Metro Cubico</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorMetroCubico }}</span>
+          </dd>
+          <dt><span>Valor Unidade</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorUnidade }}</span>
+          </dd>
+          <dt><span>Valor Km</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorKm }}</span>
+          </dd>
+          <dt><span>Valor Adicional</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorAdicional }}</span>
+          </dd>
+          <dt><span>Valor Coleta</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorColeta }}</span>
+          </dd>
+          <dt><span>Valor Entrega</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorEntrega }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorTotal }}</span>
+          </dd>
+          <dt><span>Valor Km Adicional</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.valorKmAdicional }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Embarcador</span></dt>
+          <dd>
+            @if (tabelaFrete.embarcador) {
+              <div>
+                <a [routerLink]="['/embarcador', tabelaFrete.embarcador.id, 'view']">{{ tabelaFrete.embarcador.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (tabelaFrete.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', tabelaFrete.transportadora.id, 'view']">{{ tabelaFrete.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tipo Carga</span></dt>
+          <dd>
+            @if (tabelaFrete.tipoCarga) {
+              <div>
+                <a [routerLink]="['/tipo-carga', tabelaFrete.tipoCarga.id, 'view']">{{ tabelaFrete.tipoCarga.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tipo Frete</span></dt>
+          <dd>
+            @if (tabelaFrete.tipoFrete) {
+              <div>
+                <a [routerLink]="['/tipo-frete', tabelaFrete.tipoFrete.id, 'view']">{{ tabelaFrete.tipoFrete.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Forma Cobranca</span></dt>
+          <dd>
+            @if (tabelaFrete.formaCobranca) {
+              <div>
+                <a [routerLink]="['/forma-cobranca', tabelaFrete.formaCobranca.id, 'view']">{{ tabelaFrete.formaCobranca.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Regiao Origem</span></dt>
+          <dd>
+            @if (tabelaFrete.regiaoOrigem) {
+              <div>
+                <a [routerLink]="['/regiao', tabelaFrete.regiaoOrigem.id, 'view']">{{ tabelaFrete.regiaoOrigem.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Regiao Destino</span></dt>
+          <dd>
+            @if (tabelaFrete.regiaoDestino) {
+              <div>
+                <a [routerLink]="['/regiao', tabelaFrete.regiaoDestino.id, 'view']">{{ tabelaFrete.regiaoDestino.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tabela-frete', tabelaFrete.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

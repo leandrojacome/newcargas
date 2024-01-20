@@ -1,0 +1,344 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-solicitacao-coleta-heading" data-cy="SolicitacaoColetaCreateUpdateHeading">Criar ou editar Solicitacao Coleta</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_coletado">Coletado</label>
+          <input type="checkbox" class="form-check" name="coletado" id="field_coletado" data-cy="coletado" formControlName="coletado" />
+          @if (editForm.get('coletado')!.invalid && (editForm.get('coletado')!.dirty || editForm.get('coletado')!.touched)) {
+            <div>
+              @if (editForm.get('coletado')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataHoraColeta">Data Hora Coleta</label>
+          <div class="d-flex">
+            <input
+              id="field_dataHoraColeta"
+              data-cy="dataHoraColeta"
+              type="datetime-local"
+              class="form-control"
+              name="dataHoraColeta"
+              formControlName="dataHoraColeta"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (
+            editForm.get('dataHoraColeta')!.invalid && (editForm.get('dataHoraColeta')!.dirty || editForm.get('dataHoraColeta')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('dataHoraColeta')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataHoraColeta')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entregue">Entregue</label>
+          <input type="checkbox" class="form-check" name="entregue" id="field_entregue" data-cy="entregue" formControlName="entregue" />
+          @if (editForm.get('entregue')!.invalid && (editForm.get('entregue')!.dirty || editForm.get('entregue')!.touched)) {
+            <div>
+              @if (editForm.get('entregue')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataHoraEntrega">Data Hora Entrega</label>
+          <div class="d-flex">
+            <input
+              id="field_dataHoraEntrega"
+              data-cy="dataHoraEntrega"
+              type="datetime-local"
+              class="form-control"
+              name="dataHoraEntrega"
+              formControlName="dataHoraEntrega"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_valorTotal">Valor Total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="valorTotal"
+            id="field_valorTotal"
+            data-cy="valorTotal"
+            formControlName="valorTotal"
+          />
+          @if (editForm.get('valorTotal')!.invalid && (editForm.get('valorTotal')!.dirty || editForm.get('valorTotal')!.touched)) {
+            <div>
+              @if (editForm.get('valorTotal')?.errors?.min) {
+                <small class="form-text text-danger">Este campo deve ser maior que 1.</small>
+              }
+              @if (editForm.get('valorTotal')?.errors?.max) {
+                <small class="form-text text-danger">Este campo não pode ser maior que 10.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('valorTotal')?.errors?.number"
+                >Este campo é do tipo numérico.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observacao">Observacao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observacao"
+            id="field_observacao"
+            data-cy="observacao"
+            formControlName="observacao"
+          />
+          @if (editForm.get('observacao')!.invalid && (editForm.get('observacao')!.dirty || editForm.get('observacao')!.touched)) {
+            <div>
+              @if (editForm.get('observacao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('observacao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="datetime-local"
+              class="form-control"
+              name="dataCadastro"
+              formControlName="dataCadastro"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)) {
+            <div>
+              @if (editForm.get('dataCadastro')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataCadastro')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataAtualizacao"
+              data-cy="dataAtualizacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataAtualizacao"
+              formControlName="dataAtualizacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cancelado">Cancelado</label>
+          <input type="checkbox" class="form-check" name="cancelado" id="field_cancelado" data-cy="cancelado" formControlName="cancelado" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCancelamento">Data Cancelamento</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCancelamento"
+              data-cy="dataCancelamento"
+              type="datetime-local"
+              class="form-control"
+              name="dataCancelamento"
+              formControlName="dataCancelamento"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usuarioCancelamento">Usuario Cancelamento</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usuarioCancelamento"
+            id="field_usuarioCancelamento"
+            data-cy="usuarioCancelamento"
+            formControlName="usuarioCancelamento"
+          />
+          @if (
+            editForm.get('usuarioCancelamento')!.invalid &&
+            (editForm.get('usuarioCancelamento')!.dirty || editForm.get('usuarioCancelamento')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('usuarioCancelamento')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('usuarioCancelamento')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_removido">Removido</label>
+          <input type="checkbox" class="form-check" name="removido" id="field_removido" data-cy="removido" formControlName="removido" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataRemocao">Data Remocao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataRemocao"
+              data-cy="dataRemocao"
+              type="datetime-local"
+              class="form-control"
+              name="dataRemocao"
+              formControlName="dataRemocao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usuarioRemocao">Usuario Remocao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usuarioRemocao"
+            id="field_usuarioRemocao"
+            data-cy="usuarioRemocao"
+            formControlName="usuarioRemocao"
+          />
+          @if (
+            editForm.get('usuarioRemocao')!.invalid && (editForm.get('usuarioRemocao')!.dirty || editForm.get('usuarioRemocao')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('usuarioRemocao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('usuarioRemocao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_embarcador">Embarcador</label>
+          <select
+            class="form-control"
+            id="field_embarcador"
+            data-cy="embarcador"
+            name="embarcador"
+            formControlName="embarcador"
+            [compareWith]="compareEmbarcador"
+          >
+            <option [ngValue]="null"></option>
+            @for (embarcadorOption of embarcadorsSharedCollection; track $index) {
+              <option [ngValue]="embarcadorOption">{{ embarcadorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_statusColeta">Status Coleta</label>
+          <select
+            class="form-control"
+            id="field_statusColeta"
+            data-cy="statusColeta"
+            name="statusColeta"
+            formControlName="statusColeta"
+            [compareWith]="compareStatusColeta"
+          >
+            <option [ngValue]="null"></option>
+            @for (statusColetaOption of statusColetasSharedCollection; track $index) {
+              <option [ngValue]="statusColetaOption">{{ statusColetaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_roteirizacao">Roteirizacao</label>
+          <select
+            class="form-control"
+            id="field_roteirizacao"
+            data-cy="roteirizacao"
+            name="roteirizacao"
+            formControlName="roteirizacao"
+            [compareWith]="compareRoteirizacao"
+          >
+            <option [ngValue]="null"></option>
+            @for (roteirizacaoOption of roteirizacaosSharedCollection; track $index) {
+              <option [ngValue]="roteirizacaoOption">{{ roteirizacaoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoVeiculo">Tipo Veiculo</label>
+          <select
+            class="form-control"
+            id="field_tipoVeiculo"
+            data-cy="tipoVeiculo"
+            name="tipoVeiculo"
+            formControlName="tipoVeiculo"
+            [compareWith]="compareTipoVeiculo"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoVeiculoOption of tipoVeiculosSharedCollection; track $index) {
+              <option [ngValue]="tipoVeiculoOption">{{ tipoVeiculoOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

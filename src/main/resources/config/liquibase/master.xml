@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120164717_added_entity_Estado.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120164817_added_entity_Cidade.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120164917_added_entity_Embarcador.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165017_added_entity_Transportadora.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165117_added_entity_Banco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165217_added_entity_ContaBancaria.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165317_added_entity_TabelaFrete.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165417_added_entity_Endereco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165517_added_entity_FormaCobranca.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165617_added_entity_TipoFrete.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165717_added_entity_TipoVeiculo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165817_added_entity_TipoCarga.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165917_added_entity_SolicitacaoColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170017_added_entity_NotaFiscalColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170117_added_entity_StatusColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170217_added_entity_HistoricoStatusColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170317_added_entity_Roteirizacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170417_added_entity_TomadaPreco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170517_added_entity_Notificacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170617_added_entity_Contratacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170717_added_entity_Fatura.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170817_added_entity_Regiao.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20240120164817_added_entity_constraints_Cidade.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165217_added_entity_constraints_ContaBancaria.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165317_added_entity_constraints_TabelaFrete.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165417_added_entity_constraints_Endereco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165917_added_entity_constraints_SolicitacaoColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170017_added_entity_constraints_NotaFiscalColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170117_added_entity_constraints_StatusColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170217_added_entity_constraints_HistoricoStatusColeta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170317_added_entity_constraints_Roteirizacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170417_added_entity_constraints_TomadaPreco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170517_added_entity_constraints_Notificacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170617_added_entity_constraints_Contratacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120170717_added_entity_constraints_Fatura.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>

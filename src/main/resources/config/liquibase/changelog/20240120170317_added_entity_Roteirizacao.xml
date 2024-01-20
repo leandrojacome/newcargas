@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Roteirizacao.
+    -->
+    <changeSet id="20240120170317-1" author="jhipster">
+        <createTable tableName="roteirizacao">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data_hora_primeira_coleta" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="data_hora_ultima_coleta" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_hora_primeira_entrega" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_hora_ultima_entrega" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="valor_total" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="observacao" type="varchar(500)">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_cadastro" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="usuario_cadastro" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_atualizacao" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="usuario_atualizacao" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="cancelado" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_cancelamento" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="usuario_cancelamento" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="removido" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_remocao" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="usuario_remocao" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="status_coleta_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_hora_primeira_coleta" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_hora_ultima_coleta" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_hora_primeira_entrega" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_hora_ultima_entrega" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_cadastro" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_atualizacao" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_cancelamento" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="roteirizacao" columnName="data_remocao" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20240120170317-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/roteirizacao.csv"
+                  separator=";"
+                  tableName="roteirizacao"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="data_hora_primeira_coleta" type="date"/>
+            <column name="data_hora_ultima_coleta" type="date"/>
+            <column name="data_hora_primeira_entrega" type="date"/>
+            <column name="data_hora_ultima_entrega" type="date"/>
+            <column name="valor_total" type="numeric"/>
+            <column name="observacao" type="string"/>
+            <column name="data_cadastro" type="date"/>
+            <column name="usuario_cadastro" type="string"/>
+            <column name="data_atualizacao" type="date"/>
+            <column name="usuario_atualizacao" type="string"/>
+            <column name="cancelado" type="boolean"/>
+            <column name="data_cancelamento" type="date"/>
+            <column name="usuario_cancelamento" type="string"/>
+            <column name="removido" type="boolean"/>
+            <column name="data_remocao" type="date"/>
+            <column name="usuario_remocao" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

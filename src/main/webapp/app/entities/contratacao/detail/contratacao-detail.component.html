@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (contratacao) {
+      <div>
+        <h2 data-cy="contratacaoDetailsHeading"><span>Contratacao</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Código</span></dt>
+          <dd>
+            <span>{{ contratacao.id }}</span>
+          </dd>
+          <dt><span>Valor Total</span></dt>
+          <dd>
+            <span>{{ contratacao.valorTotal }}</span>
+          </dd>
+          <dt><span>Validade Em Dias</span></dt>
+          <dd>
+            <span>{{ contratacao.validadeEmDias }}</span>
+          </dd>
+          <dt><span>Data Validade</span></dt>
+          <dd>
+            <span>{{ contratacao.dataValidade | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Observacao</span></dt>
+          <dd>
+            <span>{{ contratacao.observacao }}</span>
+          </dd>
+          <dt><span>Data Cadastro</span></dt>
+          <dd>
+            <span>{{ contratacao.dataCadastro | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cadastro</span></dt>
+          <dd>
+            <span>{{ contratacao.usuarioCadastro }}</span>
+          </dd>
+          <dt><span>Data Atualizacao</span></dt>
+          <dd>
+            <span>{{ contratacao.dataAtualizacao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Atualizacao</span></dt>
+          <dd>
+            <span>{{ contratacao.usuarioAtualizacao }}</span>
+          </dd>
+          <dt><span>Cancelado</span></dt>
+          <dd>
+            <span>{{ contratacao.cancelado }}</span>
+          </dd>
+          <dt><span>Data Cancelamento</span></dt>
+          <dd>
+            <span>{{ contratacao.dataCancelamento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Cancelamento</span></dt>
+          <dd>
+            <span>{{ contratacao.usuarioCancelamento }}</span>
+          </dd>
+          <dt><span>Removido</span></dt>
+          <dd>
+            <span>{{ contratacao.removido }}</span>
+          </dd>
+          <dt><span>Data Remocao</span></dt>
+          <dd>
+            <span>{{ contratacao.dataRemocao | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Usuario Remocao</span></dt>
+          <dd>
+            <span>{{ contratacao.usuarioRemocao }}</span>
+          </dd>
+          <dt><span>Transportadora</span></dt>
+          <dd>
+            @if (contratacao.transportadora) {
+              <div>
+                <a [routerLink]="['/transportadora', contratacao.transportadora.id, 'view']">{{ contratacao.transportadora.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/contratacao', contratacao.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

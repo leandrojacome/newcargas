@@ -1,0 +1,295 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-notificacao-heading" data-cy="NotificacaoCreateUpdateHeading">Criar ou editar Notificacao</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipo">Tipo</label>
+          <select class="form-control" name="tipo" formControlName="tipo" id="field_tipo" data-cy="tipo">
+            <option [ngValue]="null"></option>
+            @for (tipoNotificacao of tipoNotificacaoValues; track $index) {
+              <option [value]="tipoNotificacao">{{ tipoNotificacao }}</option>
+            }
+          </select>
+          @if (editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)) {
+            <div>
+              @if (editForm.get('tipo')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('email')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_telefone">Telefone</label>
+          <input type="text" class="form-control" name="telefone" id="field_telefone" data-cy="telefone" formControlName="telefone" />
+          @if (editForm.get('telefone')!.invalid && (editForm.get('telefone')!.dirty || editForm.get('telefone')!.touched)) {
+            <div>
+              @if (editForm.get('telefone')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 10 caracteres.</small>
+              }
+              @if (editForm.get('telefone')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 11 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_assunto">Assunto</label>
+          <input type="text" class="form-control" name="assunto" id="field_assunto" data-cy="assunto" formControlName="assunto" />
+          @if (editForm.get('assunto')!.invalid && (editForm.get('assunto')!.dirty || editForm.get('assunto')!.touched)) {
+            <div>
+              @if (editForm.get('assunto')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('assunto')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('assunto')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mensagem">Mensagem</label>
+          <input type="text" class="form-control" name="mensagem" id="field_mensagem" data-cy="mensagem" formControlName="mensagem" />
+          @if (editForm.get('mensagem')!.invalid && (editForm.get('mensagem')!.dirty || editForm.get('mensagem')!.touched)) {
+            <div>
+              @if (editForm.get('mensagem')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              @if (editForm.get('mensagem')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('mensagem')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataHoraEnvio">Data Hora Envio</label>
+          <div class="d-flex">
+            <input
+              id="field_dataHoraEnvio"
+              data-cy="dataHoraEnvio"
+              type="datetime-local"
+              class="form-control"
+              name="dataHoraEnvio"
+              formControlName="dataHoraEnvio"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataHoraEnvio')!.invalid && (editForm.get('dataHoraEnvio')!.dirty || editForm.get('dataHoraEnvio')!.touched)) {
+            <div>
+              @if (editForm.get('dataHoraEnvio')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataHoraEnvio')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataHoraLeitura">Data Hora Leitura</label>
+          <div class="d-flex">
+            <input
+              id="field_dataHoraLeitura"
+              data-cy="dataHoraLeitura"
+              type="datetime-local"
+              class="form-control"
+              name="dataHoraLeitura"
+              formControlName="dataHoraLeitura"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
+          <div class="d-flex">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="datetime-local"
+              class="form-control"
+              name="dataCadastro"
+              formControlName="dataCadastro"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)) {
+            <div>
+              @if (editForm.get('dataCadastro')?.errors?.required) {
+                <small class="form-text text-danger">O campo é obrigatório.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dataCadastro')?.errors?.datetimelocal"
+                >Este campo é do tipo data/hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataAtualizacao"
+              data-cy="dataAtualizacao"
+              type="datetime-local"
+              class="form-control"
+              name="dataAtualizacao"
+              formControlName="dataAtualizacao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lido">Lido</label>
+          <input type="checkbox" class="form-check" name="lido" id="field_lido" data-cy="lido" formControlName="lido" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataLeitura">Data Leitura</label>
+          <div class="d-flex">
+            <input
+              id="field_dataLeitura"
+              data-cy="dataLeitura"
+              type="datetime-local"
+              class="form-control"
+              name="dataLeitura"
+              formControlName="dataLeitura"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_removido">Removido</label>
+          <input type="checkbox" class="form-check" name="removido" id="field_removido" data-cy="removido" formControlName="removido" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataRemocao">Data Remocao</label>
+          <div class="d-flex">
+            <input
+              id="field_dataRemocao"
+              data-cy="dataRemocao"
+              type="datetime-local"
+              class="form-control"
+              name="dataRemocao"
+              formControlName="dataRemocao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usuarioRemocao">Usuario Remocao</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usuarioRemocao"
+            id="field_usuarioRemocao"
+            data-cy="usuarioRemocao"
+            formControlName="usuarioRemocao"
+          />
+          @if (
+            editForm.get('usuarioRemocao')!.invalid && (editForm.get('usuarioRemocao')!.dirty || editForm.get('usuarioRemocao')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('usuarioRemocao')?.errors?.minlength) {
+                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+              }
+              @if (editForm.get('usuarioRemocao')?.errors?.maxlength) {
+                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_embarcador">Embarcador</label>
+          <select
+            class="form-control"
+            id="field_embarcador"
+            data-cy="embarcador"
+            name="embarcador"
+            formControlName="embarcador"
+            [compareWith]="compareEmbarcador"
+          >
+            <option [ngValue]="null"></option>
+            @for (embarcadorOption of embarcadorsSharedCollection; track $index) {
+              <option [ngValue]="embarcadorOption">{{ embarcadorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transportadora">Transportadora</label>
+          <select
+            class="form-control"
+            id="field_transportadora"
+            data-cy="transportadora"
+            name="transportadora"
+            formControlName="transportadora"
+            [compareWith]="compareTransportadora"
+          >
+            <option [ngValue]="null"></option>
+            @for (transportadoraOption of transportadorasSharedCollection; track $index) {
+              <option [ngValue]="transportadoraOption">{{ transportadoraOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

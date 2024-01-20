@@ -1,0 +1,297 @@
+<div>
+  <h2 id="page-heading" data-cy="TomadaPrecoHeading">
+    <span>Tomada Precos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tomada-preco"
+        [routerLink]="['/tomada-preco/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down">Criar novo Tomada Preco</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch">Pesquisar por Tomada Preco</label>
+        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query" />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (tomadaPrecos?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>Nenhum Tomada Preco encontrado</span>
+    </div>
+  }
+
+  @if (tomadaPrecos && tomadaPrecos.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Código</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataHoraEnvio">
+              <div class="d-flex">
+                <span>Data Hora Envio</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="prazoResposta">
+              <div class="d-flex">
+                <span>Prazo Resposta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="valorTotal">
+              <div class="d-flex">
+                <span>Valor Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacao">
+              <div class="d-flex">
+                <span>Observacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCadastro">
+              <div class="d-flex">
+                <span>Data Cadastro</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCadastro">
+              <div class="d-flex">
+                <span>Usuario Cadastro</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAtualizacao">
+              <div class="d-flex">
+                <span>Data Atualizacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioAtualizacao">
+              <div class="d-flex">
+                <span>Usuario Atualizacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="aprovado">
+              <div class="d-flex">
+                <span>Aprovado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataAprovacao">
+              <div class="d-flex">
+                <span>Data Aprovacao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioAprovacao">
+              <div class="d-flex">
+                <span>Usuario Aprovacao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cancelado">
+              <div class="d-flex">
+                <span>Cancelado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataCancelamento">
+              <div class="d-flex">
+                <span>Data Cancelamento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioCancelamento">
+              <div class="d-flex">
+                <span>Usuario Cancelamento</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="removido">
+              <div class="d-flex">
+                <span>Removido</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataRemocao">
+              <div class="d-flex">
+                <span>Data Remocao</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usuarioRemocao">
+              <div class="d-flex">
+                <span>Usuario Remocao</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contratacao.id">
+              <div class="d-flex">
+                <span>Contratacao</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transportadora.id">
+              <div class="d-flex">
+                <span>Transportadora</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="roteirizacao.id">
+              <div class="d-flex">
+                <span>Roteirizacao</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tomadaPreco of tomadaPrecos; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/tomada-preco', tomadaPreco.id, 'view']">{{ tomadaPreco.id }}</a>
+              </td>
+              <td>{{ tomadaPreco.dataHoraEnvio | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.prazoResposta }}</td>
+              <td>{{ tomadaPreco.valorTotal }}</td>
+              <td>{{ tomadaPreco.observacao }}</td>
+              <td>{{ tomadaPreco.dataCadastro | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.usuarioCadastro }}</td>
+              <td>{{ tomadaPreco.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.usuarioAtualizacao }}</td>
+              <td>{{ tomadaPreco.aprovado }}</td>
+              <td>{{ tomadaPreco.dataAprovacao | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.usuarioAprovacao }}</td>
+              <td>{{ tomadaPreco.cancelado }}</td>
+              <td>{{ tomadaPreco.dataCancelamento | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.usuarioCancelamento }}</td>
+              <td>{{ tomadaPreco.removido }}</td>
+              <td>{{ tomadaPreco.dataRemocao | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.usuarioRemocao }}</td>
+              <td>
+                @if (tomadaPreco.contratacao) {
+                  <div>
+                    <a [routerLink]="['/contratacao', tomadaPreco.contratacao.id, 'view']">{{ tomadaPreco.contratacao.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tomadaPreco.transportadora) {
+                  <div>
+                    <a [routerLink]="['/transportadora', tomadaPreco.transportadora.id, 'view']">{{ tomadaPreco.transportadora.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (tomadaPreco.roteirizacao) {
+                  <div>
+                    <a [routerLink]="['/roteirizacao', tomadaPreco.roteirizacao.id, 'view']">{{ tomadaPreco.roteirizacao.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/tomada-preco', tomadaPreco.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizar</span>
+                  </a>
+
+                  <a [routerLink]="['/tomada-preco', tomadaPreco.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(tomadaPreco)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Excluir</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (tomadaPrecos && tomadaPrecos.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

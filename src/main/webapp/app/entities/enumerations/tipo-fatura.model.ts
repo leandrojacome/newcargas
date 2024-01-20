@@ -1,0 +1,5 @@
+export enum TipoFatura {
+  EMBARCADOR = 'EMBARCADOR',
+
+  TRANSPORTADORA = 'TRANSPORTADORA',
+}
