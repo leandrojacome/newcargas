@@ -2,7 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -39,25 +39,17 @@ public class StatusColetaDTO implements Serializable {
     @Size(min = 2, max = 500)
     private String descricao;
 
-    @NotNull
-    private ZonedDateTime dataCadastro;
-
-    @Size(min = 2, max = 150)
-    private String usuarioCadastro;
-
-    private ZonedDateTime dataAtualizacao;
-
-    @Size(min = 2, max = 150)
-    private String usuarioAtualizacao;
-
     private Boolean ativo;
 
     private Boolean removido;
 
-    private ZonedDateTime dataRemocao;
+    private String createdBy;
 
-    @Size(min = 2, max = 150)
-    private String usuarioRemocao;
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private Set<StatusColetaDTO> statusColetaOrigems = new HashSet<>();
 
@@ -141,38 +133,6 @@ public class StatusColetaDTO implements Serializable {
         this.descricao = descricao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public String getUsuarioCadastro() {
-        return usuarioCadastro;
-    }
-
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public String getUsuarioAtualizacao() {
-        return usuarioAtualizacao;
-    }
-
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
-    }
-
     public Boolean getAtivo() {
         return ativo;
     }
@@ -189,20 +149,36 @@ public class StatusColetaDTO implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return dataRemocao;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getUsuarioRemocao() {
-        return usuarioRemocao;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Set<StatusColetaDTO> getStatusColetaOrigems() {
@@ -248,14 +224,12 @@ public class StatusColetaDTO implements Serializable {
             ", permiteEditar='" + getPermiteEditar() + "'" +
             ", permiteExcluir='" + getPermiteExcluir() + "'" +
             ", descricao='" + getDescricao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
             ", ativo='" + getAtivo() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", statusColetaOrigems=" + getStatusColetaOrigems() +
             "}";
     }

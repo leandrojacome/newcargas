@@ -8,9 +8,8 @@ import { StatusColetaService, RestStatusColeta } from './status-coleta.service';
 
 const requireRestSample: RestStatusColeta = {
   ...sampleWithRequiredData,
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('StatusColeta Service', () => {

@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (embarcadors?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Embarcador encontrado</span>
@@ -173,34 +175,40 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCadastro">
-              <div class="d-flex">
-                <span>Usuario Cadastro</span>
+                <span>Created By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
+            <th scope="col" jhiSortBy="createdDate">
               <div class="d-flex">
-                <span>Data Atualizacao</span>
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioAtualizacao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Atualizacao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cidade.id">
+              <div class="d-flex">
+                <span>Cidade</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col"></th>
@@ -226,12 +234,79 @@
               <td>{{ embarcador.telefone }}</td>
               <td>{{ embarcador.email }}</td>
               <td>{{ embarcador.observacao }}</td>
-              <td>{{ embarcador.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ embarcador.usuarioCadastro }}</td>
-              <td>{{ embarcador.dataAtualizacao | formatMediumDatetime }}</td>
-              <td>{{ embarcador.usuarioAtualizacao }}</td>
+              <td>{{ embarcador.createdBy }}</td>
+              <td>{{ embarcador.createdDate | formatMediumDatetime }}</td>
+              <td>{{ embarcador.lastModifiedBy }}</td>
+              <td>{{ embarcador.lastModifiedDate | formatMediumDatetime }}</td>
+              <td>
+                @if (embarcador.cidade) {
+                  <div>
+                    <a [routerLink]="['/cidade', embarcador.cidade.id, 'view']">{{ embarcador.cidade.id }}</a>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/endereco']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Endereco</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/conta-bancaria']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Conta Bancaria</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/tabela-frete']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Tabela Frete</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/solicitacao-coleta']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Solicitacao Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/notificacao']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Notificacao</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/fatura']"
+                    [queryParams]="{ 'filter[embarcadorId.in]': embarcador.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Fatura</span>
+                  </button>
                   <a [routerLink]="['/embarcador', embarcador.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

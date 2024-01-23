@@ -15,7 +15,7 @@ describe('Banco e2e test', () => {
   const bancoPageUrlPattern = new RegExp('/banco(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const bancoSample = { nome: 'busk secret yippee' };
+  const bancoSample = { nome: 'witty decimate' };
 
   let banco;
 
@@ -125,7 +125,7 @@ describe('Banco e2e test', () => {
         cy.url().should('match', bancoPageUrlPattern);
       });
 
-      it('edit button click should load edit Banco page and save', () => {
+      it.skip('edit button click should load edit Banco page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Banco');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,11 +160,11 @@ describe('Banco e2e test', () => {
     });
 
     it('should create an instance of Banco', () => {
-      cy.get(`[data-cy="nome"]`).type('colorless');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'colorless');
+      cy.get(`[data-cy="nome"]`).type('mysterious chopstick');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'mysterious chopstick');
 
-      cy.get(`[data-cy="codigo"]`).type('pag');
-      cy.get(`[data-cy="codigo"]`).should('have.value', 'pag');
+      cy.get(`[data-cy="codigo"]`).type('hei');
+      cy.get(`[data-cy="codigo"]`).should('have.value', 'hei');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

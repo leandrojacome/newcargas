@@ -1,10 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -16,8 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "transportadora")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "transportadora")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Transportadora implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class Transportadora extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,78 +33,83 @@ public class Transportadora implements Serializable {
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "nome", length = 150, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String nome;
 
     @NotNull
     @Size(min = 14, max = 14)
     @Column(name = "cnpj", length = 14, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String cnpj;
 
     @Size(min = 2, max = 150)
     @Column(name = "razao_social", length = 150, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String razaoSocial;
 
     @Size(min = 2, max = 20)
     @Column(name = "inscricao_estadual", length = 20, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String inscricaoEstadual;
 
     @Size(min = 2, max = 20)
     @Column(name = "inscricao_municipal", length = 20, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String inscricaoMunicipal;
 
     @Size(min = 2, max = 150)
     @Column(name = "responsavel", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String responsavel;
 
     @Size(min = 8, max = 8)
     @Column(name = "cep", length = 8)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String cep;
 
     @Size(min = 2, max = 150)
     @Column(name = "endereco", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String endereco;
 
     @Size(min = 1, max = 10)
     @Column(name = "numero", length = 10)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String numero;
 
     @Size(min = 2, max = 150)
     @Column(name = "complemento", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String complemento;
 
     @Size(min = 2, max = 150)
     @Column(name = "bairro", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String bairro;
 
     @Size(min = 10, max = 11)
     @Column(name = "telefone", length = 11)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String telefone;
 
     @Size(min = 2, max = 150)
     @Column(name = "email", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String email;
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cadastro", length = 150)
-    private String usuarioCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_atualizacao", length = 150)
-    private String usuarioAtualizacao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -118,16 +126,13 @@ public class Transportadora implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "enderecos", "estado", "embarcador", "transportadora" }, allowSetters = true)
-    private Set<Cidade> cidades = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "banco", "embarcador", "transportadora" }, allowSetters = true)
     private Set<ContaBancaria> contaBancarias = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = { "embarcador", "transportadora", "tipoCarga", "tipoFrete", "formaCobranca", "regiaoOrigem", "regiaoDestino" },
         allowSetters = true
@@ -136,23 +141,31 @@ public class Transportadora implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "contratacao", "transportadora", "roteirizacao" }, allowSetters = true)
     private Set<TomadaPreco> tomadaPrecos = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "faturas", "solicitacaoColeta", "transportadora" }, allowSetters = true)
     private Set<Contratacao> contratacaos = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "embarcador", "transportadora" }, allowSetters = true)
     private Set<Notificacao> notificacaos = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportadora")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "embarcador", "transportadora", "contratacao", "formaCobranca" }, allowSetters = true)
     private Set<Fatura> faturas = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "enderecos", "embarcadors", "transportadoras", "estado" }, allowSetters = true)
+    private Cidade cidade;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -351,56 +364,28 @@ public class Transportadora implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public Transportadora dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
+    // Inherited createdBy methods
+    public Transportadora createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public String getUsuarioCadastro() {
-        return this.usuarioCadastro;
-    }
-
-    public Transportadora usuarioCadastro(String usuarioCadastro) {
-        this.setUsuarioCadastro(usuarioCadastro);
+    // Inherited createdDate methods
+    public Transportadora createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public Transportadora dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
+    // Inherited lastModifiedBy methods
+    public Transportadora lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public String getUsuarioAtualizacao() {
-        return this.usuarioAtualizacao;
-    }
-
-    public Transportadora usuarioAtualizacao(String usuarioAtualizacao) {
-        this.setUsuarioAtualizacao(usuarioAtualizacao);
+    // Inherited lastModifiedDate methods
+    public Transportadora lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
         return this;
-    }
-
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
     }
 
     public Set<Endereco> getEnderecos() {
@@ -431,37 +416,6 @@ public class Transportadora implements Serializable {
     public Transportadora removeEndereco(Endereco endereco) {
         this.enderecos.remove(endereco);
         endereco.setTransportadora(null);
-        return this;
-    }
-
-    public Set<Cidade> getCidades() {
-        return this.cidades;
-    }
-
-    public void setCidades(Set<Cidade> cidades) {
-        if (this.cidades != null) {
-            this.cidades.forEach(i -> i.setTransportadora(null));
-        }
-        if (cidades != null) {
-            cidades.forEach(i -> i.setTransportadora(this));
-        }
-        this.cidades = cidades;
-    }
-
-    public Transportadora cidades(Set<Cidade> cidades) {
-        this.setCidades(cidades);
-        return this;
-    }
-
-    public Transportadora addCidade(Cidade cidade) {
-        this.cidades.add(cidade);
-        cidade.setTransportadora(this);
-        return this;
-    }
-
-    public Transportadora removeCidade(Cidade cidade) {
-        this.cidades.remove(cidade);
-        cidade.setTransportadora(null);
         return this;
     }
 
@@ -651,6 +605,19 @@ public class Transportadora implements Serializable {
         return this;
     }
 
+    public Cidade getCidade() {
+        return this.cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public Transportadora cidade(Cidade cidade) {
+        this.setCidade(cidade);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -689,10 +656,10 @@ public class Transportadora implements Serializable {
             ", telefone='" + getTelefone() + "'" +
             ", email='" + getEmail() + "'" +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

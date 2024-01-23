@@ -15,14 +15,12 @@ export interface ISolicitacaoColeta {
   dataHoraEntrega?: dayjs.Dayjs | null;
   valorTotal?: number | null;
   observacao?: string | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
   cancelado?: boolean | null;
-  dataCancelamento?: dayjs.Dayjs | null;
-  usuarioCancelamento?: string | null;
   removido?: boolean | null;
-  dataRemocao?: dayjs.Dayjs | null;
-  usuarioRemocao?: string | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   notaFiscalColetas?: Pick<INotaFiscalColeta, 'id'>[] | null;
   enderecoOrigems?: Pick<IEndereco, 'id'>[] | null;
   enderecoDestinos?: Pick<IEndereco, 'id'>[] | null;

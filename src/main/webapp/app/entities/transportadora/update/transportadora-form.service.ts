@@ -19,16 +19,16 @@ type TransportadoraFormGroupInput = ITransportadora | PartialWithRequiredKeyOf<N
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends ITransportadora | NewTransportadora> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type FormValueOf<T extends ITransportadora | NewTransportadora> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type TransportadoraFormRawValue = FormValueOf<ITransportadora>;
 
 type NewTransportadoraFormRawValue = FormValueOf<NewTransportadora>;
 
-type TransportadoraFormDefaults = Pick<NewTransportadora, 'id' | 'dataCadastro' | 'dataAtualizacao'>;
+type TransportadoraFormDefaults = Pick<NewTransportadora, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type TransportadoraFormGroupContent = {
   id: FormControl<TransportadoraFormRawValue['id'] | NewTransportadora['id']>;
@@ -46,10 +46,12 @@ type TransportadoraFormGroupContent = {
   telefone: FormControl<TransportadoraFormRawValue['telefone']>;
   email: FormControl<TransportadoraFormRawValue['email']>;
   observacao: FormControl<TransportadoraFormRawValue['observacao']>;
-  dataCadastro: FormControl<TransportadoraFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<TransportadoraFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<TransportadoraFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<TransportadoraFormRawValue['usuarioAtualizacao']>;
+  createdBy: FormControl<TransportadoraFormRawValue['createdBy']>;
+  createdDate: FormControl<TransportadoraFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<TransportadoraFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<TransportadoraFormRawValue['lastModifiedDate']>;
+  cidade: FormControl<TransportadoraFormRawValue['cidade']>;
+  estado: FormControl<TransportadoraFormRawValue['estado']>;
 };
 
 export type TransportadoraFormGroup = FormGroup<TransportadoraFormGroupContent>;
@@ -111,16 +113,12 @@ export class TransportadoraFormService {
       observacao: new FormControl(transportadoraRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(transportadoraRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(transportadoraRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(transportadoraRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(transportadoraRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(transportadoraRawValue.createdBy),
+      createdDate: new FormControl(transportadoraRawValue.createdDate),
+      lastModifiedBy: new FormControl(transportadoraRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(transportadoraRawValue.lastModifiedDate),
+      cidade: new FormControl(transportadoraRawValue.cidade),
+      estado: new FormControl(transportadoraRawValue.cidade),
     });
   }
 
@@ -145,8 +143,8 @@ export class TransportadoraFormService {
 
     return {
       id: null,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -155,8 +153,8 @@ export class TransportadoraFormService {
   ): ITransportadora | NewTransportadora {
     return {
       ...rawTransportadora,
-      dataCadastro: dayjs(rawTransportadora.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawTransportadora.dataAtualizacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawTransportadora.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawTransportadora.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -165,8 +163,8 @@ export class TransportadoraFormService {
   ): TransportadoraFormRawValue | PartialWithRequiredKeyOf<NewTransportadoraFormRawValue> {
     return {
       ...transportadora,
-      dataCadastro: transportadora.dataCadastro ? transportadora.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: transportadora.dataAtualizacao ? transportadora.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: transportadora.createdDate ? transportadora.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: transportadora.lastModifiedDate ? transportadora.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

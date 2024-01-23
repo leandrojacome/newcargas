@@ -10,14 +10,19 @@ public class TipoFreteTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static TipoFrete getTipoFreteSample1() {
-        return new TipoFrete().id(1L).nome("nome1").descricao("descricao1");
+        return new TipoFrete().id(1L).nome("nome1").descricao("descricao1").createdBy("createdBy1").lastModifiedBy("lastModifiedBy1");
     }
 
     public static TipoFrete getTipoFreteSample2() {
-        return new TipoFrete().id(2L).nome("nome2").descricao("descricao2");
+        return new TipoFrete().id(2L).nome("nome2").descricao("descricao2").createdBy("createdBy2").lastModifiedBy("lastModifiedBy2");
     }
 
     public static TipoFrete getTipoFreteRandomSampleGenerator() {
-        return new TipoFrete().id(longCount.incrementAndGet()).nome(UUID.randomUUID().toString()).descricao(UUID.randomUUID().toString());
+        return new TipoFrete()
+            .id(longCount.incrementAndGet())
+            .nome(UUID.randomUUID().toString())
+            .descricao(UUID.randomUUID().toString())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

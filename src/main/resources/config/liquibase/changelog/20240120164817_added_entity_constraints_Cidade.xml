@@ -14,19 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="estado"
                                  />
-
-        <addForeignKeyConstraint baseColumnNames="embarcador_id"
-                                 baseTableName="cidade"
-                                 constraintName="fk_cidade__embarcador_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="embarcador"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="transportadora_id"
-                                 baseTableName="cidade"
-                                 constraintName="fk_cidade__transportadora_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="transportadora"
-                                 />
     </changeSet>
 </databaseChangeLog>

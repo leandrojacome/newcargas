@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.Regiao;
+import br.com.revenuebrasil.newcargas.domain.TabelaFrete;
 import br.com.revenuebrasil.newcargas.repository.RegiaoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.RegiaoSearchRepository;
 import br.com.revenuebrasil.newcargas.service.dto.RegiaoDTO;
@@ -205,6 +206,303 @@ class RegiaoResourceIT {
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.sigla").value(DEFAULT_SIGLA))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO));
+    }
+
+    @Test
+    @Transactional
+    void getRegiaosByIdFiltering() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        Long id = regiao.getId();
+
+        defaultRegiaoShouldBeFound("id.equals=" + id);
+        defaultRegiaoShouldNotBeFound("id.notEquals=" + id);
+
+        defaultRegiaoShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultRegiaoShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultRegiaoShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultRegiaoShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where nome equals to DEFAULT_NOME
+        defaultRegiaoShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the regiaoList where nome equals to UPDATED_NOME
+        defaultRegiaoShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultRegiaoShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the regiaoList where nome equals to UPDATED_NOME
+        defaultRegiaoShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where nome is not null
+        defaultRegiaoShouldBeFound("nome.specified=true");
+
+        // Get all the regiaoList where nome is null
+        defaultRegiaoShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where nome contains DEFAULT_NOME
+        defaultRegiaoShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the regiaoList where nome contains UPDATED_NOME
+        defaultRegiaoShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where nome does not contain DEFAULT_NOME
+        defaultRegiaoShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the regiaoList where nome does not contain UPDATED_NOME
+        defaultRegiaoShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosBySiglaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where sigla equals to DEFAULT_SIGLA
+        defaultRegiaoShouldBeFound("sigla.equals=" + DEFAULT_SIGLA);
+
+        // Get all the regiaoList where sigla equals to UPDATED_SIGLA
+        defaultRegiaoShouldNotBeFound("sigla.equals=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosBySiglaIsInShouldWork() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where sigla in DEFAULT_SIGLA or UPDATED_SIGLA
+        defaultRegiaoShouldBeFound("sigla.in=" + DEFAULT_SIGLA + "," + UPDATED_SIGLA);
+
+        // Get all the regiaoList where sigla equals to UPDATED_SIGLA
+        defaultRegiaoShouldNotBeFound("sigla.in=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosBySiglaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where sigla is not null
+        defaultRegiaoShouldBeFound("sigla.specified=true");
+
+        // Get all the regiaoList where sigla is null
+        defaultRegiaoShouldNotBeFound("sigla.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosBySiglaContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where sigla contains DEFAULT_SIGLA
+        defaultRegiaoShouldBeFound("sigla.contains=" + DEFAULT_SIGLA);
+
+        // Get all the regiaoList where sigla contains UPDATED_SIGLA
+        defaultRegiaoShouldNotBeFound("sigla.contains=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosBySiglaNotContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where sigla does not contain DEFAULT_SIGLA
+        defaultRegiaoShouldNotBeFound("sigla.doesNotContain=" + DEFAULT_SIGLA);
+
+        // Get all the regiaoList where sigla does not contain UPDATED_SIGLA
+        defaultRegiaoShouldBeFound("sigla.doesNotContain=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByDescricaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where descricao equals to DEFAULT_DESCRICAO
+        defaultRegiaoShouldBeFound("descricao.equals=" + DEFAULT_DESCRICAO);
+
+        // Get all the regiaoList where descricao equals to UPDATED_DESCRICAO
+        defaultRegiaoShouldNotBeFound("descricao.equals=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByDescricaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where descricao in DEFAULT_DESCRICAO or UPDATED_DESCRICAO
+        defaultRegiaoShouldBeFound("descricao.in=" + DEFAULT_DESCRICAO + "," + UPDATED_DESCRICAO);
+
+        // Get all the regiaoList where descricao equals to UPDATED_DESCRICAO
+        defaultRegiaoShouldNotBeFound("descricao.in=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByDescricaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where descricao is not null
+        defaultRegiaoShouldBeFound("descricao.specified=true");
+
+        // Get all the regiaoList where descricao is null
+        defaultRegiaoShouldNotBeFound("descricao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByDescricaoContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where descricao contains DEFAULT_DESCRICAO
+        defaultRegiaoShouldBeFound("descricao.contains=" + DEFAULT_DESCRICAO);
+
+        // Get all the regiaoList where descricao contains UPDATED_DESCRICAO
+        defaultRegiaoShouldNotBeFound("descricao.contains=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByDescricaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        regiaoRepository.saveAndFlush(regiao);
+
+        // Get all the regiaoList where descricao does not contain DEFAULT_DESCRICAO
+        defaultRegiaoShouldNotBeFound("descricao.doesNotContain=" + DEFAULT_DESCRICAO);
+
+        // Get all the regiaoList where descricao does not contain UPDATED_DESCRICAO
+        defaultRegiaoShouldBeFound("descricao.doesNotContain=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByTabelaFreteOrigemIsEqualToSomething() throws Exception {
+        TabelaFrete tabelaFreteOrigem;
+        if (TestUtil.findAll(em, TabelaFrete.class).isEmpty()) {
+            regiaoRepository.saveAndFlush(regiao);
+            tabelaFreteOrigem = TabelaFreteResourceIT.createEntity(em);
+        } else {
+            tabelaFreteOrigem = TestUtil.findAll(em, TabelaFrete.class).get(0);
+        }
+        em.persist(tabelaFreteOrigem);
+        em.flush();
+        regiao.addTabelaFreteOrigem(tabelaFreteOrigem);
+        regiaoRepository.saveAndFlush(regiao);
+        Long tabelaFreteOrigemId = tabelaFreteOrigem.getId();
+        // Get all the regiaoList where tabelaFreteOrigem equals to tabelaFreteOrigemId
+        defaultRegiaoShouldBeFound("tabelaFreteOrigemId.equals=" + tabelaFreteOrigemId);
+
+        // Get all the regiaoList where tabelaFreteOrigem equals to (tabelaFreteOrigemId + 1)
+        defaultRegiaoShouldNotBeFound("tabelaFreteOrigemId.equals=" + (tabelaFreteOrigemId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRegiaosByTabelaFreteDestinoIsEqualToSomething() throws Exception {
+        TabelaFrete tabelaFreteDestino;
+        if (TestUtil.findAll(em, TabelaFrete.class).isEmpty()) {
+            regiaoRepository.saveAndFlush(regiao);
+            tabelaFreteDestino = TabelaFreteResourceIT.createEntity(em);
+        } else {
+            tabelaFreteDestino = TestUtil.findAll(em, TabelaFrete.class).get(0);
+        }
+        em.persist(tabelaFreteDestino);
+        em.flush();
+        regiao.addTabelaFreteDestino(tabelaFreteDestino);
+        regiaoRepository.saveAndFlush(regiao);
+        Long tabelaFreteDestinoId = tabelaFreteDestino.getId();
+        // Get all the regiaoList where tabelaFreteDestino equals to tabelaFreteDestinoId
+        defaultRegiaoShouldBeFound("tabelaFreteDestinoId.equals=" + tabelaFreteDestinoId);
+
+        // Get all the regiaoList where tabelaFreteDestino equals to (tabelaFreteDestinoId + 1)
+        defaultRegiaoShouldNotBeFound("tabelaFreteDestinoId.equals=" + (tabelaFreteDestinoId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultRegiaoShouldBeFound(String filter) throws Exception {
+        restRegiaoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(regiao.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].sigla").value(hasItem(DEFAULT_SIGLA)))
+            .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO)));
+
+        // Check, that the count call also returns 1
+        restRegiaoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultRegiaoShouldNotBeFound(String filter) throws Exception {
+        restRegiaoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restRegiaoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

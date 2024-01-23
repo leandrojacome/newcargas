@@ -51,22 +51,6 @@
           <dd>
             <span>{{ statusColeta.descricao }}</span>
           </dd>
-          <dt><span>Data Cadastro</span></dt>
-          <dd>
-            <span>{{ statusColeta.dataCadastro | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span>Usuario Cadastro</span></dt>
-          <dd>
-            <span>{{ statusColeta.usuarioCadastro }}</span>
-          </dd>
-          <dt><span>Data Atualizacao</span></dt>
-          <dd>
-            <span>{{ statusColeta.dataAtualizacao | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span>Usuario Atualizacao</span></dt>
-          <dd>
-            <span>{{ statusColeta.usuarioAtualizacao }}</span>
-          </dd>
           <dt><span>Ativo</span></dt>
           <dd>
             <span>{{ statusColeta.ativo }}</span>
@@ -75,13 +59,21 @@
           <dd>
             <span>{{ statusColeta.removido }}</span>
           </dd>
-          <dt><span>Data Remocao</span></dt>
+          <dt><span>Created By</span></dt>
           <dd>
-            <span>{{ statusColeta.dataRemocao | formatMediumDatetime }}</span>
+            <span>{{ statusColeta.createdBy }}</span>
           </dd>
-          <dt><span>Usuario Remocao</span></dt>
+          <dt><span>Created Date</span></dt>
           <dd>
-            <span>{{ statusColeta.usuarioRemocao }}</span>
+            <span>{{ statusColeta.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ statusColeta.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ statusColeta.lastModifiedDate | formatMediumDatetime }}</span>
           </dd>
           <dt><span>Status Coleta Origem</span></dt>
           <dd>

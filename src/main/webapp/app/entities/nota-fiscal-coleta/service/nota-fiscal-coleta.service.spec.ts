@@ -10,8 +10,8 @@ const requireRestSample: RestNotaFiscalColeta = {
   ...sampleWithRequiredData,
   dataEmissao: sampleWithRequiredData.dataEmissao?.toJSON(),
   dataSaida: sampleWithRequiredData.dataSaida?.toJSON(),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('NotaFiscalColeta Service', () => {

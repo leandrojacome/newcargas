@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -15,8 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "estado")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "estado")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Estado implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class Estado extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,21 +33,30 @@ public class Estado implements Serializable {
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "nome", length = 150, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String nome;
 
     @NotNull
     @Size(min = 2, max = 2)
     @Column(name = "sigla", length = 2, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String sigla;
 
     @Min(value = 7)
     @Max(value = 7)
     @Column(name = "codigo_ibge")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer codigoIbge;
+
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "estado")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "enderecos", "estado", "embarcador", "transportadora" }, allowSetters = true)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(value = { "enderecos", "embarcadors", "transportadoras", "estado" }, allowSetters = true)
     private Set<Cidade> cidades = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -98,6 +111,30 @@ public class Estado implements Serializable {
 
     public void setCodigoIbge(Integer codigoIbge) {
         this.codigoIbge = codigoIbge;
+    }
+
+    // Inherited createdBy methods
+    public Estado createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
+        return this;
+    }
+
+    // Inherited createdDate methods
+    public Estado createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
+        return this;
+    }
+
+    // Inherited lastModifiedBy methods
+    public Estado lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public Estado lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Set<Cidade> getCidades() {
@@ -158,6 +195,10 @@ public class Estado implements Serializable {
             ", nome='" + getNome() + "'" +
             ", sigla='" + getSigla() + "'" +
             ", codigoIbge=" + getCodigoIbge() +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

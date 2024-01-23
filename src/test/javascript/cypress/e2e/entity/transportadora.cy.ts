@@ -15,7 +15,7 @@ describe('Transportadora e2e test', () => {
   const transportadoraPageUrlPattern = new RegExp('/transportadora(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const transportadoraSample = { nome: 'past', cnpj: 'thunderous dre', dataCadastro: '2024-01-19T18:32:06.622Z' };
+  const transportadoraSample = { nome: 'quarrelsomely luxurious', cnpj: 'pew noisyXXXXX' };
 
   let transportadora;
 
@@ -125,7 +125,7 @@ describe('Transportadora e2e test', () => {
         cy.url().should('match', transportadoraPageUrlPattern);
       });
 
-      it('edit button click should load edit Transportadora page and save', () => {
+      it.skip('edit button click should load edit Transportadora page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Transportadora');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,61 +160,47 @@ describe('Transportadora e2e test', () => {
     });
 
     it('should create an instance of Transportadora', () => {
-      cy.get(`[data-cy="nome"]`).type('under');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'under');
+      cy.get(`[data-cy="nome"]`).type('ecclesia');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'ecclesia');
 
-      cy.get(`[data-cy="cnpj"]`).type('likewise relat');
-      cy.get(`[data-cy="cnpj"]`).should('have.value', 'likewise relat');
+      cy.get(`[data-cy="cnpj"]`).type('hungrilyXXXXXX');
+      cy.get(`[data-cy="cnpj"]`).should('have.value', 'hungrilyXXXXXX');
 
-      cy.get(`[data-cy="razaoSocial"]`).type('boot');
-      cy.get(`[data-cy="razaoSocial"]`).should('have.value', 'boot');
+      cy.get(`[data-cy="razaoSocial"]`).type('that');
+      cy.get(`[data-cy="razaoSocial"]`).should('have.value', 'that');
 
-      cy.get(`[data-cy="inscricaoEstadual"]`).type('despite amidst propa');
-      cy.get(`[data-cy="inscricaoEstadual"]`).should('have.value', 'despite amidst propa');
+      cy.get(`[data-cy="inscricaoEstadual"]`).type('angel under ack');
+      cy.get(`[data-cy="inscricaoEstadual"]`).should('have.value', 'angel under ack');
 
-      cy.get(`[data-cy="inscricaoMunicipal"]`).type('lazily');
-      cy.get(`[data-cy="inscricaoMunicipal"]`).should('have.value', 'lazily');
+      cy.get(`[data-cy="inscricaoMunicipal"]`).type('relative inasmuch');
+      cy.get(`[data-cy="inscricaoMunicipal"]`).should('have.value', 'relative inasmuch');
 
-      cy.get(`[data-cy="responsavel"]`).type('pro');
-      cy.get(`[data-cy="responsavel"]`).should('have.value', 'pro');
+      cy.get(`[data-cy="responsavel"]`).type('boot');
+      cy.get(`[data-cy="responsavel"]`).should('have.value', 'boot');
 
-      cy.get(`[data-cy="cep"]`).type('honestly');
-      cy.get(`[data-cy="cep"]`).should('have.value', 'honestly');
+      cy.get(`[data-cy="cep"]`).type('despite ');
+      cy.get(`[data-cy="cep"]`).should('have.value', 'despite ');
 
-      cy.get(`[data-cy="endereco"]`).type('mime');
-      cy.get(`[data-cy="endereco"]`).should('have.value', 'mime');
+      cy.get(`[data-cy="endereco"]`).type('lazily');
+      cy.get(`[data-cy="endereco"]`).should('have.value', 'lazily');
 
-      cy.get(`[data-cy="numero"]`).type('timer');
-      cy.get(`[data-cy="numero"]`).should('have.value', 'timer');
+      cy.get(`[data-cy="numero"]`).type('pro');
+      cy.get(`[data-cy="numero"]`).should('have.value', 'pro');
 
-      cy.get(`[data-cy="complemento"]`).type('deficient grizzled excepting');
-      cy.get(`[data-cy="complemento"]`).should('have.value', 'deficient grizzled excepting');
+      cy.get(`[data-cy="complemento"]`).type('honestly disclose');
+      cy.get(`[data-cy="complemento"]`).should('have.value', 'honestly disclose');
 
-      cy.get(`[data-cy="bairro"]`).type('while second-hand hence');
-      cy.get(`[data-cy="bairro"]`).should('have.value', 'while second-hand hence');
+      cy.get(`[data-cy="bairro"]`).type('mime');
+      cy.get(`[data-cy="bairro"]`).should('have.value', 'mime');
 
-      cy.get(`[data-cy="telefone"]`).type('amidst bah ');
-      cy.get(`[data-cy="telefone"]`).should('have.value', 'amidst bah ');
+      cy.get(`[data-cy="telefone"]`).type('timerXXXXX');
+      cy.get(`[data-cy="telefone"]`).should('have.value', 'timerXXXXX');
 
-      cy.get(`[data-cy="email"]`).type('Warley_Moreira@live.com');
-      cy.get(`[data-cy="email"]`).should('have.value', 'Warley_Moreira@live.com');
+      cy.get(`[data-cy="email"]`).type('Vitor_Moreira@hotmail.com');
+      cy.get(`[data-cy="email"]`).should('have.value', 'Vitor_Moreira@hotmail.com');
 
-      cy.get(`[data-cy="observacao"]`).type('of excluding fumbling');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'of excluding fumbling');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T06:17');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T06:17');
-
-      cy.get(`[data-cy="usuarioCadastro"]`).type('since herald during');
-      cy.get(`[data-cy="usuarioCadastro"]`).should('have.value', 'since herald during');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T13:16');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T13:16');
-
-      cy.get(`[data-cy="usuarioAtualizacao"]`).type('woot toughen acquiesce');
-      cy.get(`[data-cy="usuarioAtualizacao"]`).should('have.value', 'woot toughen acquiesce');
+      cy.get(`[data-cy="observacao"]`).type('old-fashioned always likewise');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'old-fashioned always likewise');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

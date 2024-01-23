@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.HistoricoStatusColeta;
+import br.com.revenuebrasil.newcargas.domain.Roteirizacao;
+import br.com.revenuebrasil.newcargas.domain.SolicitacaoColeta;
+import br.com.revenuebrasil.newcargas.domain.StatusColeta;
 import br.com.revenuebrasil.newcargas.repository.HistoricoStatusColetaRepository;
 import br.com.revenuebrasil.newcargas.repository.search.HistoricoStatusColetaSearchRepository;
 import br.com.revenuebrasil.newcargas.service.dto.HistoricoStatusColetaDTO;
@@ -45,6 +48,7 @@ class HistoricoStatusColetaResourceIT {
 
     private static final ZonedDateTime DEFAULT_DATA_CRIACAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_DATA_CRIACAO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_DATA_CRIACAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     private static final String DEFAULT_OBSERVACAO = "AAAAAAAAAA";
     private static final String UPDATED_OBSERVACAO = "BBBBBBBBBB";
@@ -220,6 +224,307 @@ class HistoricoStatusColetaResourceIT {
             .andExpect(jsonPath("$.id").value(historicoStatusColeta.getId().intValue()))
             .andExpect(jsonPath("$.dataCriacao").value(sameInstant(DEFAULT_DATA_CRIACAO)))
             .andExpect(jsonPath("$.observacao").value(DEFAULT_OBSERVACAO));
+    }
+
+    @Test
+    @Transactional
+    void getHistoricoStatusColetasByIdFiltering() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        Long id = historicoStatusColeta.getId();
+
+        defaultHistoricoStatusColetaShouldBeFound("id.equals=" + id);
+        defaultHistoricoStatusColetaShouldNotBeFound("id.notEquals=" + id);
+
+        defaultHistoricoStatusColetaShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultHistoricoStatusColetaShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultHistoricoStatusColetaShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultHistoricoStatusColetaShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao equals to DEFAULT_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.equals=" + DEFAULT_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao equals to UPDATED_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.equals=" + UPDATED_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao in DEFAULT_DATA_CRIACAO or UPDATED_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.in=" + DEFAULT_DATA_CRIACAO + "," + UPDATED_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao equals to UPDATED_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.in=" + UPDATED_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao is not null
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.specified=true");
+
+        // Get all the historicoStatusColetaList where dataCriacao is null
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao is greater than or equal to DEFAULT_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.greaterThanOrEqual=" + DEFAULT_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao is greater than or equal to UPDATED_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.greaterThanOrEqual=" + UPDATED_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao is less than or equal to DEFAULT_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.lessThanOrEqual=" + DEFAULT_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao is less than or equal to SMALLER_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.lessThanOrEqual=" + SMALLER_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao is less than DEFAULT_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.lessThan=" + DEFAULT_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao is less than UPDATED_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.lessThan=" + UPDATED_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByDataCriacaoIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where dataCriacao is greater than DEFAULT_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("dataCriacao.greaterThan=" + DEFAULT_DATA_CRIACAO);
+
+        // Get all the historicoStatusColetaList where dataCriacao is greater than SMALLER_DATA_CRIACAO
+        defaultHistoricoStatusColetaShouldBeFound("dataCriacao.greaterThan=" + SMALLER_DATA_CRIACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByObservacaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where observacao equals to DEFAULT_OBSERVACAO
+        defaultHistoricoStatusColetaShouldBeFound("observacao.equals=" + DEFAULT_OBSERVACAO);
+
+        // Get all the historicoStatusColetaList where observacao equals to UPDATED_OBSERVACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("observacao.equals=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByObservacaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where observacao in DEFAULT_OBSERVACAO or UPDATED_OBSERVACAO
+        defaultHistoricoStatusColetaShouldBeFound("observacao.in=" + DEFAULT_OBSERVACAO + "," + UPDATED_OBSERVACAO);
+
+        // Get all the historicoStatusColetaList where observacao equals to UPDATED_OBSERVACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("observacao.in=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByObservacaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where observacao is not null
+        defaultHistoricoStatusColetaShouldBeFound("observacao.specified=true");
+
+        // Get all the historicoStatusColetaList where observacao is null
+        defaultHistoricoStatusColetaShouldNotBeFound("observacao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByObservacaoContainsSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where observacao contains DEFAULT_OBSERVACAO
+        defaultHistoricoStatusColetaShouldBeFound("observacao.contains=" + DEFAULT_OBSERVACAO);
+
+        // Get all the historicoStatusColetaList where observacao contains UPDATED_OBSERVACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("observacao.contains=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByObservacaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+
+        // Get all the historicoStatusColetaList where observacao does not contain DEFAULT_OBSERVACAO
+        defaultHistoricoStatusColetaShouldNotBeFound("observacao.doesNotContain=" + DEFAULT_OBSERVACAO);
+
+        // Get all the historicoStatusColetaList where observacao does not contain UPDATED_OBSERVACAO
+        defaultHistoricoStatusColetaShouldBeFound("observacao.doesNotContain=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasBySolicitacaoColetaIsEqualToSomething() throws Exception {
+        SolicitacaoColeta solicitacaoColeta;
+        if (TestUtil.findAll(em, SolicitacaoColeta.class).isEmpty()) {
+            historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+            solicitacaoColeta = SolicitacaoColetaResourceIT.createEntity(em);
+        } else {
+            solicitacaoColeta = TestUtil.findAll(em, SolicitacaoColeta.class).get(0);
+        }
+        em.persist(solicitacaoColeta);
+        em.flush();
+        historicoStatusColeta.setSolicitacaoColeta(solicitacaoColeta);
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+        Long solicitacaoColetaId = solicitacaoColeta.getId();
+        // Get all the historicoStatusColetaList where solicitacaoColeta equals to solicitacaoColetaId
+        defaultHistoricoStatusColetaShouldBeFound("solicitacaoColetaId.equals=" + solicitacaoColetaId);
+
+        // Get all the historicoStatusColetaList where solicitacaoColeta equals to (solicitacaoColetaId + 1)
+        defaultHistoricoStatusColetaShouldNotBeFound("solicitacaoColetaId.equals=" + (solicitacaoColetaId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByRoteirizacaoIsEqualToSomething() throws Exception {
+        Roteirizacao roteirizacao;
+        if (TestUtil.findAll(em, Roteirizacao.class).isEmpty()) {
+            historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+            roteirizacao = RoteirizacaoResourceIT.createEntity(em);
+        } else {
+            roteirizacao = TestUtil.findAll(em, Roteirizacao.class).get(0);
+        }
+        em.persist(roteirizacao);
+        em.flush();
+        historicoStatusColeta.setRoteirizacao(roteirizacao);
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+        Long roteirizacaoId = roteirizacao.getId();
+        // Get all the historicoStatusColetaList where roteirizacao equals to roteirizacaoId
+        defaultHistoricoStatusColetaShouldBeFound("roteirizacaoId.equals=" + roteirizacaoId);
+
+        // Get all the historicoStatusColetaList where roteirizacao equals to (roteirizacaoId + 1)
+        defaultHistoricoStatusColetaShouldNotBeFound("roteirizacaoId.equals=" + (roteirizacaoId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByStatusColetaOrigemIsEqualToSomething() throws Exception {
+        StatusColeta statusColetaOrigem;
+        if (TestUtil.findAll(em, StatusColeta.class).isEmpty()) {
+            historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+            statusColetaOrigem = StatusColetaResourceIT.createEntity(em);
+        } else {
+            statusColetaOrigem = TestUtil.findAll(em, StatusColeta.class).get(0);
+        }
+        em.persist(statusColetaOrigem);
+        em.flush();
+        historicoStatusColeta.setStatusColetaOrigem(statusColetaOrigem);
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+        Long statusColetaOrigemId = statusColetaOrigem.getId();
+        // Get all the historicoStatusColetaList where statusColetaOrigem equals to statusColetaOrigemId
+        defaultHistoricoStatusColetaShouldBeFound("statusColetaOrigemId.equals=" + statusColetaOrigemId);
+
+        // Get all the historicoStatusColetaList where statusColetaOrigem equals to (statusColetaOrigemId + 1)
+        defaultHistoricoStatusColetaShouldNotBeFound("statusColetaOrigemId.equals=" + (statusColetaOrigemId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllHistoricoStatusColetasByStatusColetaDestinoIsEqualToSomething() throws Exception {
+        StatusColeta statusColetaDestino;
+        if (TestUtil.findAll(em, StatusColeta.class).isEmpty()) {
+            historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+            statusColetaDestino = StatusColetaResourceIT.createEntity(em);
+        } else {
+            statusColetaDestino = TestUtil.findAll(em, StatusColeta.class).get(0);
+        }
+        em.persist(statusColetaDestino);
+        em.flush();
+        historicoStatusColeta.setStatusColetaDestino(statusColetaDestino);
+        historicoStatusColetaRepository.saveAndFlush(historicoStatusColeta);
+        Long statusColetaDestinoId = statusColetaDestino.getId();
+        // Get all the historicoStatusColetaList where statusColetaDestino equals to statusColetaDestinoId
+        defaultHistoricoStatusColetaShouldBeFound("statusColetaDestinoId.equals=" + statusColetaDestinoId);
+
+        // Get all the historicoStatusColetaList where statusColetaDestino equals to (statusColetaDestinoId + 1)
+        defaultHistoricoStatusColetaShouldNotBeFound("statusColetaDestinoId.equals=" + (statusColetaDestinoId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultHistoricoStatusColetaShouldBeFound(String filter) throws Exception {
+        restHistoricoStatusColetaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(historicoStatusColeta.getId().intValue())))
+            .andExpect(jsonPath("$.[*].dataCriacao").value(hasItem(sameInstant(DEFAULT_DATA_CRIACAO))))
+            .andExpect(jsonPath("$.[*].observacao").value(hasItem(DEFAULT_OBSERVACAO)));
+
+        // Check, that the count call also returns 1
+        restHistoricoStatusColetaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultHistoricoStatusColetaShouldNotBeFound(String filter) throws Exception {
+        restHistoricoStatusColetaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restHistoricoStatusColetaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

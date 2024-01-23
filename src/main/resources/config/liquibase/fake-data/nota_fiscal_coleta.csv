@@ -1,11 +1,11 @@
-id;numero;serie;remetente;destinatario;metro_cubico;quantidade;peso;data_emissao;data_saida;valor_total;peso_total;quantidade_total;observacao;data_cadastro;data_atualizacao
-1;marathon viciously;yuck witty discourse;recap;pulley round;8.18;4.17;7.21;2024-01-20T09:33:19;2024-01-20T00:00:35;5.47;3.39;1;before nervously questionable;2024-01-19T19:12:17;2024-01-20T11:58:21
-2;consequently;eek;adjust quaint;mortally medal;7.67;8.89;3.16;2024-01-20T10:46:09;2024-01-20T11:22:01;6.36;4.17;2;constrict times;2024-01-20T10:45:41;2024-01-20T15:17:46
-3;judgementally vaguel;attainment ptarmigan;ha instead;without ack;9.62;2.48;8.86;2024-01-20T11:41:16;2024-01-20T15:06:27;3.76;3.99;4;gosh;2024-01-20T00:21:56;2024-01-19T17:01:26
-4;jumpy;spotless mmm;sans ornery;declare aha hmph;4.97;6.72;3.49;2024-01-20T07:46:18;2024-01-20T04:30:37;6.8;7.08;2;not through;2024-01-20T15:49:53;2024-01-20T15:23:53
-5;lumpy;round sadly;optimistic paintwork;since tyrannise meanwhile;3.14;5.28;7.43;2024-01-20T05:22:29;2024-01-20T07:59:01;9.15;4.04;3;wetly than conform;2024-01-19T21:34:08;2024-01-19T17:35:09
-6;ski fooey hat;steel leeway;wrathful patio and;yawn uh-huh;4.83;2.86;8.72;2024-01-20T03:04:29;2024-01-19T17:18:51;3.43;4.3;4;likewise extreme;2024-01-19T17:05:18;2024-01-20T12:52:12
-7;red drat stock;probable vacantly;whoever fondly;evocation;4.65;5.05;2.22;2024-01-20T15:15:50;2024-01-20T08:42:10;2.19;3.59;4;sonar;2024-01-20T00:04:22;2024-01-20T02:53:44
-8;behind;toward;lovingly;exile oof;2.11;1.99;9.26;2024-01-19T22:45:04;2024-01-19T17:50:28;6.13;1.44;3;against;2024-01-20T15:09:10;2024-01-20T00:32:09
-9;hm sidewalk;bashfully wiggly pur;mostly merit triumphantly;venerated interestingly dreamer;6.06;3.51;8.66;2024-01-20T02:44:59;2024-01-20T04:54:06;6.7;2.56;4;oof;2024-01-20T16:11:20;2024-01-20T04:07:46
-10;well ha defiantly;defer that;abnormally after;tenderly almost offensive;5.49;7.82;2.05;2024-01-20T14:47:07;2024-01-20T12:17:38;3.84;5.14;3;acrobatic than valley;2024-01-20T12:41:00;2024-01-19T17:31:04
+id;numero;serie;remetente;destinatario;metro_cubico;quantidade;peso;data_emissao;data_saida;valor_total;peso_total;quantidade_total;observacao;created_by;created_date;last_modified_by;last_modified_date
+1;marathon viciously;yuck witty discourse;recap;pulley round;8.18;4.17;7.21;2024-01-20T09:33:19;2024-01-20T00:00:35;5.47;3.39;1;before nervously questionable;hoax playground worth;2024-01-20T16:08:49;over muted vainly;2024-01-20T04:00:03
+2;potentially infinite;but;yet very;after loyally;5.31;8.27;5.95;2024-01-20T05:04:44;2024-01-20T08:25:38;4.12;5.37;3;meanwhile graduate;off furthermore reason;2024-01-19T19:34:30;notwithstanding ornament;2024-01-19T21:02:53
+3;velvety pish repay;right than;during;doorpost typewriter;1.87;1.81;2.1;2024-01-20T09:01:43;2024-01-20T16:30:56;5.77;9.37;4;dearly lumpy;round sadly;2024-01-20T07:41:54;specific zowie;2024-01-20T01:40:18
+4;for solidly now;pitiful amid past;why;ski fooey hat;4.56;6.73;4.59;2024-01-19T17:45:04;2024-01-20T01:42:43;5.47;5.72;4;quirky wrathful;given;2024-01-20T02:14:42;friction certainly;2024-01-19T18:06:17
+5;modulo nifty;since;till;sadly;2.87;6.53;2.2;2024-01-19T17:46:51;2024-01-20T06:33:47;5.27;4.14;3;unionise meh towards;note;2024-01-20T13:46:44;congressperson;2024-01-20T05:47:46
+6;correctly;pinot;genuine even;and rationalize amidst;4.14;5.04;3.83;2024-01-20T00:52:39;2024-01-20T14:44:12;9.68;2.11;1;cut blaspheme generously;weakly;2024-01-19T21:41:55;bashfully wiggly pure;2024-01-19T21:53:34
+7;fully inside past;bustling misgovern;however blink oof;softly;5.03;9.59;2.25;2024-01-20T06:15:19;2024-01-20T10:01:20;1.89;9.84;4;defiantly underneath correct;deliberately because;2024-01-20T16:43:08;tenderly almost offensive;2024-01-20T05:02:09
+8;reading acrobatic th;apropos;through around while;uh-huh tremendously;8.2;5.28;8.69;2024-01-20T03:10:34;2024-01-20T16:47:07;9.48;9.78;3;yet missile hmph;grateful miserably;2024-01-20T15:01:19;meager;2024-01-20T16:05:18
+9;attempt among;idolize;shawl oddly;pond bite-sized;4.8;5.66;2.79;2024-01-19T19:09:44;2024-01-20T16:58:28;9.89;3.39;1;till yowza;provided militarize barring;2024-01-20T02:09:59;taut ouch;2024-01-20T12:10:27
+10;criticize since wise;anti;jaunty;geez jilt;9.69;5.69;1.54;2024-01-20T11:52:36;2024-01-20T03:22:36;1.19;6.72;3;the;authentic twig;2024-01-19T22:44:37;incidentally precious;2024-01-19T20:46:34

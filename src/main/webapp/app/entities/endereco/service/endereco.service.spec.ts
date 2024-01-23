@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IEndereco } from '../endereco.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../endereco.test-samples';
 
-import { EnderecoService } from './endereco.service';
+import { EnderecoService, RestEndereco } from './endereco.service';
 
-const requireRestSample: IEndereco = {
+const requireRestSample: RestEndereco = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Endereco Service', () => {

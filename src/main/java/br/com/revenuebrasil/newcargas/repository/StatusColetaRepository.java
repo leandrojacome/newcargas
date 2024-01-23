@@ -3,6 +3,7 @@ package br.com.revenuebrasil.newcargas.repository;
 import br.com.revenuebrasil.newcargas.domain.StatusColeta;
 import java.util.List;
 import java.util.Optional;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Repository;
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface StatusColetaRepository extends StatusColetaRepositoryWithBagRelationships, JpaRepository<StatusColeta, Long> {
+@JaversSpringDataAuditable
+public interface StatusColetaRepository
+    extends StatusColetaRepositoryWithBagRelationships, JpaRepository<StatusColeta, Long>, JpaSpecificationExecutor<StatusColeta> {
     default Optional<StatusColeta> findOneWithEagerRelationships(Long id) {
         return this.fetchBagRelationships(this.findById(id));
     }

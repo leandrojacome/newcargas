@@ -19,16 +19,16 @@ type ContaBancariaFormGroupInput = IContaBancaria | PartialWithRequiredKeyOf<New
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IContaBancaria | NewContaBancaria> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type FormValueOf<T extends IContaBancaria | NewContaBancaria> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type ContaBancariaFormRawValue = FormValueOf<IContaBancaria>;
 
 type NewContaBancariaFormRawValue = FormValueOf<NewContaBancaria>;
 
-type ContaBancariaFormDefaults = Pick<NewContaBancaria, 'id' | 'dataCadastro' | 'dataAtualizacao'>;
+type ContaBancariaFormDefaults = Pick<NewContaBancaria, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type ContaBancariaFormGroupContent = {
   id: FormControl<ContaBancariaFormRawValue['id'] | NewContaBancaria['id']>;
@@ -38,8 +38,10 @@ type ContaBancariaFormGroupContent = {
   tipo: FormControl<ContaBancariaFormRawValue['tipo']>;
   pix: FormControl<ContaBancariaFormRawValue['pix']>;
   titular: FormControl<ContaBancariaFormRawValue['titular']>;
-  dataCadastro: FormControl<ContaBancariaFormRawValue['dataCadastro']>;
-  dataAtualizacao: FormControl<ContaBancariaFormRawValue['dataAtualizacao']>;
+  createdBy: FormControl<ContaBancariaFormRawValue['createdBy']>;
+  createdDate: FormControl<ContaBancariaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<ContaBancariaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<ContaBancariaFormRawValue['lastModifiedDate']>;
   banco: FormControl<ContaBancariaFormRawValue['banco']>;
   embarcador: FormControl<ContaBancariaFormRawValue['embarcador']>;
   transportadora: FormControl<ContaBancariaFormRawValue['transportadora']>;
@@ -80,10 +82,10 @@ export class ContaBancariaFormService {
       titular: new FormControl(contaBancariaRawValue.titular, {
         validators: [Validators.minLength(2), Validators.maxLength(150)],
       }),
-      dataCadastro: new FormControl(contaBancariaRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      dataAtualizacao: new FormControl(contaBancariaRawValue.dataAtualizacao),
+      createdBy: new FormControl(contaBancariaRawValue.createdBy),
+      createdDate: new FormControl(contaBancariaRawValue.createdDate),
+      lastModifiedBy: new FormControl(contaBancariaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(contaBancariaRawValue.lastModifiedDate),
       banco: new FormControl(contaBancariaRawValue.banco),
       embarcador: new FormControl(contaBancariaRawValue.embarcador),
       transportadora: new FormControl(contaBancariaRawValue.transportadora),
@@ -109,8 +111,8 @@ export class ContaBancariaFormService {
 
     return {
       id: null,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -119,8 +121,8 @@ export class ContaBancariaFormService {
   ): IContaBancaria | NewContaBancaria {
     return {
       ...rawContaBancaria,
-      dataCadastro: dayjs(rawContaBancaria.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawContaBancaria.dataAtualizacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawContaBancaria.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawContaBancaria.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -129,8 +131,8 @@ export class ContaBancariaFormService {
   ): ContaBancariaFormRawValue | PartialWithRequiredKeyOf<NewContaBancariaFormRawValue> {
     return {
       ...contaBancaria,
-      dataCadastro: contaBancaria.dataCadastro ? contaBancaria.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: contaBancaria.dataAtualizacao ? contaBancaria.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: contaBancaria.createdDate ? contaBancaria.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: contaBancaria.lastModifiedDate ? contaBancaria.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

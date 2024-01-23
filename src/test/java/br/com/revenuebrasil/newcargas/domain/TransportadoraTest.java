@@ -55,28 +55,6 @@ class TransportadoraTest {
     }
 
     @Test
-    void cidadeTest() throws Exception {
-        Transportadora transportadora = getTransportadoraRandomSampleGenerator();
-        Cidade cidadeBack = getCidadeRandomSampleGenerator();
-
-        transportadora.addCidade(cidadeBack);
-        assertThat(transportadora.getCidades()).containsOnly(cidadeBack);
-        assertThat(cidadeBack.getTransportadora()).isEqualTo(transportadora);
-
-        transportadora.removeCidade(cidadeBack);
-        assertThat(transportadora.getCidades()).doesNotContain(cidadeBack);
-        assertThat(cidadeBack.getTransportadora()).isNull();
-
-        transportadora.cidades(new HashSet<>(Set.of(cidadeBack)));
-        assertThat(transportadora.getCidades()).containsOnly(cidadeBack);
-        assertThat(cidadeBack.getTransportadora()).isEqualTo(transportadora);
-
-        transportadora.setCidades(new HashSet<>());
-        assertThat(transportadora.getCidades()).doesNotContain(cidadeBack);
-        assertThat(cidadeBack.getTransportadora()).isNull();
-    }
-
-    @Test
     void contaBancariaTest() throws Exception {
         Transportadora transportadora = getTransportadoraRandomSampleGenerator();
         ContaBancaria contaBancariaBack = getContaBancariaRandomSampleGenerator();
@@ -206,5 +184,17 @@ class TransportadoraTest {
         transportadora.setFaturas(new HashSet<>());
         assertThat(transportadora.getFaturas()).doesNotContain(faturaBack);
         assertThat(faturaBack.getTransportadora()).isNull();
+    }
+
+    @Test
+    void cidadeTest() throws Exception {
+        Transportadora transportadora = getTransportadoraRandomSampleGenerator();
+        Cidade cidadeBack = getCidadeRandomSampleGenerator();
+
+        transportadora.setCidade(cidadeBack);
+        assertThat(transportadora.getCidade()).isEqualTo(cidadeBack);
+
+        transportadora.cidade(null);
+        assertThat(transportadora.getCidade()).isNull();
     }
 }

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.TabelaFrete;
 import br.com.revenuebrasil.newcargas.domain.TipoCarga;
 import br.com.revenuebrasil.newcargas.repository.TipoCargaRepository;
 import br.com.revenuebrasil.newcargas.repository.search.TipoCargaSearchRepository;
@@ -199,6 +200,215 @@ class TipoCargaResourceIT {
             .andExpect(jsonPath("$.id").value(tipoCarga.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO));
+    }
+
+    @Test
+    @Transactional
+    void getTipoCargasByIdFiltering() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        Long id = tipoCarga.getId();
+
+        defaultTipoCargaShouldBeFound("id.equals=" + id);
+        defaultTipoCargaShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTipoCargaShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTipoCargaShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTipoCargaShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTipoCargaShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where nome equals to DEFAULT_NOME
+        defaultTipoCargaShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the tipoCargaList where nome equals to UPDATED_NOME
+        defaultTipoCargaShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultTipoCargaShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the tipoCargaList where nome equals to UPDATED_NOME
+        defaultTipoCargaShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where nome is not null
+        defaultTipoCargaShouldBeFound("nome.specified=true");
+
+        // Get all the tipoCargaList where nome is null
+        defaultTipoCargaShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where nome contains DEFAULT_NOME
+        defaultTipoCargaShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the tipoCargaList where nome contains UPDATED_NOME
+        defaultTipoCargaShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where nome does not contain DEFAULT_NOME
+        defaultTipoCargaShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the tipoCargaList where nome does not contain UPDATED_NOME
+        defaultTipoCargaShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByDescricaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where descricao equals to DEFAULT_DESCRICAO
+        defaultTipoCargaShouldBeFound("descricao.equals=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoCargaList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoCargaShouldNotBeFound("descricao.equals=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByDescricaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where descricao in DEFAULT_DESCRICAO or UPDATED_DESCRICAO
+        defaultTipoCargaShouldBeFound("descricao.in=" + DEFAULT_DESCRICAO + "," + UPDATED_DESCRICAO);
+
+        // Get all the tipoCargaList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoCargaShouldNotBeFound("descricao.in=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByDescricaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where descricao is not null
+        defaultTipoCargaShouldBeFound("descricao.specified=true");
+
+        // Get all the tipoCargaList where descricao is null
+        defaultTipoCargaShouldNotBeFound("descricao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByDescricaoContainsSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where descricao contains DEFAULT_DESCRICAO
+        defaultTipoCargaShouldBeFound("descricao.contains=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoCargaList where descricao contains UPDATED_DESCRICAO
+        defaultTipoCargaShouldNotBeFound("descricao.contains=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByDescricaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+
+        // Get all the tipoCargaList where descricao does not contain DEFAULT_DESCRICAO
+        defaultTipoCargaShouldNotBeFound("descricao.doesNotContain=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoCargaList where descricao does not contain UPDATED_DESCRICAO
+        defaultTipoCargaShouldBeFound("descricao.doesNotContain=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoCargasByTabelaFreteIsEqualToSomething() throws Exception {
+        TabelaFrete tabelaFrete;
+        if (TestUtil.findAll(em, TabelaFrete.class).isEmpty()) {
+            tipoCargaRepository.saveAndFlush(tipoCarga);
+            tabelaFrete = TabelaFreteResourceIT.createEntity(em);
+        } else {
+            tabelaFrete = TestUtil.findAll(em, TabelaFrete.class).get(0);
+        }
+        em.persist(tabelaFrete);
+        em.flush();
+        tipoCarga.addTabelaFrete(tabelaFrete);
+        tipoCargaRepository.saveAndFlush(tipoCarga);
+        Long tabelaFreteId = tabelaFrete.getId();
+        // Get all the tipoCargaList where tabelaFrete equals to tabelaFreteId
+        defaultTipoCargaShouldBeFound("tabelaFreteId.equals=" + tabelaFreteId);
+
+        // Get all the tipoCargaList where tabelaFrete equals to (tabelaFreteId + 1)
+        defaultTipoCargaShouldNotBeFound("tabelaFreteId.equals=" + (tabelaFreteId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTipoCargaShouldBeFound(String filter) throws Exception {
+        restTipoCargaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoCarga.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO)));
+
+        // Check, that the count call also returns 1
+        restTipoCargaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTipoCargaShouldNotBeFound(String filter) throws Exception {
+        restTipoCargaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTipoCargaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

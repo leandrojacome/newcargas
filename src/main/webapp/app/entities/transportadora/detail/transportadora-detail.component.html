@@ -71,21 +71,29 @@
           <dd>
             <span>{{ transportadora.observacao }}</span>
           </dd>
-          <dt><span>Data Cadastro</span></dt>
+          <dt><span>Created By</span></dt>
           <dd>
-            <span>{{ transportadora.dataCadastro | formatMediumDatetime }}</span>
+            <span>{{ transportadora.createdBy }}</span>
           </dd>
-          <dt><span>Usuario Cadastro</span></dt>
+          <dt><span>Created Date</span></dt>
           <dd>
-            <span>{{ transportadora.usuarioCadastro }}</span>
+            <span>{{ transportadora.createdDate | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Data Atualizacao</span></dt>
+          <dt><span>Last Modified By</span></dt>
           <dd>
-            <span>{{ transportadora.dataAtualizacao | formatMediumDatetime }}</span>
+            <span>{{ transportadora.lastModifiedBy }}</span>
           </dd>
-          <dt><span>Usuario Atualizacao</span></dt>
+          <dt><span>Last Modified Date</span></dt>
           <dd>
-            <span>{{ transportadora.usuarioAtualizacao }}</span>
+            <span>{{ transportadora.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Cidade</span></dt>
+          <dd>
+            @if (transportadora.cidade) {
+              <div>
+                <a [routerLink]="['/cidade', transportadora.cidade.id, 'view']">{{ transportadora.cidade.id }}</a>
+              </div>
+            }
           </dd>
         </dl>
 

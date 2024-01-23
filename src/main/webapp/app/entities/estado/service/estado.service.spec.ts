@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IEstado } from '../estado.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../estado.test-samples';
 
-import { EstadoService } from './estado.service';
+import { EstadoService, RestEstado } from './estado.service';
 
-const requireRestSample: IEstado = {
+const requireRestSample: RestEstado = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Estado Service', () => {

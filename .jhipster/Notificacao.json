@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "notificacao",
   "fields": [
     {
@@ -50,15 +51,6 @@
       "fieldType": "ZonedDateTime"
     },
     {
-      "fieldName": "dataCadastro",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "dataAtualizacao",
-      "fieldType": "ZonedDateTime"
-    },
-    {
       "fieldName": "lido",
       "fieldType": "Boolean"
     },
@@ -71,17 +63,41 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "dataRemocao",
-      "fieldType": "ZonedDateTime"
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
     },
     {
-      "fieldName": "usuarioRemocao",
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Notificacao",
   "pagination": "pagination",
   "relationships": [

@@ -1,6 +1,7 @@
 package br.com.revenuebrasil.newcargas.repository;
 
 import br.com.revenuebrasil.newcargas.domain.Transportadora;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TransportadoraRepository extends JpaRepository<Transportadora, Long> {}
+@JaversSpringDataAuditable
+public interface TransportadoraRepository extends JpaRepository<Transportadora, Long>, JpaSpecificationExecutor<Transportadora> {}

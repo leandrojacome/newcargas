@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "embarcador",
   "fields": [
     {
@@ -105,29 +106,41 @@
       "fieldValidateRulesMinlength": "2"
     },
     {
-      "fieldName": "dataCadastro",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "usuarioCadastro",
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
+      "nullable": false,
+      "readonly": true
     },
     {
-      "fieldName": "dataAtualizacao",
-      "fieldType": "ZonedDateTime"
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     },
     {
-      "fieldName": "usuarioAtualizacao",
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Embarcador",
   "pagination": "pagination",
   "relationships": [
@@ -135,13 +148,6 @@
       "otherEntityName": "endereco",
       "otherEntityRelationshipName": "embarcador",
       "relationshipName": "endereco",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "cidade",
-      "otherEntityRelationshipName": "embarcador",
-      "relationshipName": "cidade",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     },
@@ -179,6 +185,13 @@
       "relationshipName": "fatura",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "cidade",
+      "otherEntityRelationshipName": "embarcador",
+      "relationshipName": "cidade",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "elasticsearch",

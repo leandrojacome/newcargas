@@ -2,6 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -58,9 +59,13 @@ public class NotaFiscalColetaDTO implements Serializable {
     @Size(min = 2, max = 500)
     private String observacao;
 
-    private ZonedDateTime dataCadastro;
+    private String createdBy;
 
-    private ZonedDateTime dataAtualizacao;
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private SolicitacaoColetaDTO solicitacaoColeta;
 
@@ -176,20 +181,36 @@ public class NotaFiscalColetaDTO implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public SolicitacaoColetaDTO getSolicitacaoColeta() {
@@ -239,8 +260,10 @@ public class NotaFiscalColetaDTO implements Serializable {
             ", pesoTotal=" + getPesoTotal() +
             ", quantidadeTotal=" + getQuantidadeTotal() +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", solicitacaoColeta=" + getSolicitacaoColeta() +
             "}";
     }

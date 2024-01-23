@@ -23,6 +23,22 @@
           <dd>
             <span>{{ tipoCarga.descricao }}</span>
           </dd>
+          <dt><span>Created By</span></dt>
+          <dd>
+            <span>{{ tipoCarga.createdBy }}</span>
+          </dd>
+          <dt><span>Created Date</span></dt>
+          <dd>
+            <span>{{ tipoCarga.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ tipoCarga.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ tipoCarga.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

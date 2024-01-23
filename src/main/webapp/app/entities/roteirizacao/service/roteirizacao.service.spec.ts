@@ -12,10 +12,8 @@ const requireRestSample: RestRoteirizacao = {
   dataHoraUltimaColeta: sampleWithRequiredData.dataHoraUltimaColeta?.toJSON(),
   dataHoraPrimeiraEntrega: sampleWithRequiredData.dataHoraPrimeiraEntrega?.toJSON(),
   dataHoraUltimaEntrega: sampleWithRequiredData.dataHoraUltimaEntrega?.toJSON(),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
-  dataCancelamento: sampleWithRequiredData.dataCancelamento?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Roteirizacao Service', () => {

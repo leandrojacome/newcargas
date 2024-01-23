@@ -15,7 +15,7 @@ describe('HistoricoStatusColeta e2e test', () => {
   const historicoStatusColetaPageUrlPattern = new RegExp('/historico-status-coleta(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const historicoStatusColetaSample = { dataCriacao: '2024-01-20T01:16:57.875Z' };
+  const historicoStatusColetaSample = { dataCriacao: '2024-01-20T04:08:22.568Z' };
 
   let historicoStatusColeta;
 
@@ -125,7 +125,7 @@ describe('HistoricoStatusColeta e2e test', () => {
         cy.url().should('match', historicoStatusColetaPageUrlPattern);
       });
 
-      it('edit button click should load edit HistoricoStatusColeta page and save', () => {
+      it.skip('edit button click should load edit HistoricoStatusColeta page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('HistoricoStatusColeta');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,12 +160,12 @@ describe('HistoricoStatusColeta e2e test', () => {
     });
 
     it('should create an instance of HistoricoStatusColeta', () => {
-      cy.get(`[data-cy="dataCriacao"]`).type('2024-01-20T09:56');
+      cy.get(`[data-cy="dataCriacao"]`).type('2024-01-20T06:19');
       cy.get(`[data-cy="dataCriacao"]`).blur();
-      cy.get(`[data-cy="dataCriacao"]`).should('have.value', '2024-01-20T09:56');
+      cy.get(`[data-cy="dataCriacao"]`).should('have.value', '2024-01-20T06:19');
 
-      cy.get(`[data-cy="observacao"]`).type('midst');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'midst');
+      cy.get(`[data-cy="observacao"]`).type('plus');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'plus');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

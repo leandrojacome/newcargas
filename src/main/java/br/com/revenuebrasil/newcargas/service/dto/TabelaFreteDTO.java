@@ -3,7 +3,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 import br.com.revenuebrasil.newcargas.domain.enumeration.TipoTabelaFrete;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -68,10 +68,13 @@ public class TabelaFreteDTO implements Serializable {
     @DecimalMax(value = "10")
     private Double valorKmAdicional;
 
-    @NotNull
-    private ZonedDateTime dataCadastro;
+    private String createdBy;
 
-    private ZonedDateTime dataAtualizacao;
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private EmbarcadorDTO embarcador;
 
@@ -207,20 +210,36 @@ public class TabelaFreteDTO implements Serializable {
         this.valorKmAdicional = valorKmAdicional;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public EmbarcadorDTO getEmbarcador() {
@@ -319,8 +338,10 @@ public class TabelaFreteDTO implements Serializable {
             ", valorEntrega=" + getValorEntrega() +
             ", valorTotal=" + getValorTotal() +
             ", valorKmAdicional=" + getValorKmAdicional() +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", embarcador=" + getEmbarcador() +
             ", transportadora=" + getTransportadora() +
             ", tipoCarga=" + getTipoCarga() +

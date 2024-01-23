@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +18,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "nota_fiscal_coleta")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "notafiscalcoleta")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class NotaFiscalColeta implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class NotaFiscalColeta extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,19 +34,23 @@ public class NotaFiscalColeta implements Serializable {
     @NotNull
     @Size(min = 2, max = 20)
     @Column(name = "numero", length = 20, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String numero;
 
     @NotNull
     @Size(min = 2, max = 20)
     @Column(name = "serie", length = 20, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String serie;
 
     @Size(min = 2, max = 150)
     @Column(name = "remetente", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String remetente;
 
     @Size(min = 2, max = 150)
     @Column(name = "destinatario", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String destinatario;
 
     @DecimalMin(value = "1")
@@ -79,20 +87,22 @@ public class NotaFiscalColeta implements Serializable {
     @Min(value = 1)
     @Max(value = 4)
     @Column(name = "quantidade_total")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer quantidadeTotal;
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
-    @Column(name = "data_cadastro")
-    private ZonedDateTime dataCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "notaFiscalColetaOrigem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -109,6 +119,7 @@ public class NotaFiscalColeta implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "notaFiscalColetaDestino")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -323,30 +334,28 @@ public class NotaFiscalColeta implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public NotaFiscalColeta dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
+    // Inherited createdBy methods
+    public NotaFiscalColeta createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public NotaFiscalColeta dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
+    // Inherited createdDate methods
+    public NotaFiscalColeta createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    // Inherited lastModifiedBy methods
+    public NotaFiscalColeta lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public NotaFiscalColeta lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Set<Endereco> getEnderecoOrigems() {
@@ -461,8 +470,10 @@ public class NotaFiscalColeta implements Serializable {
             ", pesoTotal=" + getPesoTotal() +
             ", quantidadeTotal=" + getQuantidadeTotal() +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

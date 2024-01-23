@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (notificacaos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Notificacao encontrado</span>
@@ -115,20 +117,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
-              <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
-              <div class="d-flex">
-                <span>Data Atualizacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="lido">
               <div class="d-flex">
                 <span>Lido</span>
@@ -150,19 +138,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataRemocao">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Remocao</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioRemocao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Remocao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="embarcador.id">
@@ -193,13 +196,13 @@
               <td>{{ notificacao.mensagem }}</td>
               <td>{{ notificacao.dataHoraEnvio | formatMediumDatetime }}</td>
               <td>{{ notificacao.dataHoraLeitura | formatMediumDatetime }}</td>
-              <td>{{ notificacao.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ notificacao.dataAtualizacao | formatMediumDatetime }}</td>
               <td>{{ notificacao.lido }}</td>
               <td>{{ notificacao.dataLeitura | formatMediumDatetime }}</td>
               <td>{{ notificacao.removido }}</td>
-              <td>{{ notificacao.dataRemocao | formatMediumDatetime }}</td>
-              <td>{{ notificacao.usuarioRemocao }}</td>
+              <td>{{ notificacao.createdBy }}</td>
+              <td>{{ notificacao.createdDate | formatMediumDatetime }}</td>
+              <td>{{ notificacao.lastModifiedBy }}</td>
+              <td>{{ notificacao.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (notificacao.embarcador) {
                   <div>

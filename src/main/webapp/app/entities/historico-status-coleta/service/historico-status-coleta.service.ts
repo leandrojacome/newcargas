@@ -14,8 +14,10 @@ import { IHistoricoStatusColeta, NewHistoricoStatusColeta } from '../historico-s
 
 export type PartialUpdateHistoricoStatusColeta = Partial<IHistoricoStatusColeta> & Pick<IHistoricoStatusColeta, 'id'>;
 
-type RestOf<T extends IHistoricoStatusColeta | NewHistoricoStatusColeta> = Omit<T, 'dataCriacao'> & {
+type RestOf<T extends IHistoricoStatusColeta | NewHistoricoStatusColeta> = Omit<T, 'dataCriacao' | 'createdDate' | 'lastModifiedDate'> & {
   dataCriacao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestHistoricoStatusColeta = RestOf<IHistoricoStatusColeta>;
@@ -123,6 +125,8 @@ export class HistoricoStatusColetaService {
     return {
       ...historicoStatusColeta,
       dataCriacao: historicoStatusColeta.dataCriacao?.toJSON() ?? null,
+      createdDate: historicoStatusColeta.createdDate?.toJSON() ?? null,
+      lastModifiedDate: historicoStatusColeta.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -130,6 +134,8 @@ export class HistoricoStatusColetaService {
     return {
       ...restHistoricoStatusColeta,
       dataCriacao: restHistoricoStatusColeta.dataCriacao ? dayjs(restHistoricoStatusColeta.dataCriacao) : undefined,
+      createdDate: restHistoricoStatusColeta.createdDate ? dayjs(restHistoricoStatusColeta.createdDate) : undefined,
+      lastModifiedDate: restHistoricoStatusColeta.lastModifiedDate ? dayjs(restHistoricoStatusColeta.lastModifiedDate) : undefined,
     };
   }
 

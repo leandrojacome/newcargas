@@ -1,11 +1,15 @@
 package br.com.revenuebrasil.newcargas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.User;
 import br.com.revenuebrasil.newcargas.repository.UserRepository;
+import br.com.revenuebrasil.newcargas.repository.search.UserSearchRepository;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -16,8 +20,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
 
@@ -26,6 +32,7 @@ import tech.jhipster.security.RandomUtil;
  */
 @IntegrationTest
 @Transactional
+@DisabledInAotMode // workaround for https://github.com/spring-projects/spring-boot/issues/32195
 class UserServiceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
@@ -45,6 +52,14 @@ class UserServiceIT {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * This repository is mocked in the br.com.revenuebrasil.newcargas.repository.search test package.
+     *
+     * @see br.com.revenuebrasil.newcargas.repository.search.UserSearchRepositoryMockConfiguration
+     */
+    @SpyBean
+    private UserSearchRepository spiedUserSearchRepository;
 
     @Autowired
     private AuditingHandler auditingHandler;
@@ -160,6 +175,9 @@ class UserServiceIT {
         userService.removeNotActivatedUsers();
         users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(threeDaysAgo);
         assertThat(users).isEmpty();
+
+        // Verify Elasticsearch mock
+        verify(spiedUserSearchRepository, times(1)).deleteFromIndex(user);
     }
 
     @Test
@@ -177,5 +195,8 @@ class UserServiceIT {
         userService.removeNotActivatedUsers();
         Optional<User> maybeDbUser = userRepository.findById(dbUser.getId());
         assertThat(maybeDbUser).contains(dbUser);
+
+        // Verify Elasticsearch mock
+        verify(spiedUserSearchRepository, never()).deleteFromIndex(user);
     }
 }

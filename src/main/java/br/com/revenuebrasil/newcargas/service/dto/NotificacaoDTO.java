@@ -3,6 +3,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 import br.com.revenuebrasil.newcargas.domain.enumeration.TipoNotificacao;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -36,21 +37,19 @@ public class NotificacaoDTO implements Serializable {
 
     private ZonedDateTime dataHoraLeitura;
 
-    @NotNull
-    private ZonedDateTime dataCadastro;
-
-    private ZonedDateTime dataAtualizacao;
-
     private Boolean lido;
 
     private ZonedDateTime dataLeitura;
 
     private Boolean removido;
 
-    private ZonedDateTime dataRemocao;
+    private String createdBy;
 
-    @Size(min = 2, max = 150)
-    private String usuarioRemocao;
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private EmbarcadorDTO embarcador;
 
@@ -120,22 +119,6 @@ public class NotificacaoDTO implements Serializable {
         this.dataHoraLeitura = dataHoraLeitura;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
     public Boolean getLido() {
         return lido;
     }
@@ -160,20 +143,36 @@ public class NotificacaoDTO implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return dataRemocao;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getUsuarioRemocao() {
-        return usuarioRemocao;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public EmbarcadorDTO getEmbarcador() {
@@ -225,13 +224,13 @@ public class NotificacaoDTO implements Serializable {
             ", mensagem='" + getMensagem() + "'" +
             ", dataHoraEnvio='" + getDataHoraEnvio() + "'" +
             ", dataHoraLeitura='" + getDataHoraLeitura() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
             ", lido='" + getLido() + "'" +
             ", dataLeitura='" + getDataLeitura() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", embarcador=" + getEmbarcador() +
             ", transportadora=" + getTransportadora() +
             "}";

@@ -14,9 +14,9 @@ import { ITabelaFrete, NewTabelaFrete } from '../tabela-frete.model';
 
 export type PartialUpdateTabelaFrete = Partial<ITabelaFrete> & Pick<ITabelaFrete, 'id'>;
 
-type RestOf<T extends ITabelaFrete | NewTabelaFrete> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type RestOf<T extends ITabelaFrete | NewTabelaFrete> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestTabelaFrete = RestOf<ITabelaFrete>;
@@ -117,16 +117,16 @@ export class TabelaFreteService {
   protected convertDateFromClient<T extends ITabelaFrete | NewTabelaFrete | PartialUpdateTabelaFrete>(tabelaFrete: T): RestOf<T> {
     return {
       ...tabelaFrete,
-      dataCadastro: tabelaFrete.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: tabelaFrete.dataAtualizacao?.toJSON() ?? null,
+      createdDate: tabelaFrete.createdDate?.toJSON() ?? null,
+      lastModifiedDate: tabelaFrete.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
   protected convertDateFromServer(restTabelaFrete: RestTabelaFrete): ITabelaFrete {
     return {
       ...restTabelaFrete,
-      dataCadastro: restTabelaFrete.dataCadastro ? dayjs(restTabelaFrete.dataCadastro) : undefined,
-      dataAtualizacao: restTabelaFrete.dataAtualizacao ? dayjs(restTabelaFrete.dataAtualizacao) : undefined,
+      createdDate: restTabelaFrete.createdDate ? dayjs(restTabelaFrete.createdDate) : undefined,
+      lastModifiedDate: restTabelaFrete.lastModifiedDate ? dayjs(restTabelaFrete.lastModifiedDate) : undefined,
     };
   }
 

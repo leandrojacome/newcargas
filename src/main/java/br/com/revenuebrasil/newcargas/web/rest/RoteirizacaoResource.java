@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.RoteirizacaoRepository;
+import br.com.revenuebrasil.newcargas.service.RoteirizacaoQueryService;
 import br.com.revenuebrasil.newcargas.service.RoteirizacaoService;
+import br.com.revenuebrasil.newcargas.service.criteria.RoteirizacaoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.RoteirizacaoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class RoteirizacaoResource {
 
     private final RoteirizacaoRepository roteirizacaoRepository;
 
-    public RoteirizacaoResource(RoteirizacaoService roteirizacaoService, RoteirizacaoRepository roteirizacaoRepository) {
+    private final RoteirizacaoQueryService roteirizacaoQueryService;
+
+    public RoteirizacaoResource(
+        RoteirizacaoService roteirizacaoService,
+        RoteirizacaoRepository roteirizacaoRepository,
+        RoteirizacaoQueryService roteirizacaoQueryService
+    ) {
         this.roteirizacaoService = roteirizacaoService;
         this.roteirizacaoRepository = roteirizacaoRepository;
+        this.roteirizacaoQueryService = roteirizacaoQueryService;
     }
 
     /**
@@ -81,7 +90,7 @@ public class RoteirizacaoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RoteirizacaoDTO> updateRoteirizacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody RoteirizacaoDTO roteirizacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Roteirizacao : {}, {}", id, roteirizacaoDTO);
@@ -116,7 +125,7 @@ public class RoteirizacaoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<RoteirizacaoDTO> partialUpdateRoteirizacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody RoteirizacaoDTO roteirizacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Roteirizacao partially : {}, {}", id, roteirizacaoDTO);
@@ -143,14 +152,31 @@ public class RoteirizacaoResource {
      * {@code GET  /roteirizacaos} : get all the roteirizacaos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roteirizacaos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<RoteirizacaoDTO>> getAllRoteirizacaos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Roteirizacaos");
-        Page<RoteirizacaoDTO> page = roteirizacaoService.findAll(pageable);
+    public ResponseEntity<List<RoteirizacaoDTO>> getAllRoteirizacaos(
+        RoteirizacaoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Roteirizacaos by criteria: {}", criteria);
+
+        Page<RoteirizacaoDTO> page = roteirizacaoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /roteirizacaos/count} : count all the roteirizacaos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countRoteirizacaos(RoteirizacaoCriteria criteria) {
+        log.debug("REST request to count Roteirizacaos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(roteirizacaoQueryService.countByCriteria(criteria));
     }
 
     /**

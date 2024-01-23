@@ -1,11 +1,12 @@
 package br.com.revenuebrasil.newcargas.domain;
 
 import br.com.revenuebrasil.newcargas.domain.enumeration.TipoTabelaFrete;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,8 +16,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "tabela_frete")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "tabelafrete")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class TabelaFrete implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class TabelaFrete extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,20 +32,24 @@ public class TabelaFrete implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Keyword)
     private TipoTabelaFrete tipo;
 
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "nome", length = 150, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String nome;
 
     @Size(min = 2, max = 500)
     @Column(name = "descricao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String descricao;
 
     @Min(value = 1)
     @Max(value = 4)
     @Column(name = "lead_time")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer leadTime;
 
     @DecimalMin(value = "1")
@@ -95,23 +102,21 @@ public class TabelaFrete implements Serializable {
     @Column(name = "valor_km_adicional")
     private Double valorKmAdicional;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Embarcador embarcador;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Transportadora transportadora;
@@ -333,30 +338,28 @@ public class TabelaFrete implements Serializable {
         this.valorKmAdicional = valorKmAdicional;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public TabelaFrete dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
+    // Inherited createdBy methods
+    public TabelaFrete createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public TabelaFrete dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
+    // Inherited createdDate methods
+    public TabelaFrete createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    // Inherited lastModifiedBy methods
+    public TabelaFrete lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public TabelaFrete lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Embarcador getEmbarcador() {
@@ -488,8 +491,10 @@ public class TabelaFrete implements Serializable {
             ", valorEntrega=" + getValorEntrega() +
             ", valorTotal=" + getValorTotal() +
             ", valorKmAdicional=" + getValorKmAdicional() +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

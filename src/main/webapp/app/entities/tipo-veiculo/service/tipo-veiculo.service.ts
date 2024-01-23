@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -11,6 +13,17 @@ import { SearchWithPagination } from 'app/core/request/request.model';
 import { ITipoVeiculo, NewTipoVeiculo } from '../tipo-veiculo.model';
 
 export type PartialUpdateTipoVeiculo = Partial<ITipoVeiculo> & Pick<ITipoVeiculo, 'id'>;
+
+type RestOf<T extends ITipoVeiculo | NewTipoVeiculo> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+export type RestTipoVeiculo = RestOf<ITipoVeiculo>;
+
+export type NewRestTipoVeiculo = RestOf<NewTipoVeiculo>;
+
+export type PartialUpdateRestTipoVeiculo = RestOf<PartialUpdateTipoVeiculo>;
 
 export type EntityResponseType = HttpResponse<ITipoVeiculo>;
 export type EntityArrayResponseType = HttpResponse<ITipoVeiculo[]>;
@@ -26,28 +39,37 @@ export class TipoVeiculoService {
   ) {}
 
   create(tipoVeiculo: NewTipoVeiculo): Observable<EntityResponseType> {
-    return this.http.post<ITipoVeiculo>(this.resourceUrl, tipoVeiculo, { observe: 'response' });
+    const copy = this.convertDateFromClient(tipoVeiculo);
+    return this.http
+      .post<RestTipoVeiculo>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(tipoVeiculo: ITipoVeiculo): Observable<EntityResponseType> {
-    return this.http.put<ITipoVeiculo>(`${this.resourceUrl}/${this.getTipoVeiculoIdentifier(tipoVeiculo)}`, tipoVeiculo, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(tipoVeiculo);
+    return this.http
+      .put<RestTipoVeiculo>(`${this.resourceUrl}/${this.getTipoVeiculoIdentifier(tipoVeiculo)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(tipoVeiculo: PartialUpdateTipoVeiculo): Observable<EntityResponseType> {
-    return this.http.patch<ITipoVeiculo>(`${this.resourceUrl}/${this.getTipoVeiculoIdentifier(tipoVeiculo)}`, tipoVeiculo, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(tipoVeiculo);
+    return this.http
+      .patch<RestTipoVeiculo>(`${this.resourceUrl}/${this.getTipoVeiculoIdentifier(tipoVeiculo)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<ITipoVeiculo>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestTipoVeiculo>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<ITipoVeiculo[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestTipoVeiculo[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -56,9 +78,10 @@ export class TipoVeiculoService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<ITipoVeiculo[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(catchError(() => scheduled([new HttpResponse<ITipoVeiculo[]>()], asapScheduler)));
+    return this.http.get<RestTipoVeiculo[]>(this.resourceSearchUrl, { params: options, observe: 'response' }).pipe(
+      map(res => this.convertResponseArrayFromServer(res)),
+      catchError(() => scheduled([new HttpResponse<ITipoVeiculo[]>()], asapScheduler)),
+    );
   }
 
   getTipoVeiculoIdentifier(tipoVeiculo: Pick<ITipoVeiculo, 'id'>): number {
@@ -89,5 +112,33 @@ export class TipoVeiculoService {
       return [...tipoVeiculosToAdd, ...tipoVeiculoCollection];
     }
     return tipoVeiculoCollection;
+  }
+
+  protected convertDateFromClient<T extends ITipoVeiculo | NewTipoVeiculo | PartialUpdateTipoVeiculo>(tipoVeiculo: T): RestOf<T> {
+    return {
+      ...tipoVeiculo,
+      createdDate: tipoVeiculo.createdDate?.toJSON() ?? null,
+      lastModifiedDate: tipoVeiculo.lastModifiedDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restTipoVeiculo: RestTipoVeiculo): ITipoVeiculo {
+    return {
+      ...restTipoVeiculo,
+      createdDate: restTipoVeiculo.createdDate ? dayjs(restTipoVeiculo.createdDate) : undefined,
+      lastModifiedDate: restTipoVeiculo.lastModifiedDate ? dayjs(restTipoVeiculo.lastModifiedDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestTipoVeiculo>): HttpResponse<ITipoVeiculo> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestTipoVeiculo[]>): HttpResponse<ITipoVeiculo[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

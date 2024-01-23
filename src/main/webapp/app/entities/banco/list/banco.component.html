@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (bancos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Banco encontrado</span>
@@ -77,6 +79,36 @@
                 }
               </div>
             </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -88,8 +120,22 @@
               </td>
               <td>{{ banco.nome }}</td>
               <td>{{ banco.codigo }}</td>
+              <td>{{ banco.createdBy }}</td>
+              <td>{{ banco.createdDate | formatMediumDatetime }}</td>
+              <td>{{ banco.lastModifiedBy }}</td>
+              <td>{{ banco.lastModifiedDate | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/conta-bancaria']"
+                    [queryParams]="{ 'filter[bancoId.in]': banco.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Conta Bancaria</span>
+                  </button>
                   <a [routerLink]="['/banco', banco.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

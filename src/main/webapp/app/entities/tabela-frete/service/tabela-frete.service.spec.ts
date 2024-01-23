@@ -8,8 +8,8 @@ import { TabelaFreteService, RestTabelaFrete } from './tabela-frete.service';
 
 const requireRestSample: RestTabelaFrete = {
   ...sampleWithRequiredData,
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('TabelaFrete Service', () => {

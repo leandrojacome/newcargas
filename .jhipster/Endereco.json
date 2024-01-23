@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "endereco",
   "fields": [
     {
@@ -46,8 +47,43 @@
       "fieldValidateRules": ["maxlength", "minlength", "required"],
       "fieldValidateRulesMaxlength": "150",
       "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Endereco",
   "pagination": "pagination",
   "relationships": [

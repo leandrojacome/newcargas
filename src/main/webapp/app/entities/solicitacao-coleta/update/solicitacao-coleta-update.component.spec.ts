@@ -62,10 +62,10 @@ describe('SolicitacaoColeta Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Embarcador query and add missing value', () => {
       const solicitacaoColeta: ISolicitacaoColeta = { id: 456 };
-      const embarcador: IEmbarcador = { id: 6349 };
+      const embarcador: IEmbarcador = { id: 22281 };
       solicitacaoColeta.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 19118 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 25835 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -84,10 +84,10 @@ describe('SolicitacaoColeta Management Update Component', () => {
 
     it('Should call StatusColeta query and add missing value', () => {
       const solicitacaoColeta: ISolicitacaoColeta = { id: 456 };
-      const statusColeta: IStatusColeta = { id: 1794 };
+      const statusColeta: IStatusColeta = { id: 32133 };
       solicitacaoColeta.statusColeta = statusColeta;
 
-      const statusColetaCollection: IStatusColeta[] = [{ id: 5002 }];
+      const statusColetaCollection: IStatusColeta[] = [{ id: 1298 }];
       jest.spyOn(statusColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: statusColetaCollection })));
       const additionalStatusColetas = [statusColeta];
       const expectedCollection: IStatusColeta[] = [...additionalStatusColetas, ...statusColetaCollection];
@@ -106,10 +106,10 @@ describe('SolicitacaoColeta Management Update Component', () => {
 
     it('Should call Roteirizacao query and add missing value', () => {
       const solicitacaoColeta: ISolicitacaoColeta = { id: 456 };
-      const roteirizacao: IRoteirizacao = { id: 28869 };
+      const roteirizacao: IRoteirizacao = { id: 24483 };
       solicitacaoColeta.roteirizacao = roteirizacao;
 
-      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 28176 }];
+      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 20396 }];
       jest.spyOn(roteirizacaoService, 'query').mockReturnValue(of(new HttpResponse({ body: roteirizacaoCollection })));
       const additionalRoteirizacaos = [roteirizacao];
       const expectedCollection: IRoteirizacao[] = [...additionalRoteirizacaos, ...roteirizacaoCollection];
@@ -128,10 +128,10 @@ describe('SolicitacaoColeta Management Update Component', () => {
 
     it('Should call TipoVeiculo query and add missing value', () => {
       const solicitacaoColeta: ISolicitacaoColeta = { id: 456 };
-      const tipoVeiculo: ITipoVeiculo = { id: 26832 };
+      const tipoVeiculo: ITipoVeiculo = { id: 24851 };
       solicitacaoColeta.tipoVeiculo = tipoVeiculo;
 
-      const tipoVeiculoCollection: ITipoVeiculo[] = [{ id: 16737 }];
+      const tipoVeiculoCollection: ITipoVeiculo[] = [{ id: 23376 }];
       jest.spyOn(tipoVeiculoService, 'query').mockReturnValue(of(new HttpResponse({ body: tipoVeiculoCollection })));
       const additionalTipoVeiculos = [tipoVeiculo];
       const expectedCollection: ITipoVeiculo[] = [...additionalTipoVeiculos, ...tipoVeiculoCollection];
@@ -150,13 +150,13 @@ describe('SolicitacaoColeta Management Update Component', () => {
 
     it('Should update editForm', () => {
       const solicitacaoColeta: ISolicitacaoColeta = { id: 456 };
-      const embarcador: IEmbarcador = { id: 31347 };
+      const embarcador: IEmbarcador = { id: 7180 };
       solicitacaoColeta.embarcador = embarcador;
-      const statusColeta: IStatusColeta = { id: 19352 };
+      const statusColeta: IStatusColeta = { id: 10503 };
       solicitacaoColeta.statusColeta = statusColeta;
-      const roteirizacao: IRoteirizacao = { id: 1001 };
+      const roteirizacao: IRoteirizacao = { id: 19920 };
       solicitacaoColeta.roteirizacao = roteirizacao;
-      const tipoVeiculo: ITipoVeiculo = { id: 32538 };
+      const tipoVeiculo: ITipoVeiculo = { id: 98 };
       solicitacaoColeta.tipoVeiculo = tipoVeiculo;
 
       activatedRoute.data = of({ solicitacaoColeta });

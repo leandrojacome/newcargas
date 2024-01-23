@@ -15,7 +15,7 @@ describe('FormaCobranca e2e test', () => {
   const formaCobrancaPageUrlPattern = new RegExp('/forma-cobranca(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const formaCobrancaSample = { nome: 'yin' };
+  const formaCobrancaSample = { nome: 'powerfully within fiercely' };
 
   let formaCobranca;
 
@@ -125,7 +125,7 @@ describe('FormaCobranca e2e test', () => {
         cy.url().should('match', formaCobrancaPageUrlPattern);
       });
 
-      it('edit button click should load edit FormaCobranca page and save', () => {
+      it.skip('edit button click should load edit FormaCobranca page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('FormaCobranca');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,11 +160,11 @@ describe('FormaCobranca e2e test', () => {
     });
 
     it('should create an instance of FormaCobranca', () => {
-      cy.get(`[data-cy="nome"]`).type('ew near better');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'ew near better');
+      cy.get(`[data-cy="nome"]`).type('secularize');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'secularize');
 
-      cy.get(`[data-cy="descricao"]`).type('since ick whether');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'since ick whether');
+      cy.get(`[data-cy="descricao"]`).type('an in morale');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'an in morale');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

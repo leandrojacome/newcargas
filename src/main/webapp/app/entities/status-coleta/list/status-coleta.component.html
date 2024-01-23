@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (statusColetas?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Status Coleta encontrado</span>
@@ -127,36 +129,6 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
-              <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCadastro">
-              <div class="d-flex">
-                <span>Usuario Cadastro</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
-              <div class="d-flex">
-                <span>Data Atualizacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioAtualizacao">
-              <div class="d-flex">
-                <span>Usuario Atualizacao</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
             <th scope="col" jhiSortBy="ativo">
               <div class="d-flex">
                 <span>Ativo</span>
@@ -171,19 +143,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataRemocao">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Remocao</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioRemocao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Remocao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col"></th>
@@ -204,16 +191,64 @@
               <td>{{ statusColeta.permiteEditar }}</td>
               <td>{{ statusColeta.permiteExcluir }}</td>
               <td>{{ statusColeta.descricao }}</td>
-              <td>{{ statusColeta.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ statusColeta.usuarioCadastro }}</td>
-              <td>{{ statusColeta.dataAtualizacao | formatMediumDatetime }}</td>
-              <td>{{ statusColeta.usuarioAtualizacao }}</td>
               <td>{{ statusColeta.ativo }}</td>
               <td>{{ statusColeta.removido }}</td>
-              <td>{{ statusColeta.dataRemocao | formatMediumDatetime }}</td>
-              <td>{{ statusColeta.usuarioRemocao }}</td>
+              <td>{{ statusColeta.createdBy }}</td>
+              <td>{{ statusColeta.createdDate | formatMediumDatetime }}</td>
+              <td>{{ statusColeta.lastModifiedBy }}</td>
+              <td>{{ statusColeta.lastModifiedDate | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/solicitacao-coleta']"
+                    [queryParams]="{ 'filter[statusColetaId.in]': statusColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Solicitacao Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/historico-status-coleta']"
+                    [queryParams]="{ 'filter[statusColetaOrigemId.in]': statusColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Historico Status Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/historico-status-coleta']"
+                    [queryParams]="{ 'filter[statusColetaDestinoId.in]': statusColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Historico Status Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/roteirizacao']"
+                    [queryParams]="{ 'filter[statusColetaId.in]': statusColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Roteirizacao</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/status-coleta']"
+                    [queryParams]="{ 'filter[statusColetaOrigemId.in]': statusColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Status Coleta</span>
+                  </button>
                   <a [routerLink]="['/status-coleta', statusColeta.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

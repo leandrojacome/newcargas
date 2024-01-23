@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "estado",
   "fields": [
     {
@@ -26,8 +27,43 @@
       "fieldValidateRules": ["max", "min"],
       "fieldValidateRulesMax": "7",
       "fieldValidateRulesMin": "7"
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Estado",
   "pagination": "pagination",
   "relationships": [

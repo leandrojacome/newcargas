@@ -7,6 +7,10 @@ export interface IHistoricoStatusColeta {
   id: number;
   dataCriacao?: dayjs.Dayjs | null;
   observacao?: string | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   solicitacaoColeta?: Pick<ISolicitacaoColeta, 'id'> | null;
   roteirizacao?: Pick<IRoteirizacao, 'id'> | null;
   statusColetaOrigem?: Pick<IStatusColeta, 'id'> | null;

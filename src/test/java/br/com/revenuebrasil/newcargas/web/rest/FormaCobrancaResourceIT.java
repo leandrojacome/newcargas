@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.Fatura;
 import br.com.revenuebrasil.newcargas.domain.FormaCobranca;
+import br.com.revenuebrasil.newcargas.domain.TabelaFrete;
 import br.com.revenuebrasil.newcargas.repository.FormaCobrancaRepository;
 import br.com.revenuebrasil.newcargas.repository.search.FormaCobrancaSearchRepository;
 import br.com.revenuebrasil.newcargas.service.dto.FormaCobrancaDTO;
@@ -205,6 +207,237 @@ class FormaCobrancaResourceIT {
             .andExpect(jsonPath("$.id").value(formaCobranca.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO));
+    }
+
+    @Test
+    @Transactional
+    void getFormaCobrancasByIdFiltering() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        Long id = formaCobranca.getId();
+
+        defaultFormaCobrancaShouldBeFound("id.equals=" + id);
+        defaultFormaCobrancaShouldNotBeFound("id.notEquals=" + id);
+
+        defaultFormaCobrancaShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultFormaCobrancaShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultFormaCobrancaShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultFormaCobrancaShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where nome equals to DEFAULT_NOME
+        defaultFormaCobrancaShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the formaCobrancaList where nome equals to UPDATED_NOME
+        defaultFormaCobrancaShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultFormaCobrancaShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the formaCobrancaList where nome equals to UPDATED_NOME
+        defaultFormaCobrancaShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where nome is not null
+        defaultFormaCobrancaShouldBeFound("nome.specified=true");
+
+        // Get all the formaCobrancaList where nome is null
+        defaultFormaCobrancaShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where nome contains DEFAULT_NOME
+        defaultFormaCobrancaShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the formaCobrancaList where nome contains UPDATED_NOME
+        defaultFormaCobrancaShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where nome does not contain DEFAULT_NOME
+        defaultFormaCobrancaShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the formaCobrancaList where nome does not contain UPDATED_NOME
+        defaultFormaCobrancaShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByDescricaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where descricao equals to DEFAULT_DESCRICAO
+        defaultFormaCobrancaShouldBeFound("descricao.equals=" + DEFAULT_DESCRICAO);
+
+        // Get all the formaCobrancaList where descricao equals to UPDATED_DESCRICAO
+        defaultFormaCobrancaShouldNotBeFound("descricao.equals=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByDescricaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where descricao in DEFAULT_DESCRICAO or UPDATED_DESCRICAO
+        defaultFormaCobrancaShouldBeFound("descricao.in=" + DEFAULT_DESCRICAO + "," + UPDATED_DESCRICAO);
+
+        // Get all the formaCobrancaList where descricao equals to UPDATED_DESCRICAO
+        defaultFormaCobrancaShouldNotBeFound("descricao.in=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByDescricaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where descricao is not null
+        defaultFormaCobrancaShouldBeFound("descricao.specified=true");
+
+        // Get all the formaCobrancaList where descricao is null
+        defaultFormaCobrancaShouldNotBeFound("descricao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByDescricaoContainsSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where descricao contains DEFAULT_DESCRICAO
+        defaultFormaCobrancaShouldBeFound("descricao.contains=" + DEFAULT_DESCRICAO);
+
+        // Get all the formaCobrancaList where descricao contains UPDATED_DESCRICAO
+        defaultFormaCobrancaShouldNotBeFound("descricao.contains=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByDescricaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+
+        // Get all the formaCobrancaList where descricao does not contain DEFAULT_DESCRICAO
+        defaultFormaCobrancaShouldNotBeFound("descricao.doesNotContain=" + DEFAULT_DESCRICAO);
+
+        // Get all the formaCobrancaList where descricao does not contain UPDATED_DESCRICAO
+        defaultFormaCobrancaShouldBeFound("descricao.doesNotContain=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByTabelaFreteIsEqualToSomething() throws Exception {
+        TabelaFrete tabelaFrete;
+        if (TestUtil.findAll(em, TabelaFrete.class).isEmpty()) {
+            formaCobrancaRepository.saveAndFlush(formaCobranca);
+            tabelaFrete = TabelaFreteResourceIT.createEntity(em);
+        } else {
+            tabelaFrete = TestUtil.findAll(em, TabelaFrete.class).get(0);
+        }
+        em.persist(tabelaFrete);
+        em.flush();
+        formaCobranca.addTabelaFrete(tabelaFrete);
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+        Long tabelaFreteId = tabelaFrete.getId();
+        // Get all the formaCobrancaList where tabelaFrete equals to tabelaFreteId
+        defaultFormaCobrancaShouldBeFound("tabelaFreteId.equals=" + tabelaFreteId);
+
+        // Get all the formaCobrancaList where tabelaFrete equals to (tabelaFreteId + 1)
+        defaultFormaCobrancaShouldNotBeFound("tabelaFreteId.equals=" + (tabelaFreteId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllFormaCobrancasByFatutaIsEqualToSomething() throws Exception {
+        Fatura fatuta;
+        if (TestUtil.findAll(em, Fatura.class).isEmpty()) {
+            formaCobrancaRepository.saveAndFlush(formaCobranca);
+            fatuta = FaturaResourceIT.createEntity(em);
+        } else {
+            fatuta = TestUtil.findAll(em, Fatura.class).get(0);
+        }
+        em.persist(fatuta);
+        em.flush();
+        formaCobranca.addFatuta(fatuta);
+        formaCobrancaRepository.saveAndFlush(formaCobranca);
+        Long fatutaId = fatuta.getId();
+        // Get all the formaCobrancaList where fatuta equals to fatutaId
+        defaultFormaCobrancaShouldBeFound("fatutaId.equals=" + fatutaId);
+
+        // Get all the formaCobrancaList where fatuta equals to (fatutaId + 1)
+        defaultFormaCobrancaShouldNotBeFound("fatutaId.equals=" + (fatutaId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultFormaCobrancaShouldBeFound(String filter) throws Exception {
+        restFormaCobrancaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(formaCobranca.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO)));
+
+        // Check, that the count call also returns 1
+        restFormaCobrancaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultFormaCobrancaShouldNotBeFound(String filter) throws Exception {
+        restFormaCobrancaMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restFormaCobrancaMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

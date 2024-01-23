@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (roteirizacaos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Roteirizacao encontrado</span>
@@ -104,56 +106,11 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
-              <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCadastro">
-              <div class="d-flex">
-                <span>Usuario Cadastro</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
-              <div class="d-flex">
-                <span>Data Atualizacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioAtualizacao">
-              <div class="d-flex">
-                <span>Usuario Atualizacao</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
             <th scope="col" jhiSortBy="cancelado">
               <div class="d-flex">
                 <span>Cancelado</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataCancelamento">
-              <div class="d-flex">
-                <span>Data Cancelamento</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCancelamento">
-              <div class="d-flex">
-                <span>Usuario Cancelamento</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
               </div>
             </th>
             <th scope="col" jhiSortBy="removido">
@@ -163,19 +120,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataRemocao">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Remocao</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioRemocao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Remocao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="statusColeta.id">
@@ -199,16 +171,12 @@
               <td>{{ roteirizacao.dataHoraUltimaEntrega | formatMediumDatetime }}</td>
               <td>{{ roteirizacao.valorTotal }}</td>
               <td>{{ roteirizacao.observacao }}</td>
-              <td>{{ roteirizacao.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ roteirizacao.usuarioCadastro }}</td>
-              <td>{{ roteirizacao.dataAtualizacao | formatMediumDatetime }}</td>
-              <td>{{ roteirizacao.usuarioAtualizacao }}</td>
               <td>{{ roteirizacao.cancelado }}</td>
-              <td>{{ roteirizacao.dataCancelamento | formatMediumDatetime }}</td>
-              <td>{{ roteirizacao.usuarioCancelamento }}</td>
               <td>{{ roteirizacao.removido }}</td>
-              <td>{{ roteirizacao.dataRemocao | formatMediumDatetime }}</td>
-              <td>{{ roteirizacao.usuarioRemocao }}</td>
+              <td>{{ roteirizacao.createdBy }}</td>
+              <td>{{ roteirizacao.createdDate | formatMediumDatetime }}</td>
+              <td>{{ roteirizacao.lastModifiedBy }}</td>
+              <td>{{ roteirizacao.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (roteirizacao.statusColeta) {
                   <div>
@@ -218,6 +186,36 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/historico-status-coleta']"
+                    [queryParams]="{ 'filter[roteirizacaoId.in]': roteirizacao.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Historico Status Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/solicitacao-coleta']"
+                    [queryParams]="{ 'filter[roteirizacaoId.in]': roteirizacao.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Solicitacao Coleta</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/tomada-preco']"
+                    [queryParams]="{ 'filter[roteirizacaoId.in]': roteirizacao.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Tomada Preco</span>
+                  </button>
                   <a [routerLink]="['/roteirizacao', roteirizacao.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

@@ -127,88 +127,8 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_dataCadastro">Data Cadastro</label>
-          <div class="d-flex">
-            <input
-              id="field_dataCadastro"
-              data-cy="dataCadastro"
-              type="datetime-local"
-              class="form-control"
-              name="dataCadastro"
-              formControlName="dataCadastro"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-          @if (editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)) {
-            <div>
-              @if (editForm.get('dataCadastro')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('dataCadastro')?.errors?.datetimelocal"
-                >Este campo é do tipo data/hora.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_dataAtualizacao">Data Atualizacao</label>
-          <div class="d-flex">
-            <input
-              id="field_dataAtualizacao"
-              data-cy="dataAtualizacao"
-              type="datetime-local"
-              class="form-control"
-              name="dataAtualizacao"
-              formControlName="dataAtualizacao"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_cancelado">Cancelado</label>
           <input type="checkbox" class="form-check" name="cancelado" id="field_cancelado" data-cy="cancelado" formControlName="cancelado" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_dataCancelamento">Data Cancelamento</label>
-          <div class="d-flex">
-            <input
-              id="field_dataCancelamento"
-              data-cy="dataCancelamento"
-              type="datetime-local"
-              class="form-control"
-              name="dataCancelamento"
-              formControlName="dataCancelamento"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_usuarioCancelamento">Usuario Cancelamento</label>
-          <input
-            type="text"
-            class="form-control"
-            name="usuarioCancelamento"
-            id="field_usuarioCancelamento"
-            data-cy="usuarioCancelamento"
-            formControlName="usuarioCancelamento"
-          />
-          @if (
-            editForm.get('usuarioCancelamento')!.invalid &&
-            (editForm.get('usuarioCancelamento')!.dirty || editForm.get('usuarioCancelamento')!.touched)
-          ) {
-            <div>
-              @if (editForm.get('usuarioCancelamento')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
-              }
-              @if (editForm.get('usuarioCancelamento')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
-              }
-            </div>
-          }
         </div>
 
         <div class="mb-3">
@@ -216,44 +136,71 @@
           <input type="checkbox" class="form-check" name="removido" id="field_removido" data-cy="removido" formControlName="removido" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dataRemocao">Data Remocao</label>
-          <div class="d-flex">
+        @if (editForm.controls.createdBy.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_createdBy">Created By</label>
             <input
-              id="field_dataRemocao"
-              data-cy="dataRemocao"
-              type="datetime-local"
+              type="text"
               class="form-control"
-              name="dataRemocao"
-              formControlName="dataRemocao"
-              placeholder="YYYY-MM-DD HH:mm"
+              name="createdBy"
+              id="field_createdBy"
+              data-cy="createdBy"
+              formControlName="createdBy"
+              [readonly]="true"
             />
           </div>
-        </div>
+        }
 
-        <div class="mb-3">
-          <label class="form-label" for="field_usuarioRemocao">Usuario Remocao</label>
-          <input
-            type="text"
-            class="form-control"
-            name="usuarioRemocao"
-            id="field_usuarioRemocao"
-            data-cy="usuarioRemocao"
-            formControlName="usuarioRemocao"
-          />
-          @if (
-            editForm.get('usuarioRemocao')!.invalid && (editForm.get('usuarioRemocao')!.dirty || editForm.get('usuarioRemocao')!.touched)
-          ) {
-            <div>
-              @if (editForm.get('usuarioRemocao')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
-              }
-              @if (editForm.get('usuarioRemocao')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
-              }
+        @if (editForm.controls.createdDate.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_createdDate">Created Date</label>
+            <div class="d-flex">
+              <input
+                id="field_createdDate"
+                data-cy="createdDate"
+                type="datetime-local"
+                class="form-control"
+                name="createdDate"
+                formControlName="createdDate"
+                placeholder="YYYY-MM-DD HH:mm"
+                [readonly]="true"
+              />
             </div>
-          }
-        </div>
+          </div>
+        }
+
+        @if (editForm.controls.lastModifiedBy.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_lastModifiedBy">Last Modified By</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lastModifiedBy"
+              id="field_lastModifiedBy"
+              data-cy="lastModifiedBy"
+              formControlName="lastModifiedBy"
+              [readonly]="true"
+            />
+          </div>
+        }
+
+        @if (editForm.controls.lastModifiedDate.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_lastModifiedDate">Last Modified Date</label>
+            <div class="d-flex">
+              <input
+                id="field_lastModifiedDate"
+                data-cy="lastModifiedDate"
+                type="datetime-local"
+                class="form-control"
+                name="lastModifiedDate"
+                formControlName="lastModifiedDate"
+                placeholder="YYYY-MM-DD HH:mm"
+                [readonly]="true"
+              />
+            </div>
+          </div>
+        }
 
         <div class="mb-3">
           <label class="form-label" for="field_embarcador">Embarcador</label>

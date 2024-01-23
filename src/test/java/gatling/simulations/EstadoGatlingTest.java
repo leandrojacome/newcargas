@@ -74,7 +74,19 @@ public class EstadoGatlingTest extends Simulation {
                     http("Create new estado")
                         .post("/api/estados")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"nome\": \"SAMPLE_TEXT\"" + ", \"sigla\": \"SAMPLE_TEXT\"" + ", \"codigoIbge\": 0" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"nome\": \"SAMPLE_TEXT\"" +
+                                ", \"sigla\": \"SAMPLE_TEXT\"" +
+                                ", \"codigoIbge\": 0" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_estado_url"))

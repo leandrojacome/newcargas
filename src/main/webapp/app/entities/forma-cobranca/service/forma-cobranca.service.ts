@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -11,6 +13,17 @@ import { SearchWithPagination } from 'app/core/request/request.model';
 import { IFormaCobranca, NewFormaCobranca } from '../forma-cobranca.model';
 
 export type PartialUpdateFormaCobranca = Partial<IFormaCobranca> & Pick<IFormaCobranca, 'id'>;
+
+type RestOf<T extends IFormaCobranca | NewFormaCobranca> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+export type RestFormaCobranca = RestOf<IFormaCobranca>;
+
+export type NewRestFormaCobranca = RestOf<NewFormaCobranca>;
+
+export type PartialUpdateRestFormaCobranca = RestOf<PartialUpdateFormaCobranca>;
 
 export type EntityResponseType = HttpResponse<IFormaCobranca>;
 export type EntityArrayResponseType = HttpResponse<IFormaCobranca[]>;
@@ -26,28 +39,37 @@ export class FormaCobrancaService {
   ) {}
 
   create(formaCobranca: NewFormaCobranca): Observable<EntityResponseType> {
-    return this.http.post<IFormaCobranca>(this.resourceUrl, formaCobranca, { observe: 'response' });
+    const copy = this.convertDateFromClient(formaCobranca);
+    return this.http
+      .post<RestFormaCobranca>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(formaCobranca: IFormaCobranca): Observable<EntityResponseType> {
-    return this.http.put<IFormaCobranca>(`${this.resourceUrl}/${this.getFormaCobrancaIdentifier(formaCobranca)}`, formaCobranca, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(formaCobranca);
+    return this.http
+      .put<RestFormaCobranca>(`${this.resourceUrl}/${this.getFormaCobrancaIdentifier(formaCobranca)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(formaCobranca: PartialUpdateFormaCobranca): Observable<EntityResponseType> {
-    return this.http.patch<IFormaCobranca>(`${this.resourceUrl}/${this.getFormaCobrancaIdentifier(formaCobranca)}`, formaCobranca, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(formaCobranca);
+    return this.http
+      .patch<RestFormaCobranca>(`${this.resourceUrl}/${this.getFormaCobrancaIdentifier(formaCobranca)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IFormaCobranca>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestFormaCobranca>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IFormaCobranca[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestFormaCobranca[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -56,9 +78,10 @@ export class FormaCobrancaService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<IFormaCobranca[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(catchError(() => scheduled([new HttpResponse<IFormaCobranca[]>()], asapScheduler)));
+    return this.http.get<RestFormaCobranca[]>(this.resourceSearchUrl, { params: options, observe: 'response' }).pipe(
+      map(res => this.convertResponseArrayFromServer(res)),
+      catchError(() => scheduled([new HttpResponse<IFormaCobranca[]>()], asapScheduler)),
+    );
   }
 
   getFormaCobrancaIdentifier(formaCobranca: Pick<IFormaCobranca, 'id'>): number {
@@ -89,5 +112,33 @@ export class FormaCobrancaService {
       return [...formaCobrancasToAdd, ...formaCobrancaCollection];
     }
     return formaCobrancaCollection;
+  }
+
+  protected convertDateFromClient<T extends IFormaCobranca | NewFormaCobranca | PartialUpdateFormaCobranca>(formaCobranca: T): RestOf<T> {
+    return {
+      ...formaCobranca,
+      createdDate: formaCobranca.createdDate?.toJSON() ?? null,
+      lastModifiedDate: formaCobranca.lastModifiedDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restFormaCobranca: RestFormaCobranca): IFormaCobranca {
+    return {
+      ...restFormaCobranca,
+      createdDate: restFormaCobranca.createdDate ? dayjs(restFormaCobranca.createdDate) : undefined,
+      lastModifiedDate: restFormaCobranca.lastModifiedDate ? dayjs(restFormaCobranca.lastModifiedDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestFormaCobranca>): HttpResponse<IFormaCobranca> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestFormaCobranca[]>): HttpResponse<IFormaCobranca[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

@@ -19,16 +19,10 @@ type TomadaPrecoFormGroupInput = ITomadaPreco | PartialWithRequiredKeyOf<NewToma
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends ITomadaPreco | NewTomadaPreco> = Omit<
-  T,
-  'dataHoraEnvio' | 'dataCadastro' | 'dataAtualizacao' | 'dataAprovacao' | 'dataCancelamento' | 'dataRemocao'
-> & {
+type FormValueOf<T extends ITomadaPreco | NewTomadaPreco> = Omit<T, 'dataHoraEnvio' | 'createdDate' | 'lastModifiedDate'> & {
   dataHoraEnvio?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataAprovacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type TomadaPrecoFormRawValue = FormValueOf<ITomadaPreco>;
@@ -37,16 +31,7 @@ type NewTomadaPrecoFormRawValue = FormValueOf<NewTomadaPreco>;
 
 type TomadaPrecoFormDefaults = Pick<
   NewTomadaPreco,
-  | 'id'
-  | 'dataHoraEnvio'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
-  | 'aprovado'
-  | 'dataAprovacao'
-  | 'cancelado'
-  | 'dataCancelamento'
-  | 'removido'
-  | 'dataRemocao'
+  'id' | 'dataHoraEnvio' | 'aprovado' | 'cancelado' | 'removido' | 'createdDate' | 'lastModifiedDate'
 >;
 
 type TomadaPrecoFormGroupContent = {
@@ -55,19 +40,13 @@ type TomadaPrecoFormGroupContent = {
   prazoResposta: FormControl<TomadaPrecoFormRawValue['prazoResposta']>;
   valorTotal: FormControl<TomadaPrecoFormRawValue['valorTotal']>;
   observacao: FormControl<TomadaPrecoFormRawValue['observacao']>;
-  dataCadastro: FormControl<TomadaPrecoFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<TomadaPrecoFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<TomadaPrecoFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<TomadaPrecoFormRawValue['usuarioAtualizacao']>;
   aprovado: FormControl<TomadaPrecoFormRawValue['aprovado']>;
-  dataAprovacao: FormControl<TomadaPrecoFormRawValue['dataAprovacao']>;
-  usuarioAprovacao: FormControl<TomadaPrecoFormRawValue['usuarioAprovacao']>;
   cancelado: FormControl<TomadaPrecoFormRawValue['cancelado']>;
-  dataCancelamento: FormControl<TomadaPrecoFormRawValue['dataCancelamento']>;
-  usuarioCancelamento: FormControl<TomadaPrecoFormRawValue['usuarioCancelamento']>;
   removido: FormControl<TomadaPrecoFormRawValue['removido']>;
-  dataRemocao: FormControl<TomadaPrecoFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<TomadaPrecoFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<TomadaPrecoFormRawValue['createdBy']>;
+  createdDate: FormControl<TomadaPrecoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<TomadaPrecoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<TomadaPrecoFormRawValue['lastModifiedDate']>;
   contratacao: FormControl<TomadaPrecoFormRawValue['contratacao']>;
   transportadora: FormControl<TomadaPrecoFormRawValue['transportadora']>;
   roteirizacao: FormControl<TomadaPrecoFormRawValue['roteirizacao']>;
@@ -102,31 +81,13 @@ export class TomadaPrecoFormService {
       observacao: new FormControl(tomadaPrecoRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(tomadaPrecoRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(tomadaPrecoRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(tomadaPrecoRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(tomadaPrecoRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       aprovado: new FormControl(tomadaPrecoRawValue.aprovado),
-      dataAprovacao: new FormControl(tomadaPrecoRawValue.dataAprovacao),
-      usuarioAprovacao: new FormControl(tomadaPrecoRawValue.usuarioAprovacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       cancelado: new FormControl(tomadaPrecoRawValue.cancelado),
-      dataCancelamento: new FormControl(tomadaPrecoRawValue.dataCancelamento),
-      usuarioCancelamento: new FormControl(tomadaPrecoRawValue.usuarioCancelamento, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       removido: new FormControl(tomadaPrecoRawValue.removido),
-      dataRemocao: new FormControl(tomadaPrecoRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(tomadaPrecoRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(tomadaPrecoRawValue.createdBy),
+      createdDate: new FormControl(tomadaPrecoRawValue.createdDate),
+      lastModifiedBy: new FormControl(tomadaPrecoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(tomadaPrecoRawValue.lastModifiedDate),
       contratacao: new FormControl(tomadaPrecoRawValue.contratacao),
       transportadora: new FormControl(tomadaPrecoRawValue.transportadora),
       roteirizacao: new FormControl(tomadaPrecoRawValue.roteirizacao),
@@ -153,14 +114,11 @@ export class TomadaPrecoFormService {
     return {
       id: null,
       dataHoraEnvio: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       aprovado: false,
-      dataAprovacao: currentTime,
       cancelado: false,
-      dataCancelamento: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -170,11 +128,8 @@ export class TomadaPrecoFormService {
     return {
       ...rawTomadaPreco,
       dataHoraEnvio: dayjs(rawTomadaPreco.dataHoraEnvio, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawTomadaPreco.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawTomadaPreco.dataAtualizacao, DATE_TIME_FORMAT),
-      dataAprovacao: dayjs(rawTomadaPreco.dataAprovacao, DATE_TIME_FORMAT),
-      dataCancelamento: dayjs(rawTomadaPreco.dataCancelamento, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawTomadaPreco.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawTomadaPreco.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawTomadaPreco.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -184,11 +139,8 @@ export class TomadaPrecoFormService {
     return {
       ...tomadaPreco,
       dataHoraEnvio: tomadaPreco.dataHoraEnvio ? tomadaPreco.dataHoraEnvio.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: tomadaPreco.dataCadastro ? tomadaPreco.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: tomadaPreco.dataAtualizacao ? tomadaPreco.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataAprovacao: tomadaPreco.dataAprovacao ? tomadaPreco.dataAprovacao.format(DATE_TIME_FORMAT) : undefined,
-      dataCancelamento: tomadaPreco.dataCancelamento ? tomadaPreco.dataCancelamento.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: tomadaPreco.dataRemocao ? tomadaPreco.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: tomadaPreco.createdDate ? tomadaPreco.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: tomadaPreco.lastModifiedDate ? tomadaPreco.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

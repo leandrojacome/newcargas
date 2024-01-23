@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.FormaCobrancaRepository;
+import br.com.revenuebrasil.newcargas.service.FormaCobrancaQueryService;
 import br.com.revenuebrasil.newcargas.service.FormaCobrancaService;
+import br.com.revenuebrasil.newcargas.service.criteria.FormaCobrancaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.FormaCobrancaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class FormaCobrancaResource {
 
     private final FormaCobrancaRepository formaCobrancaRepository;
 
-    public FormaCobrancaResource(FormaCobrancaService formaCobrancaService, FormaCobrancaRepository formaCobrancaRepository) {
+    private final FormaCobrancaQueryService formaCobrancaQueryService;
+
+    public FormaCobrancaResource(
+        FormaCobrancaService formaCobrancaService,
+        FormaCobrancaRepository formaCobrancaRepository,
+        FormaCobrancaQueryService formaCobrancaQueryService
+    ) {
         this.formaCobrancaService = formaCobrancaService;
         this.formaCobrancaRepository = formaCobrancaRepository;
+        this.formaCobrancaQueryService = formaCobrancaQueryService;
     }
 
     /**
@@ -81,7 +90,7 @@ public class FormaCobrancaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<FormaCobrancaDTO> updateFormaCobranca(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody FormaCobrancaDTO formaCobrancaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update FormaCobranca : {}, {}", id, formaCobrancaDTO);
@@ -116,7 +125,7 @@ public class FormaCobrancaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<FormaCobrancaDTO> partialUpdateFormaCobranca(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody FormaCobrancaDTO formaCobrancaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update FormaCobranca partially : {}, {}", id, formaCobrancaDTO);
@@ -143,14 +152,31 @@ public class FormaCobrancaResource {
      * {@code GET  /forma-cobrancas} : get all the formaCobrancas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of formaCobrancas in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<FormaCobrancaDTO>> getAllFormaCobrancas(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of FormaCobrancas");
-        Page<FormaCobrancaDTO> page = formaCobrancaService.findAll(pageable);
+    public ResponseEntity<List<FormaCobrancaDTO>> getAllFormaCobrancas(
+        FormaCobrancaCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get FormaCobrancas by criteria: {}", criteria);
+
+        Page<FormaCobrancaDTO> page = formaCobrancaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /forma-cobrancas/count} : count all the formaCobrancas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countFormaCobrancas(FormaCobrancaCriteria criteria) {
+        log.debug("REST request to count FormaCobrancas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(formaCobrancaQueryService.countByCriteria(criteria));
     }
 
     /**

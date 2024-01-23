@@ -2,6 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -20,11 +21,15 @@ public class CidadeDTO implements Serializable {
     @Max(value = 7)
     private Integer codigoIbge;
 
+    private String createdBy;
+
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
+
     private EstadoDTO estado;
-
-    private EmbarcadorDTO embarcador;
-
-    private TransportadoraDTO transportadora;
 
     public Long getId() {
         return id;
@@ -50,28 +55,44 @@ public class CidadeDTO implements Serializable {
         this.codigoIbge = codigoIbge;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public EstadoDTO getEstado() {
         return estado;
     }
 
     public void setEstado(EstadoDTO estado) {
         this.estado = estado;
-    }
-
-    public EmbarcadorDTO getEmbarcador() {
-        return embarcador;
-    }
-
-    public void setEmbarcador(EmbarcadorDTO embarcador) {
-        this.embarcador = embarcador;
-    }
-
-    public TransportadoraDTO getTransportadora() {
-        return transportadora;
-    }
-
-    public void setTransportadora(TransportadoraDTO transportadora) {
-        this.transportadora = transportadora;
     }
 
     @Override
@@ -102,9 +123,11 @@ public class CidadeDTO implements Serializable {
             "id=" + getId() +
             ", nome='" + getNome() + "'" +
             ", codigoIbge=" + getCodigoIbge() +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", estado=" + getEstado() +
-            ", embarcador=" + getEmbarcador() +
-            ", transportadora=" + getTransportadora() +
             "}";
     }
 }

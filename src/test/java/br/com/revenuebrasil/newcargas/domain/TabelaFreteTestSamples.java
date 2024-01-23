@@ -12,11 +12,23 @@ public class TabelaFreteTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static TabelaFrete getTabelaFreteSample1() {
-        return new TabelaFrete().id(1L).nome("nome1").descricao("descricao1").leadTime(1);
+        return new TabelaFrete()
+            .id(1L)
+            .nome("nome1")
+            .descricao("descricao1")
+            .leadTime(1)
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static TabelaFrete getTabelaFreteSample2() {
-        return new TabelaFrete().id(2L).nome("nome2").descricao("descricao2").leadTime(2);
+        return new TabelaFrete()
+            .id(2L)
+            .nome("nome2")
+            .descricao("descricao2")
+            .leadTime(2)
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static TabelaFrete getTabelaFreteRandomSampleGenerator() {
@@ -24,6 +36,8 @@ public class TabelaFreteTestSamples {
             .id(longCount.incrementAndGet())
             .nome(UUID.randomUUID().toString())
             .descricao(UUID.randomUUID().toString())
-            .leadTime(intCount.incrementAndGet());
+            .leadTime(intCount.incrementAndGet())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

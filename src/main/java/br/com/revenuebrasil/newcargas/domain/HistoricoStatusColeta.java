@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -14,8 +16,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "historico_status_coleta")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "historicostatuscoleta")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class HistoricoStatusColeta implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class HistoricoStatusColeta extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +35,13 @@ public class HistoricoStatusColeta implements Serializable {
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
+
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
@@ -122,6 +132,30 @@ public class HistoricoStatusColeta implements Serializable {
         this.observacao = observacao;
     }
 
+    // Inherited createdBy methods
+    public HistoricoStatusColeta createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
+        return this;
+    }
+
+    // Inherited createdDate methods
+    public HistoricoStatusColeta createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
+        return this;
+    }
+
+    // Inherited lastModifiedBy methods
+    public HistoricoStatusColeta lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public HistoricoStatusColeta lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
+    }
+
     public SolicitacaoColeta getSolicitacaoColeta() {
         return this.solicitacaoColeta;
     }
@@ -200,6 +234,10 @@ public class HistoricoStatusColeta implements Serializable {
             "id=" + getId() +
             ", dataCriacao='" + getDataCriacao() + "'" +
             ", observacao='" + getObservacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

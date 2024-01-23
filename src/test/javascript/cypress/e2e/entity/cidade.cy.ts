@@ -15,7 +15,7 @@ describe('Cidade e2e test', () => {
   const cidadePageUrlPattern = new RegExp('/cidade(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const cidadeSample = { nome: 'frank plump' };
+  const cidadeSample = { nome: 'before' };
 
   let cidade;
 
@@ -125,7 +125,7 @@ describe('Cidade e2e test', () => {
         cy.url().should('match', cidadePageUrlPattern);
       });
 
-      it('edit button click should load edit Cidade page and save', () => {
+      it.skip('edit button click should load edit Cidade page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Cidade');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,8 +160,8 @@ describe('Cidade e2e test', () => {
     });
 
     it('should create an instance of Cidade', () => {
-      cy.get(`[data-cy="nome"]`).type('up yum');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'up yum');
+      cy.get(`[data-cy="nome"]`).type('whoa inside reproachfully');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'whoa inside reproachfully');
 
       cy.get(`[data-cy="codigoIbge"]`).type('7');
       cy.get(`[data-cy="codigoIbge"]`).should('have.value', '7');

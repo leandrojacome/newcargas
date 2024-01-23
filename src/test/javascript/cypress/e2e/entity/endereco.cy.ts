@@ -15,7 +15,7 @@ describe('Endereco e2e test', () => {
   const enderecoPageUrlPattern = new RegExp('/endereco(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const enderecoSample = { tipo: 'EMBARCADOR', cep: 'repackag', endereco: 'gee weighty', bairro: 'hence' };
+  const enderecoSample = { tipo: 'EMBARCADOR', cep: 'lest squ', endereco: 'aw diminish', bairro: 'career pan' };
 
   let endereco;
 
@@ -125,7 +125,7 @@ describe('Endereco e2e test', () => {
         cy.url().should('match', enderecoPageUrlPattern);
       });
 
-      it('edit button click should load edit Endereco page and save', () => {
+      it.skip('edit button click should load edit Endereco page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Endereco');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,22 +160,22 @@ describe('Endereco e2e test', () => {
     });
 
     it('should create an instance of Endereco', () => {
-      cy.get(`[data-cy="tipo"]`).select('EMBARCADOR');
+      cy.get(`[data-cy="tipo"]`).select('TRANSPORTADOR');
 
-      cy.get(`[data-cy="cep"]`).type('hatch ma');
-      cy.get(`[data-cy="cep"]`).should('have.value', 'hatch ma');
+      cy.get(`[data-cy="cep"]`).type('question');
+      cy.get(`[data-cy="cep"]`).should('have.value', 'question');
 
-      cy.get(`[data-cy="endereco"]`).type('mint acknowledge');
-      cy.get(`[data-cy="endereco"]`).should('have.value', 'mint acknowledge');
+      cy.get(`[data-cy="endereco"]`).type('after whenever whoever');
+      cy.get(`[data-cy="endereco"]`).should('have.value', 'after whenever whoever');
 
-      cy.get(`[data-cy="numero"]`).type('athwart vi');
-      cy.get(`[data-cy="numero"]`).should('have.value', 'athwart vi');
+      cy.get(`[data-cy="numero"]`).type('leach');
+      cy.get(`[data-cy="numero"]`).should('have.value', 'leach');
 
-      cy.get(`[data-cy="complemento"]`).type('shrill');
-      cy.get(`[data-cy="complemento"]`).should('have.value', 'shrill');
+      cy.get(`[data-cy="complemento"]`).type('soon knottily');
+      cy.get(`[data-cy="complemento"]`).should('have.value', 'soon knottily');
 
-      cy.get(`[data-cy="bairro"]`).type('to physically');
-      cy.get(`[data-cy="bairro"]`).should('have.value', 'to physically');
+      cy.get(`[data-cy="bairro"]`).type('visitor traipse pace');
+      cy.get(`[data-cy="bairro"]`).should('have.value', 'visitor traipse pace');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

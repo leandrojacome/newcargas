@@ -52,9 +52,10 @@ public class CacheConfiguration {
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Estado.class.getName() + ".cidades");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Cidade.class.getName());
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Cidade.class.getName() + ".enderecos");
+            createCache(cm, br.com.revenuebrasil.newcargas.domain.Cidade.class.getName() + ".embarcadors");
+            createCache(cm, br.com.revenuebrasil.newcargas.domain.Cidade.class.getName() + ".transportadoras");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName());
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".enderecos");
-            createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".cidades");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".contaBancarias");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".tabelaFretes");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".solitacaoColetas");
@@ -62,7 +63,6 @@ public class CacheConfiguration {
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Embarcador.class.getName() + ".faturas");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName());
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName() + ".enderecos");
-            createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName() + ".cidades");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName() + ".contaBancarias");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName() + ".tabelaFretes");
             createCache(cm, br.com.revenuebrasil.newcargas.domain.Transportadora.class.getName() + ".tomadaPrecos");

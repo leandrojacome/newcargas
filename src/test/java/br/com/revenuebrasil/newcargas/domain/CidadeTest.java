@@ -51,6 +51,50 @@ class CidadeTest {
     }
 
     @Test
+    void embarcadorTest() throws Exception {
+        Cidade cidade = getCidadeRandomSampleGenerator();
+        Embarcador embarcadorBack = getEmbarcadorRandomSampleGenerator();
+
+        cidade.addEmbarcador(embarcadorBack);
+        assertThat(cidade.getEmbarcadors()).containsOnly(embarcadorBack);
+        assertThat(embarcadorBack.getCidade()).isEqualTo(cidade);
+
+        cidade.removeEmbarcador(embarcadorBack);
+        assertThat(cidade.getEmbarcadors()).doesNotContain(embarcadorBack);
+        assertThat(embarcadorBack.getCidade()).isNull();
+
+        cidade.embarcadors(new HashSet<>(Set.of(embarcadorBack)));
+        assertThat(cidade.getEmbarcadors()).containsOnly(embarcadorBack);
+        assertThat(embarcadorBack.getCidade()).isEqualTo(cidade);
+
+        cidade.setEmbarcadors(new HashSet<>());
+        assertThat(cidade.getEmbarcadors()).doesNotContain(embarcadorBack);
+        assertThat(embarcadorBack.getCidade()).isNull();
+    }
+
+    @Test
+    void transportadoraTest() throws Exception {
+        Cidade cidade = getCidadeRandomSampleGenerator();
+        Transportadora transportadoraBack = getTransportadoraRandomSampleGenerator();
+
+        cidade.addTransportadora(transportadoraBack);
+        assertThat(cidade.getTransportadoras()).containsOnly(transportadoraBack);
+        assertThat(transportadoraBack.getCidade()).isEqualTo(cidade);
+
+        cidade.removeTransportadora(transportadoraBack);
+        assertThat(cidade.getTransportadoras()).doesNotContain(transportadoraBack);
+        assertThat(transportadoraBack.getCidade()).isNull();
+
+        cidade.transportadoras(new HashSet<>(Set.of(transportadoraBack)));
+        assertThat(cidade.getTransportadoras()).containsOnly(transportadoraBack);
+        assertThat(transportadoraBack.getCidade()).isEqualTo(cidade);
+
+        cidade.setTransportadoras(new HashSet<>());
+        assertThat(cidade.getTransportadoras()).doesNotContain(transportadoraBack);
+        assertThat(transportadoraBack.getCidade()).isNull();
+    }
+
+    @Test
     void estadoTest() throws Exception {
         Cidade cidade = getCidadeRandomSampleGenerator();
         Estado estadoBack = getEstadoRandomSampleGenerator();
@@ -60,29 +104,5 @@ class CidadeTest {
 
         cidade.estado(null);
         assertThat(cidade.getEstado()).isNull();
-    }
-
-    @Test
-    void embarcadorTest() throws Exception {
-        Cidade cidade = getCidadeRandomSampleGenerator();
-        Embarcador embarcadorBack = getEmbarcadorRandomSampleGenerator();
-
-        cidade.setEmbarcador(embarcadorBack);
-        assertThat(cidade.getEmbarcador()).isEqualTo(embarcadorBack);
-
-        cidade.embarcador(null);
-        assertThat(cidade.getEmbarcador()).isNull();
-    }
-
-    @Test
-    void transportadoraTest() throws Exception {
-        Cidade cidade = getCidadeRandomSampleGenerator();
-        Transportadora transportadoraBack = getTransportadoraRandomSampleGenerator();
-
-        cidade.setTransportadora(transportadoraBack);
-        assertThat(cidade.getTransportadora()).isEqualTo(transportadoraBack);
-
-        cidade.transportadora(null);
-        assertThat(cidade.getTransportadora()).isNull();
     }
 }

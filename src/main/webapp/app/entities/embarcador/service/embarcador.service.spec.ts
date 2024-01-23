@@ -8,8 +8,8 @@ import { EmbarcadorService, RestEmbarcador } from './embarcador.service';
 
 const requireRestSample: RestEmbarcador = {
   ...sampleWithRequiredData,
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Embarcador Service', () => {

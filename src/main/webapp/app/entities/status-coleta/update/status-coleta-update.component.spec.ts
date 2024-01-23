@@ -46,10 +46,10 @@ describe('StatusColeta Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call StatusColeta query and add missing value', () => {
       const statusColeta: IStatusColeta = { id: 456 };
-      const statusColetaOrigems: IStatusColeta[] = [{ id: 30163 }];
+      const statusColetaOrigems: IStatusColeta[] = [{ id: 30577 }];
       statusColeta.statusColetaOrigems = statusColetaOrigems;
 
-      const statusColetaCollection: IStatusColeta[] = [{ id: 19800 }];
+      const statusColetaCollection: IStatusColeta[] = [{ id: 28818 }];
       jest.spyOn(statusColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: statusColetaCollection })));
       const additionalStatusColetas = [...statusColetaOrigems];
       const expectedCollection: IStatusColeta[] = [...additionalStatusColetas, ...statusColetaCollection];
@@ -68,7 +68,7 @@ describe('StatusColeta Management Update Component', () => {
 
     it('Should update editForm', () => {
       const statusColeta: IStatusColeta = { id: 456 };
-      const statusColetaOrigem: IStatusColeta = { id: 32214 };
+      const statusColetaOrigem: IStatusColeta = { id: 4213 };
       statusColeta.statusColetaOrigems = [statusColetaOrigem];
 
       activatedRoute.data = of({ statusColeta });

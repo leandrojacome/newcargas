@@ -14,10 +14,9 @@ import { IStatusColeta, NewStatusColeta } from '../status-coleta.model';
 
 export type PartialUpdateStatusColeta = Partial<IStatusColeta> & Pick<IStatusColeta, 'id'>;
 
-type RestOf<T extends IStatusColeta | NewStatusColeta> = Omit<T, 'dataCadastro' | 'dataAtualizacao' | 'dataRemocao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataRemocao?: string | null;
+type RestOf<T extends IStatusColeta | NewStatusColeta> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestStatusColeta = RestOf<IStatusColeta>;
@@ -118,18 +117,16 @@ export class StatusColetaService {
   protected convertDateFromClient<T extends IStatusColeta | NewStatusColeta | PartialUpdateStatusColeta>(statusColeta: T): RestOf<T> {
     return {
       ...statusColeta,
-      dataCadastro: statusColeta.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: statusColeta.dataAtualizacao?.toJSON() ?? null,
-      dataRemocao: statusColeta.dataRemocao?.toJSON() ?? null,
+      createdDate: statusColeta.createdDate?.toJSON() ?? null,
+      lastModifiedDate: statusColeta.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
   protected convertDateFromServer(restStatusColeta: RestStatusColeta): IStatusColeta {
     return {
       ...restStatusColeta,
-      dataCadastro: restStatusColeta.dataCadastro ? dayjs(restStatusColeta.dataCadastro) : undefined,
-      dataAtualizacao: restStatusColeta.dataAtualizacao ? dayjs(restStatusColeta.dataAtualizacao) : undefined,
-      dataRemocao: restStatusColeta.dataRemocao ? dayjs(restStatusColeta.dataRemocao) : undefined,
+      createdDate: restStatusColeta.createdDate ? dayjs(restStatusColeta.createdDate) : undefined,
+      lastModifiedDate: restStatusColeta.lastModifiedDate ? dayjs(restStatusColeta.lastModifiedDate) : undefined,
     };
   }
 

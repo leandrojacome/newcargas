@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TipoFreteRepository;
+import br.com.revenuebrasil.newcargas.service.TipoFreteQueryService;
 import br.com.revenuebrasil.newcargas.service.TipoFreteService;
+import br.com.revenuebrasil.newcargas.service.criteria.TipoFreteCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TipoFreteDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TipoFreteResource {
 
     private final TipoFreteRepository tipoFreteRepository;
 
-    public TipoFreteResource(TipoFreteService tipoFreteService, TipoFreteRepository tipoFreteRepository) {
+    private final TipoFreteQueryService tipoFreteQueryService;
+
+    public TipoFreteResource(
+        TipoFreteService tipoFreteService,
+        TipoFreteRepository tipoFreteRepository,
+        TipoFreteQueryService tipoFreteQueryService
+    ) {
         this.tipoFreteService = tipoFreteService;
         this.tipoFreteRepository = tipoFreteRepository;
+        this.tipoFreteQueryService = tipoFreteQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class TipoFreteResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TipoFreteDTO> updateTipoFrete(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TipoFreteDTO tipoFreteDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TipoFrete : {}, {}", id, tipoFreteDTO);
@@ -115,7 +124,7 @@ public class TipoFreteResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TipoFreteDTO> partialUpdateTipoFrete(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TipoFreteDTO tipoFreteDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TipoFrete partially : {}, {}", id, tipoFreteDTO);
@@ -142,14 +151,31 @@ public class TipoFreteResource {
      * {@code GET  /tipo-fretes} : get all the tipoFretes.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tipoFretes in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TipoFreteDTO>> getAllTipoFretes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TipoFretes");
-        Page<TipoFreteDTO> page = tipoFreteService.findAll(pageable);
+    public ResponseEntity<List<TipoFreteDTO>> getAllTipoFretes(
+        TipoFreteCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TipoFretes by criteria: {}", criteria);
+
+        Page<TipoFreteDTO> page = tipoFreteQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tipo-fretes/count} : count all the tipoFretes.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTipoFretes(TipoFreteCriteria criteria) {
+        log.debug("REST request to count TipoFretes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tipoFreteQueryService.countByCriteria(criteria));
     }
 
     /**

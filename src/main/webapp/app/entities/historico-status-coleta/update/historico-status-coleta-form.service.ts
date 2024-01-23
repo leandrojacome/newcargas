@@ -19,20 +19,29 @@ type HistoricoStatusColetaFormGroupInput = IHistoricoStatusColeta | PartialWithR
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IHistoricoStatusColeta | NewHistoricoStatusColeta> = Omit<T, 'dataCriacao'> & {
+type FormValueOf<T extends IHistoricoStatusColeta | NewHistoricoStatusColeta> = Omit<
+  T,
+  'dataCriacao' | 'createdDate' | 'lastModifiedDate'
+> & {
   dataCriacao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type HistoricoStatusColetaFormRawValue = FormValueOf<IHistoricoStatusColeta>;
 
 type NewHistoricoStatusColetaFormRawValue = FormValueOf<NewHistoricoStatusColeta>;
 
-type HistoricoStatusColetaFormDefaults = Pick<NewHistoricoStatusColeta, 'id' | 'dataCriacao'>;
+type HistoricoStatusColetaFormDefaults = Pick<NewHistoricoStatusColeta, 'id' | 'dataCriacao' | 'createdDate' | 'lastModifiedDate'>;
 
 type HistoricoStatusColetaFormGroupContent = {
   id: FormControl<HistoricoStatusColetaFormRawValue['id'] | NewHistoricoStatusColeta['id']>;
   dataCriacao: FormControl<HistoricoStatusColetaFormRawValue['dataCriacao']>;
   observacao: FormControl<HistoricoStatusColetaFormRawValue['observacao']>;
+  createdBy: FormControl<HistoricoStatusColetaFormRawValue['createdBy']>;
+  createdDate: FormControl<HistoricoStatusColetaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<HistoricoStatusColetaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<HistoricoStatusColetaFormRawValue['lastModifiedDate']>;
   solicitacaoColeta: FormControl<HistoricoStatusColetaFormRawValue['solicitacaoColeta']>;
   roteirizacao: FormControl<HistoricoStatusColetaFormRawValue['roteirizacao']>;
   statusColetaOrigem: FormControl<HistoricoStatusColetaFormRawValue['statusColetaOrigem']>;
@@ -64,6 +73,10 @@ export class HistoricoStatusColetaFormService {
       observacao: new FormControl(historicoStatusColetaRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
+      createdBy: new FormControl(historicoStatusColetaRawValue.createdBy),
+      createdDate: new FormControl(historicoStatusColetaRawValue.createdDate),
+      lastModifiedBy: new FormControl(historicoStatusColetaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(historicoStatusColetaRawValue.lastModifiedDate),
       solicitacaoColeta: new FormControl(historicoStatusColetaRawValue.solicitacaoColeta),
       roteirizacao: new FormControl(historicoStatusColetaRawValue.roteirizacao),
       statusColetaOrigem: new FormControl(historicoStatusColetaRawValue.statusColetaOrigem),
@@ -96,6 +109,8 @@ export class HistoricoStatusColetaFormService {
     return {
       id: null,
       dataCriacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -105,6 +120,8 @@ export class HistoricoStatusColetaFormService {
     return {
       ...rawHistoricoStatusColeta,
       dataCriacao: dayjs(rawHistoricoStatusColeta.dataCriacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawHistoricoStatusColeta.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawHistoricoStatusColeta.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -114,6 +131,10 @@ export class HistoricoStatusColetaFormService {
     return {
       ...historicoStatusColeta,
       dataCriacao: historicoStatusColeta.dataCriacao ? historicoStatusColeta.dataCriacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: historicoStatusColeta.createdDate ? historicoStatusColeta.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: historicoStatusColeta.lastModifiedDate
+        ? historicoStatusColeta.lastModifiedDate.format(DATE_TIME_FORMAT)
+        : undefined,
     };
   }
 }

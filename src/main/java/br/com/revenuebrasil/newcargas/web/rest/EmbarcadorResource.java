@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.EmbarcadorRepository;
+import br.com.revenuebrasil.newcargas.service.EmbarcadorQueryService;
 import br.com.revenuebrasil.newcargas.service.EmbarcadorService;
+import br.com.revenuebrasil.newcargas.service.criteria.EmbarcadorCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.EmbarcadorDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class EmbarcadorResource {
 
     private final EmbarcadorRepository embarcadorRepository;
 
-    public EmbarcadorResource(EmbarcadorService embarcadorService, EmbarcadorRepository embarcadorRepository) {
+    private final EmbarcadorQueryService embarcadorQueryService;
+
+    public EmbarcadorResource(
+        EmbarcadorService embarcadorService,
+        EmbarcadorRepository embarcadorRepository,
+        EmbarcadorQueryService embarcadorQueryService
+    ) {
         this.embarcadorService = embarcadorService;
         this.embarcadorRepository = embarcadorRepository;
+        this.embarcadorQueryService = embarcadorQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class EmbarcadorResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<EmbarcadorDTO> updateEmbarcador(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody EmbarcadorDTO embarcadorDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Embarcador : {}, {}", id, embarcadorDTO);
@@ -115,7 +124,7 @@ public class EmbarcadorResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EmbarcadorDTO> partialUpdateEmbarcador(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody EmbarcadorDTO embarcadorDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Embarcador partially : {}, {}", id, embarcadorDTO);
@@ -142,14 +151,31 @@ public class EmbarcadorResource {
      * {@code GET  /embarcadors} : get all the embarcadors.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of embarcadors in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<EmbarcadorDTO>> getAllEmbarcadors(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Embarcadors");
-        Page<EmbarcadorDTO> page = embarcadorService.findAll(pageable);
+    public ResponseEntity<List<EmbarcadorDTO>> getAllEmbarcadors(
+        EmbarcadorCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Embarcadors by criteria: {}", criteria);
+
+        Page<EmbarcadorDTO> page = embarcadorQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /embarcadors/count} : count all the embarcadors.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEmbarcadors(EmbarcadorCriteria criteria) {
+        log.debug("REST request to count Embarcadors by criteria: {}", criteria);
+        return ResponseEntity.ok().body(embarcadorQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "status_coleta",
   "fields": [
     {
@@ -55,29 +56,6 @@
       "fieldValidateRulesMinlength": "2"
     },
     {
-      "fieldName": "dataCadastro",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "usuarioCadastro",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
-    },
-    {
-      "fieldName": "dataAtualizacao",
-      "fieldType": "ZonedDateTime"
-    },
-    {
-      "fieldName": "usuarioAtualizacao",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
-    },
-    {
       "fieldName": "ativo",
       "fieldType": "Boolean"
     },
@@ -86,17 +64,41 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "dataRemocao",
-      "fieldType": "ZonedDateTime"
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
     },
     {
-      "fieldName": "usuarioRemocao",
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "StatusColeta",
   "pagination": "pagination",
   "relationships": [

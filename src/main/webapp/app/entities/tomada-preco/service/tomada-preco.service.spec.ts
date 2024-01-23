@@ -9,11 +9,8 @@ import { TomadaPrecoService, RestTomadaPreco } from './tomada-preco.service';
 const requireRestSample: RestTomadaPreco = {
   ...sampleWithRequiredData,
   dataHoraEnvio: sampleWithRequiredData.dataHoraEnvio?.toJSON(),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
-  dataAprovacao: sampleWithRequiredData.dataAprovacao?.toJSON(),
-  dataCancelamento: sampleWithRequiredData.dataCancelamento?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('TomadaPreco Service', () => {

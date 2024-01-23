@@ -10,17 +10,19 @@ public class FormaCobrancaTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static FormaCobranca getFormaCobrancaSample1() {
-        return new FormaCobranca().id(1L).nome("nome1").descricao("descricao1");
+        return new FormaCobranca().id(1L).nome("nome1").descricao("descricao1").createdBy("createdBy1").lastModifiedBy("lastModifiedBy1");
     }
 
     public static FormaCobranca getFormaCobrancaSample2() {
-        return new FormaCobranca().id(2L).nome("nome2").descricao("descricao2");
+        return new FormaCobranca().id(2L).nome("nome2").descricao("descricao2").createdBy("createdBy2").lastModifiedBy("lastModifiedBy2");
     }
 
     public static FormaCobranca getFormaCobrancaRandomSampleGenerator() {
         return new FormaCobranca()
             .id(longCount.incrementAndGet())
             .nome(UUID.randomUUID().toString())
-            .descricao(UUID.randomUUID().toString());
+            .descricao(UUID.randomUUID().toString())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

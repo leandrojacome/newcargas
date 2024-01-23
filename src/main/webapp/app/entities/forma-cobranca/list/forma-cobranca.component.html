@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (formaCobrancas?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Forma Cobranca encontrado</span>
@@ -77,6 +79,36 @@
                 }
               </div>
             </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -88,8 +120,32 @@
               </td>
               <td>{{ formaCobranca.nome }}</td>
               <td>{{ formaCobranca.descricao }}</td>
+              <td>{{ formaCobranca.createdBy }}</td>
+              <td>{{ formaCobranca.createdDate | formatMediumDatetime }}</td>
+              <td>{{ formaCobranca.lastModifiedBy }}</td>
+              <td>{{ formaCobranca.lastModifiedDate | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/tabela-frete']"
+                    [queryParams]="{ 'filter[formaCobrancaId.in]': formaCobranca.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Tabela Frete</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/fatura']"
+                    [queryParams]="{ 'filter[formaCobrancaId.in]': formaCobranca.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Fatura</span>
+                  </button>
                   <a [routerLink]="['/forma-cobranca', formaCobranca.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

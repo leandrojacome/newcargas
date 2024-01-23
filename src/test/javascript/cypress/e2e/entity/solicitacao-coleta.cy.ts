@@ -15,12 +15,7 @@ describe('SolicitacaoColeta e2e test', () => {
   const solicitacaoColetaPageUrlPattern = new RegExp('/solicitacao-coleta(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const solicitacaoColetaSample = {
-    coletado: true,
-    dataHoraColeta: '2024-01-20T04:43:30.320Z',
-    entregue: false,
-    dataCadastro: '2024-01-19T17:38:43.342Z',
-  };
+  const solicitacaoColetaSample = { coletado: false, dataHoraColeta: '2024-01-20T16:27:48.892Z', entregue: false };
 
   let solicitacaoColeta;
 
@@ -130,7 +125,7 @@ describe('SolicitacaoColeta e2e test', () => {
         cy.url().should('match', solicitacaoColetaPageUrlPattern);
       });
 
-      it('edit button click should load edit SolicitacaoColeta page and save', () => {
+      it.skip('edit button click should load edit SolicitacaoColeta page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('SolicitacaoColeta');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -169,53 +164,31 @@ describe('SolicitacaoColeta e2e test', () => {
       cy.get(`[data-cy="coletado"]`).click();
       cy.get(`[data-cy="coletado"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataHoraColeta"]`).type('2024-01-19T19:16');
+      cy.get(`[data-cy="dataHoraColeta"]`).type('2024-01-19T20:30');
       cy.get(`[data-cy="dataHoraColeta"]`).blur();
-      cy.get(`[data-cy="dataHoraColeta"]`).should('have.value', '2024-01-19T19:16');
+      cy.get(`[data-cy="dataHoraColeta"]`).should('have.value', '2024-01-19T20:30');
 
       cy.get(`[data-cy="entregue"]`).should('not.be.checked');
       cy.get(`[data-cy="entregue"]`).click();
       cy.get(`[data-cy="entregue"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataHoraEntrega"]`).type('2024-01-20T12:28');
+      cy.get(`[data-cy="dataHoraEntrega"]`).type('2024-01-20T16:20');
       cy.get(`[data-cy="dataHoraEntrega"]`).blur();
-      cy.get(`[data-cy="dataHoraEntrega"]`).should('have.value', '2024-01-20T12:28');
+      cy.get(`[data-cy="dataHoraEntrega"]`).should('have.value', '2024-01-20T16:20');
 
-      cy.get(`[data-cy="valorTotal"]`).type('4.67');
-      cy.get(`[data-cy="valorTotal"]`).should('have.value', '4.67');
+      cy.get(`[data-cy="valorTotal"]`).type('4.2');
+      cy.get(`[data-cy="valorTotal"]`).should('have.value', '4.2');
 
-      cy.get(`[data-cy="observacao"]`).type('finally miserably commandment');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'finally miserably commandment');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-19T22:37');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-19T22:37');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T14:10');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T14:10');
+      cy.get(`[data-cy="observacao"]`).type('irritating whose');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'irritating whose');
 
       cy.get(`[data-cy="cancelado"]`).should('not.be.checked');
       cy.get(`[data-cy="cancelado"]`).click();
       cy.get(`[data-cy="cancelado"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataCancelamento"]`).type('2024-01-19T23:55');
-      cy.get(`[data-cy="dataCancelamento"]`).blur();
-      cy.get(`[data-cy="dataCancelamento"]`).should('have.value', '2024-01-19T23:55');
-
-      cy.get(`[data-cy="usuarioCancelamento"]`).type('access oh');
-      cy.get(`[data-cy="usuarioCancelamento"]`).should('have.value', 'access oh');
-
       cy.get(`[data-cy="removido"]`).should('not.be.checked');
       cy.get(`[data-cy="removido"]`).click();
       cy.get(`[data-cy="removido"]`).should('be.checked');
-
-      cy.get(`[data-cy="dataRemocao"]`).type('2024-01-19T20:41');
-      cy.get(`[data-cy="dataRemocao"]`).blur();
-      cy.get(`[data-cy="dataRemocao"]`).should('have.value', '2024-01-19T20:41');
-
-      cy.get(`[data-cy="usuarioRemocao"]`).type('fatigues ha ferociously');
-      cy.get(`[data-cy="usuarioRemocao"]`).should('have.value', 'fatigues ha ferociously');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

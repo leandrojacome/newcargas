@@ -16,15 +16,13 @@ export type PartialUpdateFatura = Partial<IFatura> & Pick<IFatura, 'id'>;
 
 type RestOf<T extends IFatura | NewFatura> = Omit<
   T,
-  'dataFatura' | 'dataVencimento' | 'dataPagamento' | 'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
+  'dataFatura' | 'dataVencimento' | 'dataPagamento' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataFatura?: string | null;
   dataVencimento?: string | null;
   dataPagamento?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestFatura = RestOf<IFatura>;
@@ -126,10 +124,8 @@ export class FaturaService {
       dataFatura: fatura.dataFatura?.toJSON() ?? null,
       dataVencimento: fatura.dataVencimento?.toJSON() ?? null,
       dataPagamento: fatura.dataPagamento?.toJSON() ?? null,
-      dataCadastro: fatura.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: fatura.dataAtualizacao?.toJSON() ?? null,
-      dataCancelamento: fatura.dataCancelamento?.toJSON() ?? null,
-      dataRemocao: fatura.dataRemocao?.toJSON() ?? null,
+      createdDate: fatura.createdDate?.toJSON() ?? null,
+      lastModifiedDate: fatura.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -139,10 +135,8 @@ export class FaturaService {
       dataFatura: restFatura.dataFatura ? dayjs(restFatura.dataFatura) : undefined,
       dataVencimento: restFatura.dataVencimento ? dayjs(restFatura.dataVencimento) : undefined,
       dataPagamento: restFatura.dataPagamento ? dayjs(restFatura.dataPagamento) : undefined,
-      dataCadastro: restFatura.dataCadastro ? dayjs(restFatura.dataCadastro) : undefined,
-      dataAtualizacao: restFatura.dataAtualizacao ? dayjs(restFatura.dataAtualizacao) : undefined,
-      dataCancelamento: restFatura.dataCancelamento ? dayjs(restFatura.dataCancelamento) : undefined,
-      dataRemocao: restFatura.dataRemocao ? dayjs(restFatura.dataRemocao) : undefined,
+      createdDate: restFatura.createdDate ? dayjs(restFatura.createdDate) : undefined,
+      lastModifiedDate: restFatura.lastModifiedDate ? dayjs(restFatura.lastModifiedDate) : undefined,
     };
   }
 

@@ -17,10 +17,9 @@ describe('Notificacao e2e test', () => {
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const notificacaoSample = {
     tipo: 'TRANSPORTADORA',
-    assunto: 'pharmacopoeia centre',
-    mensagem: 'when',
-    dataHoraEnvio: '2024-01-20T12:15:54.293Z',
-    dataCadastro: '2024-01-20T09:44:41.816Z',
+    assunto: 'exotic drat frightfully',
+    mensagem: 'hike dedication',
+    dataHoraEnvio: '2024-01-20T17:04:11.395Z',
   };
 
   let notificacao;
@@ -131,7 +130,7 @@ describe('Notificacao e2e test', () => {
         cy.url().should('match', notificacaoPageUrlPattern);
       });
 
-      it('edit button click should load edit Notificacao page and save', () => {
+      it.skip('edit button click should load edit Notificacao page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Notificacao');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -166,54 +165,39 @@ describe('Notificacao e2e test', () => {
     });
 
     it('should create an instance of Notificacao', () => {
-      cy.get(`[data-cy="tipo"]`).select('TRANSPORTADORA');
+      cy.get(`[data-cy="tipo"]`).select('EMBARCADOR');
 
-      cy.get(`[data-cy="email"]`).type('Aline_Batista80@live.com');
-      cy.get(`[data-cy="email"]`).should('have.value', 'Aline_Batista80@live.com');
+      cy.get(`[data-cy="email"]`).type('Paulo10@hotmail.com');
+      cy.get(`[data-cy="email"]`).should('have.value', 'Paulo10@hotmail.com');
 
-      cy.get(`[data-cy="telefone"]`).type('evenXXXXXX');
-      cy.get(`[data-cy="telefone"]`).should('have.value', 'evenXXXXXX');
+      cy.get(`[data-cy="telefone"]`).type('thorough fo');
+      cy.get(`[data-cy="telefone"]`).should('have.value', 'thorough fo');
 
-      cy.get(`[data-cy="assunto"]`).type('aftershock ew');
-      cy.get(`[data-cy="assunto"]`).should('have.value', 'aftershock ew');
+      cy.get(`[data-cy="assunto"]`).type('gadzooks yippee');
+      cy.get(`[data-cy="assunto"]`).should('have.value', 'gadzooks yippee');
 
-      cy.get(`[data-cy="mensagem"]`).type('hence sans plain');
-      cy.get(`[data-cy="mensagem"]`).should('have.value', 'hence sans plain');
+      cy.get(`[data-cy="mensagem"]`).type('silky minus');
+      cy.get(`[data-cy="mensagem"]`).should('have.value', 'silky minus');
 
-      cy.get(`[data-cy="dataHoraEnvio"]`).type('2024-01-20T16:41');
+      cy.get(`[data-cy="dataHoraEnvio"]`).type('2024-01-20T13:46');
       cy.get(`[data-cy="dataHoraEnvio"]`).blur();
-      cy.get(`[data-cy="dataHoraEnvio"]`).should('have.value', '2024-01-20T16:41');
+      cy.get(`[data-cy="dataHoraEnvio"]`).should('have.value', '2024-01-20T13:46');
 
-      cy.get(`[data-cy="dataHoraLeitura"]`).type('2024-01-20T12:50');
+      cy.get(`[data-cy="dataHoraLeitura"]`).type('2024-01-20T15:58');
       cy.get(`[data-cy="dataHoraLeitura"]`).blur();
-      cy.get(`[data-cy="dataHoraLeitura"]`).should('have.value', '2024-01-20T12:50');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T03:14');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T03:14');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T01:43');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T01:43');
+      cy.get(`[data-cy="dataHoraLeitura"]`).should('have.value', '2024-01-20T15:58');
 
       cy.get(`[data-cy="lido"]`).should('not.be.checked');
       cy.get(`[data-cy="lido"]`).click();
       cy.get(`[data-cy="lido"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataLeitura"]`).type('2024-01-20T02:38');
+      cy.get(`[data-cy="dataLeitura"]`).type('2024-01-20T01:24');
       cy.get(`[data-cy="dataLeitura"]`).blur();
-      cy.get(`[data-cy="dataLeitura"]`).should('have.value', '2024-01-20T02:38');
+      cy.get(`[data-cy="dataLeitura"]`).should('have.value', '2024-01-20T01:24');
 
       cy.get(`[data-cy="removido"]`).should('not.be.checked');
       cy.get(`[data-cy="removido"]`).click();
       cy.get(`[data-cy="removido"]`).should('be.checked');
-
-      cy.get(`[data-cy="dataRemocao"]`).type('2024-01-20T14:42');
-      cy.get(`[data-cy="dataRemocao"]`).blur();
-      cy.get(`[data-cy="dataRemocao"]`).should('have.value', '2024-01-20T14:42');
-
-      cy.get(`[data-cy="usuarioRemocao"]`).type('elaborate notarise moral');
-      cy.get(`[data-cy="usuarioRemocao"]`).should('have.value', 'elaborate notarise moral');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

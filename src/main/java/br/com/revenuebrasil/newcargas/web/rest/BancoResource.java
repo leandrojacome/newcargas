@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.BancoRepository;
+import br.com.revenuebrasil.newcargas.service.BancoQueryService;
 import br.com.revenuebrasil.newcargas.service.BancoService;
+import br.com.revenuebrasil.newcargas.service.criteria.BancoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.BancoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -43,9 +46,12 @@ public class BancoResource {
 
     private final BancoRepository bancoRepository;
 
-    public BancoResource(BancoService bancoService, BancoRepository bancoRepository) {
+    private final BancoQueryService bancoQueryService;
+
+    public BancoResource(BancoService bancoService, BancoRepository bancoRepository, BancoQueryService bancoQueryService) {
         this.bancoService = bancoService;
         this.bancoRepository = bancoRepository;
+        this.bancoQueryService = bancoQueryService;
     }
 
     /**
@@ -55,6 +61,7 @@ public class BancoResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new bancoDTO, or with status {@code 400 (Bad Request)} if the banco has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("permitAll()")
     @PostMapping("")
     public ResponseEntity<BancoDTO> createBanco(@Valid @RequestBody BancoDTO bancoDTO) throws URISyntaxException {
         log.debug("REST request to save Banco : {}", bancoDTO);
@@ -80,7 +87,7 @@ public class BancoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<BancoDTO> updateBanco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody BancoDTO bancoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Banco : {}, {}", id, bancoDTO);
@@ -115,7 +122,7 @@ public class BancoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<BancoDTO> partialUpdateBanco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody BancoDTO bancoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Banco partially : {}, {}", id, bancoDTO);
@@ -142,14 +149,31 @@ public class BancoResource {
      * {@code GET  /bancos} : get all the bancos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bancos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<BancoDTO>> getAllBancos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Bancos");
-        Page<BancoDTO> page = bancoService.findAll(pageable);
+    public ResponseEntity<List<BancoDTO>> getAllBancos(
+        BancoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Bancos by criteria: {}", criteria);
+
+        Page<BancoDTO> page = bancoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /bancos/count} : count all the bancos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countBancos(BancoCriteria criteria) {
+        log.debug("REST request to count Bancos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(bancoQueryService.countByCriteria(criteria));
     }
 
     /**

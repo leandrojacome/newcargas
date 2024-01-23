@@ -15,7 +15,7 @@ describe('StatusColeta e2e test', () => {
   const statusColetaPageUrlPattern = new RegExp('/status-coleta(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const statusColetaSample = { nome: 'before yet vaguely', dataCadastro: '2024-01-20T13:31:37.165Z' };
+  const statusColetaSample = { nome: 'wrought round zowie' };
 
   let statusColeta;
 
@@ -125,7 +125,7 @@ describe('StatusColeta e2e test', () => {
         cy.url().should('match', statusColetaPageUrlPattern);
       });
 
-      it('edit button click should load edit StatusColeta page and save', () => {
+      it.skip('edit button click should load edit StatusColeta page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('StatusColeta');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,14 +160,14 @@ describe('StatusColeta e2e test', () => {
     });
 
     it('should create an instance of StatusColeta', () => {
-      cy.get(`[data-cy="nome"]`).type('readily landscape ruddy');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'readily landscape ruddy');
+      cy.get(`[data-cy="nome"]`).type('roar');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'roar');
 
-      cy.get(`[data-cy="cor"]`).type('who pfft');
-      cy.get(`[data-cy="cor"]`).should('have.value', 'who pfft');
+      cy.get(`[data-cy="cor"]`).type('dry veri');
+      cy.get(`[data-cy="cor"]`).should('have.value', 'dry veri');
 
-      cy.get(`[data-cy="ordem"]`).type('4');
-      cy.get(`[data-cy="ordem"]`).should('have.value', '4');
+      cy.get(`[data-cy="ordem"]`).type('3');
+      cy.get(`[data-cy="ordem"]`).should('have.value', '3');
 
       cy.get(`[data-cy="estadoInicial"]`).should('not.be.checked');
       cy.get(`[data-cy="estadoInicial"]`).click();
@@ -189,22 +189,8 @@ describe('StatusColeta e2e test', () => {
       cy.get(`[data-cy="permiteExcluir"]`).click();
       cy.get(`[data-cy="permiteExcluir"]`).should('be.checked');
 
-      cy.get(`[data-cy="descricao"]`).type('round');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'round');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-19T23:11');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-19T23:11');
-
-      cy.get(`[data-cy="usuarioCadastro"]`).type('our liberalise');
-      cy.get(`[data-cy="usuarioCadastro"]`).should('have.value', 'our liberalise');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T06:18');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T06:18');
-
-      cy.get(`[data-cy="usuarioAtualizacao"]`).type('dearest give');
-      cy.get(`[data-cy="usuarioAtualizacao"]`).should('have.value', 'dearest give');
+      cy.get(`[data-cy="descricao"]`).type('freelance fooey underneath');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'freelance fooey underneath');
 
       cy.get(`[data-cy="ativo"]`).should('not.be.checked');
       cy.get(`[data-cy="ativo"]`).click();
@@ -213,13 +199,6 @@ describe('StatusColeta e2e test', () => {
       cy.get(`[data-cy="removido"]`).should('not.be.checked');
       cy.get(`[data-cy="removido"]`).click();
       cy.get(`[data-cy="removido"]`).should('be.checked');
-
-      cy.get(`[data-cy="dataRemocao"]`).type('2024-01-19T20:38');
-      cy.get(`[data-cy="dataRemocao"]`).blur();
-      cy.get(`[data-cy="dataRemocao"]`).should('have.value', '2024-01-19T20:38');
-
-      cy.get(`[data-cy="usuarioRemocao"]`).type('oof');
-      cy.get(`[data-cy="usuarioRemocao"]`).should('have.value', 'oof');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

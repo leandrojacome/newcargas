@@ -16,7 +16,8 @@ public class NotificacaoTestSamples {
             .telefone("telefone1")
             .assunto("assunto1")
             .mensagem("mensagem1")
-            .usuarioRemocao("usuarioRemocao1");
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static Notificacao getNotificacaoSample2() {
@@ -26,7 +27,8 @@ public class NotificacaoTestSamples {
             .telefone("telefone2")
             .assunto("assunto2")
             .mensagem("mensagem2")
-            .usuarioRemocao("usuarioRemocao2");
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static Notificacao getNotificacaoRandomSampleGenerator() {
@@ -36,6 +38,7 @@ public class NotificacaoTestSamples {
             .telefone(UUID.randomUUID().toString())
             .assunto(UUID.randomUUID().toString())
             .mensagem(UUID.randomUUID().toString())
-            .usuarioRemocao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

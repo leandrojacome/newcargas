@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import dayjs from 'dayjs/esm';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IEstado, NewEstado } from '../estado.model';
 
 /**
@@ -14,13 +16,29 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type EstadoFormGroupInput = IEstado | PartialWithRequiredKeyOf<NewEstado>;
 
-type EstadoFormDefaults = Pick<NewEstado, 'id'>;
+/**
+ * Type that converts some properties for forms.
+ */
+type FormValueOf<T extends IEstado | NewEstado> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+type EstadoFormRawValue = FormValueOf<IEstado>;
+
+type NewEstadoFormRawValue = FormValueOf<NewEstado>;
+
+type EstadoFormDefaults = Pick<NewEstado, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type EstadoFormGroupContent = {
-  id: FormControl<IEstado['id'] | NewEstado['id']>;
-  nome: FormControl<IEstado['nome']>;
-  sigla: FormControl<IEstado['sigla']>;
-  codigoIbge: FormControl<IEstado['codigoIbge']>;
+  id: FormControl<EstadoFormRawValue['id'] | NewEstado['id']>;
+  nome: FormControl<EstadoFormRawValue['nome']>;
+  sigla: FormControl<EstadoFormRawValue['sigla']>;
+  codigoIbge: FormControl<EstadoFormRawValue['codigoIbge']>;
+  createdBy: FormControl<EstadoFormRawValue['createdBy']>;
+  createdDate: FormControl<EstadoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<EstadoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<EstadoFormRawValue['lastModifiedDate']>;
 };
 
 export type EstadoFormGroup = FormGroup<EstadoFormGroupContent>;
@@ -28,10 +46,10 @@ export type EstadoFormGroup = FormGroup<EstadoFormGroupContent>;
 @Injectable({ providedIn: 'root' })
 export class EstadoFormService {
   createEstadoFormGroup(estado: EstadoFormGroupInput = { id: null }): EstadoFormGroup {
-    const estadoRawValue = {
+    const estadoRawValue = this.convertEstadoToEstadoRawValue({
       ...this.getFormDefaults(),
       ...estado,
-    };
+    });
     return new FormGroup<EstadoFormGroupContent>({
       id: new FormControl(
         { value: estadoRawValue.id, disabled: true },
@@ -49,15 +67,19 @@ export class EstadoFormService {
       codigoIbge: new FormControl(estadoRawValue.codigoIbge, {
         validators: [Validators.min(7), Validators.max(7)],
       }),
+      createdBy: new FormControl(estadoRawValue.createdBy),
+      createdDate: new FormControl(estadoRawValue.createdDate),
+      lastModifiedBy: new FormControl(estadoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(estadoRawValue.lastModifiedDate),
     });
   }
 
   getEstado(form: EstadoFormGroup): IEstado | NewEstado {
-    return form.getRawValue() as IEstado | NewEstado;
+    return this.convertEstadoRawValueToEstado(form.getRawValue() as EstadoFormRawValue | NewEstadoFormRawValue);
   }
 
   resetForm(form: EstadoFormGroup, estado: EstadoFormGroupInput): void {
-    const estadoRawValue = { ...this.getFormDefaults(), ...estado };
+    const estadoRawValue = this.convertEstadoToEstadoRawValue({ ...this.getFormDefaults(), ...estado });
     form.reset(
       {
         ...estadoRawValue,
@@ -67,8 +89,30 @@ export class EstadoFormService {
   }
 
   private getFormDefaults(): EstadoFormDefaults {
+    const currentTime = dayjs();
+
     return {
       id: null,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
+    };
+  }
+
+  private convertEstadoRawValueToEstado(rawEstado: EstadoFormRawValue | NewEstadoFormRawValue): IEstado | NewEstado {
+    return {
+      ...rawEstado,
+      createdDate: dayjs(rawEstado.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawEstado.lastModifiedDate, DATE_TIME_FORMAT),
+    };
+  }
+
+  private convertEstadoToEstadoRawValue(
+    estado: IEstado | (Partial<NewEstado> & EstadoFormDefaults),
+  ): EstadoFormRawValue | PartialWithRequiredKeyOf<NewEstadoFormRawValue> {
+    return {
+      ...estado,
+      createdDate: estado.createdDate ? estado.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: estado.lastModifiedDate ? estado.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

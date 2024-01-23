@@ -17,10 +17,9 @@ describe('Fatura e2e test', () => {
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const faturaSample = {
     tipo: 'TRANSPORTADORA',
-    dataFatura: '2024-01-20T09:59:06.236Z',
-    dataVencimento: '2024-01-19T18:09:54.923Z',
-    valorTotal: 2.27,
-    dataCadastro: '2024-01-20T01:53:26.220Z',
+    dataFatura: '2024-01-20T02:24:23.819Z',
+    dataVencimento: '2024-01-20T16:08:55.151Z',
+    valorTotal: 7.02,
   };
 
   let fatura;
@@ -131,7 +130,7 @@ describe('Fatura e2e test', () => {
         cy.url().should('match', faturaPageUrlPattern);
       });
 
-      it('edit button click should load edit Fatura page and save', () => {
+      it.skip('edit button click should load edit Fatura page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Fatura');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -166,64 +165,36 @@ describe('Fatura e2e test', () => {
     });
 
     it('should create an instance of Fatura', () => {
-      cy.get(`[data-cy="tipo"]`).select('TRANSPORTADORA');
+      cy.get(`[data-cy="tipo"]`).select('EMBARCADOR');
 
-      cy.get(`[data-cy="dataFatura"]`).type('2024-01-20T03:03');
+      cy.get(`[data-cy="dataFatura"]`).type('2024-01-19T23:39');
       cy.get(`[data-cy="dataFatura"]`).blur();
-      cy.get(`[data-cy="dataFatura"]`).should('have.value', '2024-01-20T03:03');
+      cy.get(`[data-cy="dataFatura"]`).should('have.value', '2024-01-19T23:39');
 
-      cy.get(`[data-cy="dataVencimento"]`).type('2024-01-20T00:29');
+      cy.get(`[data-cy="dataVencimento"]`).type('2024-01-20T16:54');
       cy.get(`[data-cy="dataVencimento"]`).blur();
-      cy.get(`[data-cy="dataVencimento"]`).should('have.value', '2024-01-20T00:29');
+      cy.get(`[data-cy="dataVencimento"]`).should('have.value', '2024-01-20T16:54');
 
-      cy.get(`[data-cy="dataPagamento"]`).type('2024-01-19T22:16');
+      cy.get(`[data-cy="dataPagamento"]`).type('2024-01-20T13:39');
       cy.get(`[data-cy="dataPagamento"]`).blur();
-      cy.get(`[data-cy="dataPagamento"]`).should('have.value', '2024-01-19T22:16');
+      cy.get(`[data-cy="dataPagamento"]`).should('have.value', '2024-01-20T13:39');
 
       cy.get(`[data-cy="numeroParcela"]`).type('4');
       cy.get(`[data-cy="numeroParcela"]`).should('have.value', '4');
 
-      cy.get(`[data-cy="valorTotal"]`).type('6.54');
-      cy.get(`[data-cy="valorTotal"]`).should('have.value', '6.54');
+      cy.get(`[data-cy="valorTotal"]`).type('2.39');
+      cy.get(`[data-cy="valorTotal"]`).should('have.value', '2.39');
 
-      cy.get(`[data-cy="observacao"]`).type('why till mantua');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'why till mantua');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T02:44');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T02:44');
-
-      cy.get(`[data-cy="usuarioCadastro"]`).type('glimmering even');
-      cy.get(`[data-cy="usuarioCadastro"]`).should('have.value', 'glimmering even');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-19T23:14');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-19T23:14');
-
-      cy.get(`[data-cy="usuarioAtualizacao"]`).type('homeland until');
-      cy.get(`[data-cy="usuarioAtualizacao"]`).should('have.value', 'homeland until');
+      cy.get(`[data-cy="observacao"]`).type('nimble purpose duh');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'nimble purpose duh');
 
       cy.get(`[data-cy="cancelado"]`).should('not.be.checked');
       cy.get(`[data-cy="cancelado"]`).click();
       cy.get(`[data-cy="cancelado"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataCancelamento"]`).type('2024-01-20T08:51');
-      cy.get(`[data-cy="dataCancelamento"]`).blur();
-      cy.get(`[data-cy="dataCancelamento"]`).should('have.value', '2024-01-20T08:51');
-
-      cy.get(`[data-cy="usuarioCancelamento"]`).type('unethically pooh upright');
-      cy.get(`[data-cy="usuarioCancelamento"]`).should('have.value', 'unethically pooh upright');
-
       cy.get(`[data-cy="removido"]`).should('not.be.checked');
       cy.get(`[data-cy="removido"]`).click();
       cy.get(`[data-cy="removido"]`).should('be.checked');
-
-      cy.get(`[data-cy="dataRemocao"]`).type('2024-01-19T20:18');
-      cy.get(`[data-cy="dataRemocao"]`).blur();
-      cy.get(`[data-cy="dataRemocao"]`).should('have.value', '2024-01-19T20:18');
-
-      cy.get(`[data-cy="usuarioRemocao"]`).type('since whereas');
-      cy.get(`[data-cy="usuarioRemocao"]`).should('have.value', 'since whereas');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

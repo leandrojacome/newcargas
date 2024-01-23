@@ -19,24 +19,16 @@ type ContratacaoFormGroupInput = IContratacao | PartialWithRequiredKeyOf<NewCont
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IContratacao | NewContratacao> = Omit<
-  T,
-  'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
-> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+type FormValueOf<T extends IContratacao | NewContratacao> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type ContratacaoFormRawValue = FormValueOf<IContratacao>;
 
 type NewContratacaoFormRawValue = FormValueOf<NewContratacao>;
 
-type ContratacaoFormDefaults = Pick<
-  NewContratacao,
-  'id' | 'dataCadastro' | 'dataAtualizacao' | 'cancelado' | 'dataCancelamento' | 'removido' | 'dataRemocao'
->;
+type ContratacaoFormDefaults = Pick<NewContratacao, 'id' | 'cancelado' | 'removido' | 'createdDate' | 'lastModifiedDate'>;
 
 type ContratacaoFormGroupContent = {
   id: FormControl<ContratacaoFormRawValue['id'] | NewContratacao['id']>;
@@ -44,16 +36,12 @@ type ContratacaoFormGroupContent = {
   validadeEmDias: FormControl<ContratacaoFormRawValue['validadeEmDias']>;
   dataValidade: FormControl<ContratacaoFormRawValue['dataValidade']>;
   observacao: FormControl<ContratacaoFormRawValue['observacao']>;
-  dataCadastro: FormControl<ContratacaoFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<ContratacaoFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<ContratacaoFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<ContratacaoFormRawValue['usuarioAtualizacao']>;
   cancelado: FormControl<ContratacaoFormRawValue['cancelado']>;
-  dataCancelamento: FormControl<ContratacaoFormRawValue['dataCancelamento']>;
-  usuarioCancelamento: FormControl<ContratacaoFormRawValue['usuarioCancelamento']>;
   removido: FormControl<ContratacaoFormRawValue['removido']>;
-  dataRemocao: FormControl<ContratacaoFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<ContratacaoFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<ContratacaoFormRawValue['createdBy']>;
+  createdDate: FormControl<ContratacaoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<ContratacaoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<ContratacaoFormRawValue['lastModifiedDate']>;
   transportadora: FormControl<ContratacaoFormRawValue['transportadora']>;
 };
 
@@ -86,26 +74,12 @@ export class ContratacaoFormService {
       observacao: new FormControl(contratacaoRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(contratacaoRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(contratacaoRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(contratacaoRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(contratacaoRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       cancelado: new FormControl(contratacaoRawValue.cancelado),
-      dataCancelamento: new FormControl(contratacaoRawValue.dataCancelamento),
-      usuarioCancelamento: new FormControl(contratacaoRawValue.usuarioCancelamento, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       removido: new FormControl(contratacaoRawValue.removido),
-      dataRemocao: new FormControl(contratacaoRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(contratacaoRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(contratacaoRawValue.createdBy),
+      createdDate: new FormControl(contratacaoRawValue.createdDate),
+      lastModifiedBy: new FormControl(contratacaoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(contratacaoRawValue.lastModifiedDate),
       transportadora: new FormControl(contratacaoRawValue.transportadora),
     });
   }
@@ -129,12 +103,10 @@ export class ContratacaoFormService {
 
     return {
       id: null,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       cancelado: false,
-      dataCancelamento: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -143,10 +115,8 @@ export class ContratacaoFormService {
   ): IContratacao | NewContratacao {
     return {
       ...rawContratacao,
-      dataCadastro: dayjs(rawContratacao.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawContratacao.dataAtualizacao, DATE_TIME_FORMAT),
-      dataCancelamento: dayjs(rawContratacao.dataCancelamento, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawContratacao.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawContratacao.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawContratacao.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -155,10 +125,8 @@ export class ContratacaoFormService {
   ): ContratacaoFormRawValue | PartialWithRequiredKeyOf<NewContratacaoFormRawValue> {
     return {
       ...contratacao,
-      dataCadastro: contratacao.dataCadastro ? contratacao.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: contratacao.dataAtualizacao ? contratacao.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataCancelamento: contratacao.dataCancelamento ? contratacao.dataCancelamento.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: contratacao.dataRemocao ? contratacao.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: contratacao.createdDate ? contratacao.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: contratacao.lastModifiedDate ? contratacao.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

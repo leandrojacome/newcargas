@@ -9,6 +9,7 @@ import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.Authority;
 import br.com.revenuebrasil.newcargas.domain.User;
 import br.com.revenuebrasil.newcargas.repository.UserRepository;
+import br.com.revenuebrasil.newcargas.repository.search.UserSearchRepository;
 import br.com.revenuebrasil.newcargas.security.AuthoritiesConstants;
 import br.com.revenuebrasil.newcargas.service.dto.AdminUserDTO;
 import br.com.revenuebrasil.newcargas.service.mapper.UserMapper;
@@ -60,6 +61,9 @@ class UserResourceIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserSearchRepository userSearchRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -147,6 +151,8 @@ class UserResourceIT {
             assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
             assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         });
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -172,6 +178,8 @@ class UserResourceIT {
 
         // Validate the User in the database
         assertPersistedUsers(users -> assertThat(users).hasSize(databaseSizeBeforeCreate));
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -179,6 +187,7 @@ class UserResourceIT {
     void createUserWithExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+        userSearchRepository.save(user);
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         AdminUserDTO user = new AdminUserDTO();
@@ -198,6 +207,8 @@ class UserResourceIT {
 
         // Validate the User in the database
         assertPersistedUsers(users -> assertThat(users).hasSize(databaseSizeBeforeCreate));
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -205,6 +216,7 @@ class UserResourceIT {
     void createUserWithExistingEmail() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+        userSearchRepository.save(user);
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         AdminUserDTO user = new AdminUserDTO();
@@ -224,6 +236,8 @@ class UserResourceIT {
 
         // Validate the User in the database
         assertPersistedUsers(users -> assertThat(users).hasSize(databaseSizeBeforeCreate));
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -243,6 +257,8 @@ class UserResourceIT {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -250,6 +266,8 @@ class UserResourceIT {
     void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+
+        userSearchRepository.save(user);
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 
@@ -266,6 +284,8 @@ class UserResourceIT {
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNotNull();
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -313,6 +333,8 @@ class UserResourceIT {
             assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
             assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
         });
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -355,6 +377,8 @@ class UserResourceIT {
             assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
             assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
         });
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -362,6 +386,7 @@ class UserResourceIT {
     void updateUserExistingEmail() throws Exception {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
+        userSearchRepository.save(user);
 
         User anotherUser = new User();
         anotherUser.setLogin("jhipster");
@@ -373,6 +398,7 @@ class UserResourceIT {
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         userRepository.saveAndFlush(anotherUser);
+        userSearchRepository.save(anotherUser);
 
         // Update the user
         User updatedUser = userRepository.findById(user.getId()).orElseThrow();
@@ -395,6 +421,8 @@ class UserResourceIT {
         restUserMockMvc
             .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(user)))
             .andExpect(status().isBadRequest());
+
+        userSearchRepository.deleteAll();
     }
 
     @Test
@@ -402,6 +430,7 @@ class UserResourceIT {
     void updateUserExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+        userSearchRepository.save(user);
 
         User anotherUser = new User();
         anotherUser.setLogin("jhipster");
@@ -413,6 +442,7 @@ class UserResourceIT {
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         userRepository.saveAndFlush(anotherUser);
+        userSearchRepository.save(anotherUser);
 
         // Update the user
         User updatedUser = userRepository.findById(user.getId()).orElseThrow();
@@ -435,6 +465,8 @@ class UserResourceIT {
         restUserMockMvc
             .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(user)))
             .andExpect(status().isBadRequest());
+
+        userSearchRepository.deleteAll();
     }
 
     @Test

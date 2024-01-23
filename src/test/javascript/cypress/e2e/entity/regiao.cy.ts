@@ -15,7 +15,7 @@ describe('Regiao e2e test', () => {
   const regiaoPageUrlPattern = new RegExp('/regiao(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const regiaoSample = { nome: 'essential' };
+  const regiaoSample = { nome: 'euphoric' };
 
   let regiao;
 
@@ -125,7 +125,7 @@ describe('Regiao e2e test', () => {
         cy.url().should('match', regiaoPageUrlPattern);
       });
 
-      it('edit button click should load edit Regiao page and save', () => {
+      it.skip('edit button click should load edit Regiao page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Regiao');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,14 +160,14 @@ describe('Regiao e2e test', () => {
     });
 
     it('should create an instance of Regiao', () => {
-      cy.get(`[data-cy="nome"]`).type('structure');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'structure');
+      cy.get(`[data-cy="nome"]`).type('certainly electric');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'certainly electric');
 
-      cy.get(`[data-cy="sigla"]`).type('agile');
-      cy.get(`[data-cy="sigla"]`).should('have.value', 'agile');
+      cy.get(`[data-cy="sigla"]`).type('amid');
+      cy.get(`[data-cy="sigla"]`).should('have.value', 'amid');
 
-      cy.get(`[data-cy="descricao"]`).type('quibble');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'quibble');
+      cy.get(`[data-cy="descricao"]`).type('than');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'than');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

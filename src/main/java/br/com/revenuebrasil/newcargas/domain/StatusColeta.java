@@ -1,10 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -16,8 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "status_coleta")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "statuscoleta")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class StatusColeta implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class StatusColeta extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,66 +33,61 @@ public class StatusColeta implements Serializable {
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "nome", length = 150, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String nome;
 
     @Size(min = 2, max = 8)
     @Column(name = "cor", length = 8)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String cor;
 
     @Min(value = 1)
     @Max(value = 4)
     @Column(name = "ordem")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer ordem;
 
     @Column(name = "estado_inicial")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean estadoInicial;
 
     @Column(name = "estado_final")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean estadoFinal;
 
     @Column(name = "permite_cancelar")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean permiteCancelar;
 
     @Column(name = "permite_editar")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean permiteEditar;
 
     @Column(name = "permite_excluir")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean permiteExcluir;
 
     @Size(min = 2, max = 500)
     @Column(name = "descricao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String descricao;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cadastro", length = 150)
-    private String usuarioCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_atualizacao", length = 150)
-    private String usuarioAtualizacao;
-
     @Column(name = "ativo")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean ativo;
 
     @Column(name = "removido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean removido;
 
-    @Column(name = "data_remocao")
-    private ZonedDateTime dataRemocao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_remocao", length = 150)
-    private String usuarioRemocao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "statusColeta")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "notaFiscalColetas",
@@ -107,16 +105,19 @@ public class StatusColeta implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "statusColetaOrigem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "solicitacaoColeta", "roteirizacao", "statusColetaOrigem", "statusColetaDestino" }, allowSetters = true)
     private Set<HistoricoStatusColeta> historicoStatusColetaOrigems = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "statusColetaDestino")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "solicitacaoColeta", "roteirizacao", "statusColetaOrigem", "statusColetaDestino" }, allowSetters = true)
     private Set<HistoricoStatusColeta> historicoStatusColetaDestinos = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "statusColeta")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "historicoStatusColetas", "solitacaoColetas", "tomadaPrecos", "statusColeta" }, allowSetters = true)
     private Set<Roteirizacao> roteirizacaos = new HashSet<>();
 
@@ -142,6 +143,7 @@ public class StatusColeta implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "statusColetaOrigems")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "solicitacaoColetas",
@@ -287,58 +289,6 @@ public class StatusColeta implements Serializable {
         this.descricao = descricao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public StatusColeta dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
-        return this;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public String getUsuarioCadastro() {
-        return this.usuarioCadastro;
-    }
-
-    public StatusColeta usuarioCadastro(String usuarioCadastro) {
-        this.setUsuarioCadastro(usuarioCadastro);
-        return this;
-    }
-
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public StatusColeta dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
-        return this;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public String getUsuarioAtualizacao() {
-        return this.usuarioAtualizacao;
-    }
-
-    public StatusColeta usuarioAtualizacao(String usuarioAtualizacao) {
-        this.setUsuarioAtualizacao(usuarioAtualizacao);
-        return this;
-    }
-
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
-    }
-
     public Boolean getAtivo() {
         return this.ativo;
     }
@@ -365,30 +315,28 @@ public class StatusColeta implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return this.dataRemocao;
-    }
-
-    public StatusColeta dataRemocao(ZonedDateTime dataRemocao) {
-        this.setDataRemocao(dataRemocao);
+    // Inherited createdBy methods
+    public StatusColeta createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
-    }
-
-    public String getUsuarioRemocao() {
-        return this.usuarioRemocao;
-    }
-
-    public StatusColeta usuarioRemocao(String usuarioRemocao) {
-        this.setUsuarioRemocao(usuarioRemocao);
+    // Inherited createdDate methods
+    public StatusColeta createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    // Inherited lastModifiedBy methods
+    public StatusColeta lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public StatusColeta lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Set<SolicitacaoColeta> getSolicitacaoColetas() {
@@ -602,14 +550,12 @@ public class StatusColeta implements Serializable {
             ", permiteEditar='" + getPermiteEditar() + "'" +
             ", permiteExcluir='" + getPermiteExcluir() + "'" +
             ", descricao='" + getDescricao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
             ", ativo='" + getAtivo() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

@@ -8,12 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { IEstado } from 'app/entities/estado/estado.model';
 import { EstadoService } from 'app/entities/estado/service/estado.service';
-import { IEmbarcador } from 'app/entities/embarcador/embarcador.model';
-import { EmbarcadorService } from 'app/entities/embarcador/service/embarcador.service';
-import { ITransportadora } from 'app/entities/transportadora/transportadora.model';
-import { TransportadoraService } from 'app/entities/transportadora/service/transportadora.service';
-import { ICidade } from '../cidade.model';
 import { CidadeService } from '../service/cidade.service';
+import { ICidade } from '../cidade.model';
 import { CidadeFormService } from './cidade-form.service';
 
 import { CidadeUpdateComponent } from './cidade-update.component';
@@ -25,8 +21,6 @@ describe('Cidade Management Update Component', () => {
   let cidadeFormService: CidadeFormService;
   let cidadeService: CidadeService;
   let estadoService: EstadoService;
-  let embarcadorService: EmbarcadorService;
-  let transportadoraService: TransportadoraService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,8 +43,6 @@ describe('Cidade Management Update Component', () => {
     cidadeFormService = TestBed.inject(CidadeFormService);
     cidadeService = TestBed.inject(CidadeService);
     estadoService = TestBed.inject(EstadoService);
-    embarcadorService = TestBed.inject(EmbarcadorService);
-    transportadoraService = TestBed.inject(TransportadoraService);
 
     comp = fixture.componentInstance;
   });
@@ -58,10 +50,10 @@ describe('Cidade Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Estado query and add missing value', () => {
       const cidade: ICidade = { id: 456 };
-      const estado: IEstado = { id: 32430 };
+      const estado: IEstado = { id: 3160 };
       cidade.estado = estado;
 
-      const estadoCollection: IEstado[] = [{ id: 13664 }];
+      const estadoCollection: IEstado[] = [{ id: 26810 }];
       jest.spyOn(estadoService, 'query').mockReturnValue(of(new HttpResponse({ body: estadoCollection })));
       const additionalEstados = [estado];
       const expectedCollection: IEstado[] = [...additionalEstados, ...estadoCollection];
@@ -78,65 +70,15 @@ describe('Cidade Management Update Component', () => {
       expect(comp.estadosSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Embarcador query and add missing value', () => {
-      const cidade: ICidade = { id: 456 };
-      const embarcador: IEmbarcador = { id: 13292 };
-      cidade.embarcador = embarcador;
-
-      const embarcadorCollection: IEmbarcador[] = [{ id: 20333 }];
-      jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
-      const additionalEmbarcadors = [embarcador];
-      const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
-      jest.spyOn(embarcadorService, 'addEmbarcadorToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ cidade });
-      comp.ngOnInit();
-
-      expect(embarcadorService.query).toHaveBeenCalled();
-      expect(embarcadorService.addEmbarcadorToCollectionIfMissing).toHaveBeenCalledWith(
-        embarcadorCollection,
-        ...additionalEmbarcadors.map(expect.objectContaining),
-      );
-      expect(comp.embarcadorsSharedCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call Transportadora query and add missing value', () => {
-      const cidade: ICidade = { id: 456 };
-      const transportadora: ITransportadora = { id: 9893 };
-      cidade.transportadora = transportadora;
-
-      const transportadoraCollection: ITransportadora[] = [{ id: 2802 }];
-      jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
-      const additionalTransportadoras = [transportadora];
-      const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
-      jest.spyOn(transportadoraService, 'addTransportadoraToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ cidade });
-      comp.ngOnInit();
-
-      expect(transportadoraService.query).toHaveBeenCalled();
-      expect(transportadoraService.addTransportadoraToCollectionIfMissing).toHaveBeenCalledWith(
-        transportadoraCollection,
-        ...additionalTransportadoras.map(expect.objectContaining),
-      );
-      expect(comp.transportadorasSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const cidade: ICidade = { id: 456 };
-      const estado: IEstado = { id: 29044 };
+      const estado: IEstado = { id: 3879 };
       cidade.estado = estado;
-      const embarcador: IEmbarcador = { id: 6675 };
-      cidade.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 1977 };
-      cidade.transportadora = transportadora;
 
       activatedRoute.data = of({ cidade });
       comp.ngOnInit();
 
       expect(comp.estadosSharedCollection).toContain(estado);
-      expect(comp.embarcadorsSharedCollection).toContain(embarcador);
-      expect(comp.transportadorasSharedCollection).toContain(transportadora);
       expect(comp.cidade).toEqual(cidade);
     });
   });
@@ -217,26 +159,6 @@ describe('Cidade Management Update Component', () => {
         jest.spyOn(estadoService, 'compareEstado');
         comp.compareEstado(entity, entity2);
         expect(estadoService.compareEstado).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareEmbarcador', () => {
-      it('Should forward to embarcadorService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(embarcadorService, 'compareEmbarcador');
-        comp.compareEmbarcador(entity, entity2);
-        expect(embarcadorService.compareEmbarcador).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareTransportadora', () => {
-      it('Should forward to transportadoraService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(transportadoraService, 'compareTransportadora');
-        comp.compareTransportadora(entity, entity2);
-        expect(transportadoraService.compareTransportadora).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

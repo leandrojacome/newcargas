@@ -50,10 +50,10 @@ describe('NotaFiscalColeta Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call SolicitacaoColeta query and add missing value', () => {
       const notaFiscalColeta: INotaFiscalColeta = { id: 456 };
-      const solicitacaoColeta: ISolicitacaoColeta = { id: 1742 };
+      const solicitacaoColeta: ISolicitacaoColeta = { id: 8151 };
       notaFiscalColeta.solicitacaoColeta = solicitacaoColeta;
 
-      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 17077 }];
+      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 32064 }];
       jest.spyOn(solicitacaoColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: solicitacaoColetaCollection })));
       const additionalSolicitacaoColetas = [solicitacaoColeta];
       const expectedCollection: ISolicitacaoColeta[] = [...additionalSolicitacaoColetas, ...solicitacaoColetaCollection];
@@ -72,7 +72,7 @@ describe('NotaFiscalColeta Management Update Component', () => {
 
     it('Should update editForm', () => {
       const notaFiscalColeta: INotaFiscalColeta = { id: 456 };
-      const solicitacaoColeta: ISolicitacaoColeta = { id: 32186 };
+      const solicitacaoColeta: ISolicitacaoColeta = { id: 11443 };
       notaFiscalColeta.solicitacaoColeta = solicitacaoColeta;
 
       activatedRoute.data = of({ notaFiscalColeta });

@@ -34,10 +34,11 @@ describe('Embarcador Form Service', () => {
             telefone: expect.any(Object),
             email: expect.any(Object),
             observacao: expect.any(Object),
-            dataCadastro: expect.any(Object),
-            usuarioCadastro: expect.any(Object),
-            dataAtualizacao: expect.any(Object),
-            usuarioAtualizacao: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
+            cidade: expect.any(Object),
           }),
         );
       });
@@ -62,10 +63,11 @@ describe('Embarcador Form Service', () => {
             telefone: expect.any(Object),
             email: expect.any(Object),
             observacao: expect.any(Object),
-            dataCadastro: expect.any(Object),
-            usuarioCadastro: expect.any(Object),
-            dataAtualizacao: expect.any(Object),
-            usuarioAtualizacao: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
+            cidade: expect.any(Object),
           }),
         );
       });

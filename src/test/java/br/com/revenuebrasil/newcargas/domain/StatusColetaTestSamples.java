@@ -18,9 +18,8 @@ public class StatusColetaTestSamples {
             .cor("cor1")
             .ordem(1)
             .descricao("descricao1")
-            .usuarioCadastro("usuarioCadastro1")
-            .usuarioAtualizacao("usuarioAtualizacao1")
-            .usuarioRemocao("usuarioRemocao1");
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static StatusColeta getStatusColetaSample2() {
@@ -30,9 +29,8 @@ public class StatusColetaTestSamples {
             .cor("cor2")
             .ordem(2)
             .descricao("descricao2")
-            .usuarioCadastro("usuarioCadastro2")
-            .usuarioAtualizacao("usuarioAtualizacao2")
-            .usuarioRemocao("usuarioRemocao2");
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static StatusColeta getStatusColetaRandomSampleGenerator() {
@@ -42,8 +40,7 @@ public class StatusColetaTestSamples {
             .cor(UUID.randomUUID().toString())
             .ordem(intCount.incrementAndGet())
             .descricao(UUID.randomUUID().toString())
-            .usuarioCadastro(UUID.randomUUID().toString())
-            .usuarioAtualizacao(UUID.randomUUID().toString())
-            .usuarioRemocao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

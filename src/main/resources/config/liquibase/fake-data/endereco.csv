@@ -1,11 +1,11 @@
-id;tipo;cep;endereco;numero;complemento;bairro
-1;EMBARCADOR;pageXXXX;apropos;maroon;footstep including;scented
-2;NOTA_FISCAL_COLETA;ewXXXXXX;till inasmuch;although i;opposite yet;overdue alongside
-3;TRANSPORTADOR;ack asXX;selfishly;lively;queasy ripe;intrepid into
-4;TRANSPORTADOR;potentia;phooey whose enthrall;for volumi;gratefully garland;regularly eurocentrism
-5;SOLICITACAO_COLETA;laparosc;unless likewise denote;busily unt;quietly modulo;since eek wee
-6;TRANSPORTADOR;solemnly;underneath oh whoa;than cold;boo hmph ew;and accessorise manhandle
-7;SOLICITACAO_COLETA;upload t;but now;nicely for;sass blab oval;wan fully
-8;TRANSPORTADOR;creepy o;supposing conventional;wherever t;rundown;pendulum remount
-9;SOLICITACAO_COLETA;forXXXXX;indeed;and but;wonderfully rancher;unto
-10;SOLICITACAO_COLETA;grizzled;keen;internatio;fervently which bleakly;brr
+id;tipo;cep;endereco;numero;complemento;bairro;created_by;created_date;last_modified_by;last_modified_date
+1;EMBARCADOR;pageXXXX;apropos;maroon;footstep including;scented;whoever onto mechanically;2024-01-20T14:13:45;speedily;2024-01-20T16:04:11
+2;EMBARCADOR;blushing;weld properly lanky;menopause ;commonly selfishly astride;small outlandish;including cleaner creative;2024-01-19T21:57:14;serene acidly;2024-01-20T12:38:28
+3;TRANSPORTADOR;ughXXXXX;hm sense;pointless ;modulo;likewise psst laparoscope;um unless;2024-01-20T16:27:23;eek;2024-01-19T21:47:02
+4;SOLICITACAO_COLETA;notableX;ew;anti oval;potentially next;noted since overbalance;noisily lively over;2024-01-20T02:24:38;drat;2024-01-19T18:31:37
+5;NOTA_FISCAL_COLETA;potentia;void;ew or gee;upload though defensive;but now;nicely for;2024-01-19T19:43:45;huzzah dop;2024-01-20T04:12:06
+6;TRANSPORTADOR;felineXX;till from;hiccup thr;mud up without;frenetically intently;um conscious;2024-01-20T12:26:50;ick gee;2024-01-20T05:36:51
+7;SOLICITACAO_COLETA;whether ;antler chassis crazy;yuck;from international;pneumonia fervently which;and brr;2024-01-20T14:34:06;through gee;2024-01-20T11:08:18
+8;NOTA_FISCAL_COLETA;shape un;blah ick absentmindedly;sans;kingfish huzzah approve;yieldingly indeed;yippee;2024-01-20T13:06:58;ashtray;2024-01-19T18:40:07
+9;TRANSPORTADOR;duringXX;yearningly lest;neighbourh;impassioned;tightly not;payment at unbearably;2024-01-19T19:24:50;gah blah;2024-01-20T09:27:45
+10;NOTA_FISCAL_COLETA;gahXXXXX;anaesthetize;gee;puny retain chrysalis;saloon;famous yesterday dearest;2024-01-19T19:33:41;however;2024-01-20T11:40:03

@@ -74,7 +74,18 @@ public class BancoGatlingTest extends Simulation {
                     http("Create new banco")
                         .post("/api/bancos")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"nome\": \"SAMPLE_TEXT\"" + ", \"codigo\": \"SAMPLE_TEXT\"" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"nome\": \"SAMPLE_TEXT\"" +
+                                ", \"codigo\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_banco_url"))

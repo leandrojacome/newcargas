@@ -67,13 +67,21 @@
           <dd>
             <span>{{ notaFiscalColeta.observacao }}</span>
           </dd>
-          <dt><span>Data Cadastro</span></dt>
+          <dt><span>Created By</span></dt>
           <dd>
-            <span>{{ notaFiscalColeta.dataCadastro | formatMediumDatetime }}</span>
+            <span>{{ notaFiscalColeta.createdBy }}</span>
           </dd>
-          <dt><span>Data Atualizacao</span></dt>
+          <dt><span>Created Date</span></dt>
           <dd>
-            <span>{{ notaFiscalColeta.dataAtualizacao | formatMediumDatetime }}</span>
+            <span>{{ notaFiscalColeta.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ notaFiscalColeta.lastModifiedDate | formatMediumDatetime }}</span>
           </dd>
           <dt><span>Solicitacao Coleta</span></dt>
           <dd>

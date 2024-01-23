@@ -19,16 +19,16 @@ type TabelaFreteFormGroupInput = ITabelaFrete | PartialWithRequiredKeyOf<NewTabe
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends ITabelaFrete | NewTabelaFrete> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type FormValueOf<T extends ITabelaFrete | NewTabelaFrete> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type TabelaFreteFormRawValue = FormValueOf<ITabelaFrete>;
 
 type NewTabelaFreteFormRawValue = FormValueOf<NewTabelaFrete>;
 
-type TabelaFreteFormDefaults = Pick<NewTabelaFrete, 'id' | 'dataCadastro' | 'dataAtualizacao'>;
+type TabelaFreteFormDefaults = Pick<NewTabelaFrete, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type TabelaFreteFormGroupContent = {
   id: FormControl<TabelaFreteFormRawValue['id'] | NewTabelaFrete['id']>;
@@ -46,8 +46,10 @@ type TabelaFreteFormGroupContent = {
   valorEntrega: FormControl<TabelaFreteFormRawValue['valorEntrega']>;
   valorTotal: FormControl<TabelaFreteFormRawValue['valorTotal']>;
   valorKmAdicional: FormControl<TabelaFreteFormRawValue['valorKmAdicional']>;
-  dataCadastro: FormControl<TabelaFreteFormRawValue['dataCadastro']>;
-  dataAtualizacao: FormControl<TabelaFreteFormRawValue['dataAtualizacao']>;
+  createdBy: FormControl<TabelaFreteFormRawValue['createdBy']>;
+  createdDate: FormControl<TabelaFreteFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<TabelaFreteFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<TabelaFreteFormRawValue['lastModifiedDate']>;
   embarcador: FormControl<TabelaFreteFormRawValue['embarcador']>;
   transportadora: FormControl<TabelaFreteFormRawValue['transportadora']>;
   tipoCarga: FormControl<TabelaFreteFormRawValue['tipoCarga']>;
@@ -116,10 +118,10 @@ export class TabelaFreteFormService {
       valorKmAdicional: new FormControl(tabelaFreteRawValue.valorKmAdicional, {
         validators: [Validators.min(1), Validators.max(10)],
       }),
-      dataCadastro: new FormControl(tabelaFreteRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      dataAtualizacao: new FormControl(tabelaFreteRawValue.dataAtualizacao),
+      createdBy: new FormControl(tabelaFreteRawValue.createdBy),
+      createdDate: new FormControl(tabelaFreteRawValue.createdDate),
+      lastModifiedBy: new FormControl(tabelaFreteRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(tabelaFreteRawValue.lastModifiedDate),
       embarcador: new FormControl(tabelaFreteRawValue.embarcador),
       transportadora: new FormControl(tabelaFreteRawValue.transportadora),
       tipoCarga: new FormControl(tabelaFreteRawValue.tipoCarga),
@@ -149,8 +151,8 @@ export class TabelaFreteFormService {
 
     return {
       id: null,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -159,8 +161,8 @@ export class TabelaFreteFormService {
   ): ITabelaFrete | NewTabelaFrete {
     return {
       ...rawTabelaFrete,
-      dataCadastro: dayjs(rawTabelaFrete.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawTabelaFrete.dataAtualizacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawTabelaFrete.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawTabelaFrete.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -169,8 +171,8 @@ export class TabelaFreteFormService {
   ): TabelaFreteFormRawValue | PartialWithRequiredKeyOf<NewTabelaFreteFormRawValue> {
     return {
       ...tabelaFrete,
-      dataCadastro: tabelaFrete.dataCadastro ? tabelaFrete.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: tabelaFrete.dataAtualizacao ? tabelaFrete.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: tabelaFrete.createdDate ? tabelaFrete.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: tabelaFrete.lastModifiedDate ? tabelaFrete.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

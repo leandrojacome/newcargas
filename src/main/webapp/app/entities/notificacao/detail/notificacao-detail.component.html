@@ -43,14 +43,6 @@
           <dd>
             <span>{{ notificacao.dataHoraLeitura | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Data Cadastro</span></dt>
-          <dd>
-            <span>{{ notificacao.dataCadastro | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span>Data Atualizacao</span></dt>
-          <dd>
-            <span>{{ notificacao.dataAtualizacao | formatMediumDatetime }}</span>
-          </dd>
           <dt><span>Lido</span></dt>
           <dd>
             <span>{{ notificacao.lido }}</span>
@@ -63,13 +55,21 @@
           <dd>
             <span>{{ notificacao.removido }}</span>
           </dd>
-          <dt><span>Data Remocao</span></dt>
+          <dt><span>Created By</span></dt>
           <dd>
-            <span>{{ notificacao.dataRemocao | formatMediumDatetime }}</span>
+            <span>{{ notificacao.createdBy }}</span>
           </dd>
-          <dt><span>Usuario Remocao</span></dt>
+          <dt><span>Created Date</span></dt>
           <dd>
-            <span>{{ notificacao.usuarioRemocao }}</span>
+            <span>{{ notificacao.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ notificacao.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ notificacao.lastModifiedDate | formatMediumDatetime }}</span>
           </dd>
           <dt><span>Embarcador</span></dt>
           <dd>

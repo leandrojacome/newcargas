@@ -23,6 +23,22 @@
           <dd>
             <span>{{ historicoStatusColeta.observacao }}</span>
           </dd>
+          <dt><span>Created By</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.createdBy }}</span>
+          </dd>
+          <dt><span>Created Date</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ historicoStatusColeta.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
           <dt><span>Solicitacao Coleta</span></dt>
           <dd>
             @if (historicoStatusColeta.solicitacaoColeta) {

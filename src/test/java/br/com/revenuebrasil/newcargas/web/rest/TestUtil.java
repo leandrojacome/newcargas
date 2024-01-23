@@ -2,6 +2,7 @@ package br.com.revenuebrasil.newcargas.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import br.com.revenuebrasil.newcargas.config.JacksonNativeConfiguration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -22,6 +23,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
  * Utility class for testing REST controllers.
@@ -35,6 +37,9 @@ public final class TestUtil {
         mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.registerModule(new JavaTimeModule());
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        new JacksonNativeConfiguration().customizeJackson().customize(builder);
+        builder.configure(mapper);
         return mapper;
     }
 

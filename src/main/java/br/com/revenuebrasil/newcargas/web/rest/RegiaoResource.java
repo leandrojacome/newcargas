@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.RegiaoRepository;
+import br.com.revenuebrasil.newcargas.service.RegiaoQueryService;
 import br.com.revenuebrasil.newcargas.service.RegiaoService;
+import br.com.revenuebrasil.newcargas.service.criteria.RegiaoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.RegiaoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,12 @@ public class RegiaoResource {
 
     private final RegiaoRepository regiaoRepository;
 
-    public RegiaoResource(RegiaoService regiaoService, RegiaoRepository regiaoRepository) {
+    private final RegiaoQueryService regiaoQueryService;
+
+    public RegiaoResource(RegiaoService regiaoService, RegiaoRepository regiaoRepository, RegiaoQueryService regiaoQueryService) {
         this.regiaoService = regiaoService;
         this.regiaoRepository = regiaoRepository;
+        this.regiaoQueryService = regiaoQueryService;
     }
 
     /**
@@ -80,7 +85,7 @@ public class RegiaoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RegiaoDTO> updateRegiao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody RegiaoDTO regiaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Regiao : {}, {}", id, regiaoDTO);
@@ -115,7 +120,7 @@ public class RegiaoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<RegiaoDTO> partialUpdateRegiao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody RegiaoDTO regiaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Regiao partially : {}, {}", id, regiaoDTO);
@@ -142,14 +147,31 @@ public class RegiaoResource {
      * {@code GET  /regiaos} : get all the regiaos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of regiaos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<RegiaoDTO>> getAllRegiaos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Regiaos");
-        Page<RegiaoDTO> page = regiaoService.findAll(pageable);
+    public ResponseEntity<List<RegiaoDTO>> getAllRegiaos(
+        RegiaoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Regiaos by criteria: {}", criteria);
+
+        Page<RegiaoDTO> page = regiaoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /regiaos/count} : count all the regiaos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countRegiaos(RegiaoCriteria criteria) {
+        log.debug("REST request to count Regiaos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(regiaoQueryService.countByCriteria(criteria));
     }
 
     /**

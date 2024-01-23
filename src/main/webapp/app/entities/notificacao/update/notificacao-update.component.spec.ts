@@ -54,10 +54,10 @@ describe('Notificacao Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Embarcador query and add missing value', () => {
       const notificacao: INotificacao = { id: 456 };
-      const embarcador: IEmbarcador = { id: 20068 };
+      const embarcador: IEmbarcador = { id: 6349 };
       notificacao.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 21565 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 19118 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -76,10 +76,10 @@ describe('Notificacao Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const notificacao: INotificacao = { id: 456 };
-      const transportadora: ITransportadora = { id: 20678 };
+      const transportadora: ITransportadora = { id: 30330 };
       notificacao.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 21068 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 3182 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -98,9 +98,9 @@ describe('Notificacao Management Update Component', () => {
 
     it('Should update editForm', () => {
       const notificacao: INotificacao = { id: 456 };
-      const embarcador: IEmbarcador = { id: 16372 };
+      const embarcador: IEmbarcador = { id: 31347 };
       notificacao.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 26386 };
+      const transportadora: ITransportadora = { id: 26639 };
       notificacao.transportadora = transportadora;
 
       activatedRoute.data = of({ notificacao });

@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.NotificacaoRepository;
+import br.com.revenuebrasil.newcargas.service.NotificacaoQueryService;
 import br.com.revenuebrasil.newcargas.service.NotificacaoService;
+import br.com.revenuebrasil.newcargas.service.criteria.NotificacaoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.NotificacaoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class NotificacaoResource {
 
     private final NotificacaoRepository notificacaoRepository;
 
-    public NotificacaoResource(NotificacaoService notificacaoService, NotificacaoRepository notificacaoRepository) {
+    private final NotificacaoQueryService notificacaoQueryService;
+
+    public NotificacaoResource(
+        NotificacaoService notificacaoService,
+        NotificacaoRepository notificacaoRepository,
+        NotificacaoQueryService notificacaoQueryService
+    ) {
         this.notificacaoService = notificacaoService;
         this.notificacaoRepository = notificacaoRepository;
+        this.notificacaoQueryService = notificacaoQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class NotificacaoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<NotificacaoDTO> updateNotificacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody NotificacaoDTO notificacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Notificacao : {}, {}", id, notificacaoDTO);
@@ -115,7 +124,7 @@ public class NotificacaoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<NotificacaoDTO> partialUpdateNotificacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody NotificacaoDTO notificacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Notificacao partially : {}, {}", id, notificacaoDTO);
@@ -142,14 +151,31 @@ public class NotificacaoResource {
      * {@code GET  /notificacaos} : get all the notificacaos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of notificacaos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<NotificacaoDTO>> getAllNotificacaos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Notificacaos");
-        Page<NotificacaoDTO> page = notificacaoService.findAll(pageable);
+    public ResponseEntity<List<NotificacaoDTO>> getAllNotificacaos(
+        NotificacaoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Notificacaos by criteria: {}", criteria);
+
+        Page<NotificacaoDTO> page = notificacaoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /notificacaos/count} : count all the notificacaos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countNotificacaos(NotificacaoCriteria criteria) {
+        log.debug("REST request to count Notificacaos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(notificacaoQueryService.countByCriteria(criteria));
     }
 
     /**

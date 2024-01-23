@@ -70,10 +70,10 @@ describe('TabelaFrete Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Embarcador query and add missing value', () => {
       const tabelaFrete: ITabelaFrete = { id: 456 };
-      const embarcador: IEmbarcador = { id: 13764 };
+      const embarcador: IEmbarcador = { id: 8433 };
       tabelaFrete.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 31464 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 3233 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -92,10 +92,10 @@ describe('TabelaFrete Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const tabelaFrete: ITabelaFrete = { id: 456 };
-      const transportadora: ITransportadora = { id: 7763 };
+      const transportadora: ITransportadora = { id: 17194 };
       tabelaFrete.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 4841 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 26878 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -204,9 +204,9 @@ describe('TabelaFrete Management Update Component', () => {
 
     it('Should update editForm', () => {
       const tabelaFrete: ITabelaFrete = { id: 456 };
-      const embarcador: IEmbarcador = { id: 13384 };
+      const embarcador: IEmbarcador = { id: 7551 };
       tabelaFrete.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 11202 };
+      const transportadora: ITransportadora = { id: 1428 };
       tabelaFrete.transportadora = transportadora;
       const tipoCarga: ITipoCarga = { id: 22346 };
       tabelaFrete.tipoCarga = tipoCarga;

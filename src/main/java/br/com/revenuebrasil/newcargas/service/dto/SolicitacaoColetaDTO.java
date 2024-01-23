@@ -2,6 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -31,24 +32,17 @@ public class SolicitacaoColetaDTO implements Serializable {
     @Size(min = 2, max = 500)
     private String observacao;
 
-    @NotNull
-    private ZonedDateTime dataCadastro;
-
-    private ZonedDateTime dataAtualizacao;
-
     private Boolean cancelado;
-
-    private ZonedDateTime dataCancelamento;
-
-    @Size(min = 2, max = 150)
-    private String usuarioCancelamento;
 
     private Boolean removido;
 
-    private ZonedDateTime dataRemocao;
+    private String createdBy;
 
-    @Size(min = 2, max = 150)
-    private String usuarioRemocao;
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private EmbarcadorDTO embarcador;
 
@@ -114,44 +108,12 @@ public class SolicitacaoColetaDTO implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
     public Boolean getCancelado() {
         return cancelado;
     }
 
     public void setCancelado(Boolean cancelado) {
         this.cancelado = cancelado;
-    }
-
-    public ZonedDateTime getDataCancelamento() {
-        return dataCancelamento;
-    }
-
-    public void setDataCancelamento(ZonedDateTime dataCancelamento) {
-        this.dataCancelamento = dataCancelamento;
-    }
-
-    public String getUsuarioCancelamento() {
-        return usuarioCancelamento;
-    }
-
-    public void setUsuarioCancelamento(String usuarioCancelamento) {
-        this.usuarioCancelamento = usuarioCancelamento;
     }
 
     public Boolean getRemovido() {
@@ -162,20 +124,36 @@ public class SolicitacaoColetaDTO implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return dataRemocao;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getUsuarioRemocao() {
-        return usuarioRemocao;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public EmbarcadorDTO getEmbarcador() {
@@ -242,14 +220,12 @@ public class SolicitacaoColetaDTO implements Serializable {
             ", dataHoraEntrega='" + getDataHoraEntrega() + "'" +
             ", valorTotal=" + getValorTotal() +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
             ", cancelado='" + getCancelado() + "'" +
-            ", dataCancelamento='" + getDataCancelamento() + "'" +
-            ", usuarioCancelamento='" + getUsuarioCancelamento() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", embarcador=" + getEmbarcador() +
             ", statusColeta=" + getStatusColeta() +
             ", roteirizacao=" + getRoteirizacao() +

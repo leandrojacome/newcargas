@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (enderecos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Endereco encontrado</span>
@@ -109,6 +111,36 @@
                 }
               </div>
             </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="cidade.id">
               <div class="d-flex">
                 <span>Cidade</span>
@@ -166,6 +198,10 @@
               <td>{{ endereco.numero }}</td>
               <td>{{ endereco.complemento }}</td>
               <td>{{ endereco.bairro }}</td>
+              <td>{{ endereco.createdBy }}</td>
+              <td>{{ endereco.createdDate | formatMediumDatetime }}</td>
+              <td>{{ endereco.lastModifiedBy }}</td>
+              <td>{{ endereco.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (endereco.cidade) {
                   <div>

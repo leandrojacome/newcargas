@@ -86,14 +86,12 @@ public class StatusColetaGatlingTest extends Simulation {
                                 ", \"permiteEditar\": null" +
                                 ", \"permiteExcluir\": null" +
                                 ", \"descricao\": \"SAMPLE_TEXT\"" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioCadastro\": \"SAMPLE_TEXT\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioAtualizacao\": \"SAMPLE_TEXT\"" +
                                 ", \"ativo\": null" +
                                 ", \"removido\": null" +
-                                ", \"dataRemocao\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioRemocao\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

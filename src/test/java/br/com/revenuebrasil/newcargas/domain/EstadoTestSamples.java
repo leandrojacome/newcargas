@@ -12,11 +12,11 @@ public class EstadoTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Estado getEstadoSample1() {
-        return new Estado().id(1L).nome("nome1").sigla("sigla1").codigoIbge(1);
+        return new Estado().id(1L).nome("nome1").sigla("sigla1").codigoIbge(1).createdBy("createdBy1").lastModifiedBy("lastModifiedBy1");
     }
 
     public static Estado getEstadoSample2() {
-        return new Estado().id(2L).nome("nome2").sigla("sigla2").codigoIbge(2);
+        return new Estado().id(2L).nome("nome2").sigla("sigla2").codigoIbge(2).createdBy("createdBy2").lastModifiedBy("lastModifiedBy2");
     }
 
     public static Estado getEstadoRandomSampleGenerator() {
@@ -24,6 +24,8 @@ public class EstadoTestSamples {
             .id(longCount.incrementAndGet())
             .nome(UUID.randomUUID().toString())
             .sigla(UUID.randomUUID().toString())
-            .codigoIbge(intCount.incrementAndGet());
+            .codigoIbge(intCount.incrementAndGet())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

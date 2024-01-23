@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { ICidade } from 'app/entities/cidade/cidade.model';
+import { CidadeService } from 'app/entities/cidade/service/cidade.service';
 import { TransportadoraService } from '../service/transportadora.service';
 import { ITransportadora } from '../transportadora.model';
 import { TransportadoraFormService } from './transportadora-form.service';
@@ -18,6 +20,7 @@ describe('Transportadora Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let transportadoraFormService: TransportadoraFormService;
   let transportadoraService: TransportadoraService;
+  let cidadeService: CidadeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,17 +42,43 @@ describe('Transportadora Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     transportadoraFormService = TestBed.inject(TransportadoraFormService);
     transportadoraService = TestBed.inject(TransportadoraService);
+    cidadeService = TestBed.inject(CidadeService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call Cidade query and add missing value', () => {
       const transportadora: ITransportadora = { id: 456 };
+      const cidade: ICidade = { id: 10027 };
+      transportadora.cidade = cidade;
+
+      const cidadeCollection: ICidade[] = [{ id: 19757 }];
+      jest.spyOn(cidadeService, 'query').mockReturnValue(of(new HttpResponse({ body: cidadeCollection })));
+      const additionalCidades = [cidade];
+      const expectedCollection: ICidade[] = [...additionalCidades, ...cidadeCollection];
+      jest.spyOn(cidadeService, 'addCidadeToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ transportadora });
       comp.ngOnInit();
 
+      expect(cidadeService.query).toHaveBeenCalled();
+      expect(cidadeService.addCidadeToCollectionIfMissing).toHaveBeenCalledWith(
+        cidadeCollection,
+        ...additionalCidades.map(expect.objectContaining),
+      );
+      expect(comp.cidadesSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const transportadora: ITransportadora = { id: 456 };
+      const cidade: ICidade = { id: 27376 };
+      transportadora.cidade = cidade;
+
+      activatedRoute.data = of({ transportadora });
+      comp.ngOnInit();
+
+      expect(comp.cidadesSharedCollection).toContain(cidade);
       expect(comp.transportadora).toEqual(transportadora);
     });
   });
@@ -119,6 +148,18 @@ describe('Transportadora Management Update Component', () => {
       expect(transportadoraService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareCidade', () => {
+      it('Should forward to cidadeService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(cidadeService, 'compareCidade');
+        comp.compareCidade(entity, entity2);
+        expect(cidadeService.compareCidade).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

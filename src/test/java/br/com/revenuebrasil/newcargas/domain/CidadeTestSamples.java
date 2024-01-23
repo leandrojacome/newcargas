@@ -12,14 +12,19 @@ public class CidadeTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Cidade getCidadeSample1() {
-        return new Cidade().id(1L).nome("nome1").codigoIbge(1);
+        return new Cidade().id(1L).nome("nome1").codigoIbge(1).createdBy("createdBy1").lastModifiedBy("lastModifiedBy1");
     }
 
     public static Cidade getCidadeSample2() {
-        return new Cidade().id(2L).nome("nome2").codigoIbge(2);
+        return new Cidade().id(2L).nome("nome2").codigoIbge(2).createdBy("createdBy2").lastModifiedBy("lastModifiedBy2");
     }
 
     public static Cidade getCidadeRandomSampleGenerator() {
-        return new Cidade().id(longCount.incrementAndGet()).nome(UUID.randomUUID().toString()).codigoIbge(intCount.incrementAndGet());
+        return new Cidade()
+            .id(longCount.incrementAndGet())
+            .nome(UUID.randomUUID().toString())
+            .codigoIbge(intCount.incrementAndGet())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

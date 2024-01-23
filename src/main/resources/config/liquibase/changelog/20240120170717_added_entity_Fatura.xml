@@ -35,35 +35,23 @@
             <column name="observacao" type="varchar(500)">
                 <constraints nullable="true" />
             </column>
-            <column name="data_cadastro" type="${datetimeType}">
-                <constraints nullable="false" />
-            </column>
-            <column name="usuario_cadastro" type="varchar(150)">
-                <constraints nullable="true" />
-            </column>
-            <column name="data_atualizacao" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="usuario_atualizacao" type="varchar(150)">
-                <constraints nullable="true" />
-            </column>
             <column name="cancelado" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="data_cancelamento" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="usuario_cancelamento" type="varchar(150)">
                 <constraints nullable="true" />
             </column>
             <column name="removido" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="data_remocao" type="${datetimeType}">
-                <constraints nullable="true" />
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false" />
             </column>
-            <column name="usuario_remocao" type="varchar(150)">
-                <constraints nullable="true" />
+            <column name="created_date" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_date" type="${datetimeType}">
+                <constraints nullable="false" />
             </column>
             <column name="embarcador_id" type="bigint">
                 <constraints nullable="true" />
@@ -82,10 +70,8 @@
         <dropDefaultValue tableName="fatura" columnName="data_fatura" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="fatura" columnName="data_vencimento" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="fatura" columnName="data_pagamento" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="fatura" columnName="data_cadastro" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="fatura" columnName="data_atualizacao" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="fatura" columnName="data_cancelamento" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="fatura" columnName="data_remocao" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="fatura" columnName="created_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="fatura" columnName="last_modified_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -112,16 +98,12 @@
             <column name="numero_parcela" type="numeric"/>
             <column name="valor_total" type="numeric"/>
             <column name="observacao" type="string"/>
-            <column name="data_cadastro" type="date"/>
-            <column name="usuario_cadastro" type="string"/>
-            <column name="data_atualizacao" type="date"/>
-            <column name="usuario_atualizacao" type="string"/>
             <column name="cancelado" type="boolean"/>
-            <column name="data_cancelamento" type="date"/>
-            <column name="usuario_cancelamento" type="string"/>
             <column name="removido" type="boolean"/>
-            <column name="data_remocao" type="date"/>
-            <column name="usuario_remocao" type="string"/>
+            <column name="created_by" type="string"/>
+            <column name="created_date" type="date"/>
+            <column name="last_modified_by" type="string"/>
+            <column name="last_modified_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

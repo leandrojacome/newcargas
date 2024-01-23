@@ -14,14 +14,12 @@ export interface IStatusColeta {
   permiteEditar?: boolean | null;
   permiteExcluir?: boolean | null;
   descricao?: string | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  usuarioCadastro?: string | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
-  usuarioAtualizacao?: string | null;
   ativo?: boolean | null;
   removido?: boolean | null;
-  dataRemocao?: dayjs.Dayjs | null;
-  usuarioRemocao?: string | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   solicitacaoColetas?: Pick<ISolicitacaoColeta, 'id'>[] | null;
   historicoStatusColetaOrigems?: Pick<IHistoricoStatusColeta, 'id'>[] | null;
   historicoStatusColetaDestinos?: Pick<IHistoricoStatusColeta, 'id'>[] | null;

@@ -9,7 +9,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.HistoricoStatusColeta;
 import br.com.revenuebrasil.newcargas.domain.Roteirizacao;
+import br.com.revenuebrasil.newcargas.domain.SolicitacaoColeta;
+import br.com.revenuebrasil.newcargas.domain.StatusColeta;
+import br.com.revenuebrasil.newcargas.domain.TomadaPreco;
 import br.com.revenuebrasil.newcargas.repository.RoteirizacaoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.RoteirizacaoSearchRepository;
 import br.com.revenuebrasil.newcargas.service.dto.RoteirizacaoDTO;
@@ -48,54 +52,44 @@ class RoteirizacaoResourceIT {
         ZoneOffset.UTC
     );
     private static final ZonedDateTime UPDATED_DATA_HORA_PRIMEIRA_COLETA = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_DATA_HORA_PRIMEIRA_COLETA = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(-1L),
+        ZoneOffset.UTC
+    );
 
     private static final ZonedDateTime DEFAULT_DATA_HORA_ULTIMA_COLETA = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_DATA_HORA_ULTIMA_COLETA = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_DATA_HORA_ULTIMA_COLETA = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     private static final ZonedDateTime DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA = ZonedDateTime.ofInstant(
         Instant.ofEpochMilli(0L),
         ZoneOffset.UTC
     );
     private static final ZonedDateTime UPDATED_DATA_HORA_PRIMEIRA_ENTREGA = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_DATA_HORA_PRIMEIRA_ENTREGA = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(-1L),
+        ZoneOffset.UTC
+    );
 
     private static final ZonedDateTime DEFAULT_DATA_HORA_ULTIMA_ENTREGA = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_DATA_HORA_ULTIMA_ENTREGA = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_DATA_HORA_ULTIMA_ENTREGA = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(-1L),
+        ZoneOffset.UTC
+    );
 
     private static final Double DEFAULT_VALOR_TOTAL = 1D;
     private static final Double UPDATED_VALOR_TOTAL = 2D;
+    private static final Double SMALLER_VALOR_TOTAL = 1D - 1D;
 
     private static final String DEFAULT_OBSERVACAO = "AAAAAAAAAA";
     private static final String UPDATED_OBSERVACAO = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_DATA_CADASTRO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATA_CADASTRO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_USUARIO_CADASTRO = "AAAAAAAAAA";
-    private static final String UPDATED_USUARIO_CADASTRO = "BBBBBBBBBB";
-
-    private static final ZonedDateTime DEFAULT_DATA_ATUALIZACAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATA_ATUALIZACAO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_USUARIO_ATUALIZACAO = "AAAAAAAAAA";
-    private static final String UPDATED_USUARIO_ATUALIZACAO = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_CANCELADO = false;
     private static final Boolean UPDATED_CANCELADO = true;
 
-    private static final ZonedDateTime DEFAULT_DATA_CANCELAMENTO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATA_CANCELAMENTO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_USUARIO_CANCELAMENTO = "AAAAAAAAAA";
-    private static final String UPDATED_USUARIO_CANCELAMENTO = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_REMOVIDO = false;
     private static final Boolean UPDATED_REMOVIDO = true;
-
-    private static final ZonedDateTime DEFAULT_DATA_REMOCAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATA_REMOCAO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_USUARIO_REMOCAO = "AAAAAAAAAA";
-    private static final String UPDATED_USUARIO_REMOCAO = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/roteirizacaos";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -135,16 +129,8 @@ class RoteirizacaoResourceIT {
             .dataHoraUltimaEntrega(DEFAULT_DATA_HORA_ULTIMA_ENTREGA)
             .valorTotal(DEFAULT_VALOR_TOTAL)
             .observacao(DEFAULT_OBSERVACAO)
-            .dataCadastro(DEFAULT_DATA_CADASTRO)
-            .usuarioCadastro(DEFAULT_USUARIO_CADASTRO)
-            .dataAtualizacao(DEFAULT_DATA_ATUALIZACAO)
-            .usuarioAtualizacao(DEFAULT_USUARIO_ATUALIZACAO)
             .cancelado(DEFAULT_CANCELADO)
-            .dataCancelamento(DEFAULT_DATA_CANCELAMENTO)
-            .usuarioCancelamento(DEFAULT_USUARIO_CANCELAMENTO)
-            .removido(DEFAULT_REMOVIDO)
-            .dataRemocao(DEFAULT_DATA_REMOCAO)
-            .usuarioRemocao(DEFAULT_USUARIO_REMOCAO);
+            .removido(DEFAULT_REMOVIDO);
         return roteirizacao;
     }
 
@@ -162,16 +148,8 @@ class RoteirizacaoResourceIT {
             .dataHoraUltimaEntrega(UPDATED_DATA_HORA_ULTIMA_ENTREGA)
             .valorTotal(UPDATED_VALOR_TOTAL)
             .observacao(UPDATED_OBSERVACAO)
-            .dataCadastro(UPDATED_DATA_CADASTRO)
-            .usuarioCadastro(UPDATED_USUARIO_CADASTRO)
-            .dataAtualizacao(UPDATED_DATA_ATUALIZACAO)
-            .usuarioAtualizacao(UPDATED_USUARIO_ATUALIZACAO)
             .cancelado(UPDATED_CANCELADO)
-            .dataCancelamento(UPDATED_DATA_CANCELAMENTO)
-            .usuarioCancelamento(UPDATED_USUARIO_CANCELAMENTO)
-            .removido(UPDATED_REMOVIDO)
-            .dataRemocao(UPDATED_DATA_REMOCAO)
-            .usuarioRemocao(UPDATED_USUARIO_REMOCAO);
+            .removido(UPDATED_REMOVIDO);
         return roteirizacao;
     }
 
@@ -215,16 +193,8 @@ class RoteirizacaoResourceIT {
         assertThat(testRoteirizacao.getDataHoraUltimaEntrega()).isEqualTo(DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
         assertThat(testRoteirizacao.getValorTotal()).isEqualTo(DEFAULT_VALOR_TOTAL);
         assertThat(testRoteirizacao.getObservacao()).isEqualTo(DEFAULT_OBSERVACAO);
-        assertThat(testRoteirizacao.getDataCadastro()).isEqualTo(DEFAULT_DATA_CADASTRO);
-        assertThat(testRoteirizacao.getUsuarioCadastro()).isEqualTo(DEFAULT_USUARIO_CADASTRO);
-        assertThat(testRoteirizacao.getDataAtualizacao()).isEqualTo(DEFAULT_DATA_ATUALIZACAO);
-        assertThat(testRoteirizacao.getUsuarioAtualizacao()).isEqualTo(DEFAULT_USUARIO_ATUALIZACAO);
         assertThat(testRoteirizacao.getCancelado()).isEqualTo(DEFAULT_CANCELADO);
-        assertThat(testRoteirizacao.getDataCancelamento()).isEqualTo(DEFAULT_DATA_CANCELAMENTO);
-        assertThat(testRoteirizacao.getUsuarioCancelamento()).isEqualTo(DEFAULT_USUARIO_CANCELAMENTO);
         assertThat(testRoteirizacao.getRemovido()).isEqualTo(DEFAULT_REMOVIDO);
-        assertThat(testRoteirizacao.getDataRemocao()).isEqualTo(DEFAULT_DATA_REMOCAO);
-        assertThat(testRoteirizacao.getUsuarioRemocao()).isEqualTo(DEFAULT_USUARIO_REMOCAO);
     }
 
     @Test
@@ -276,29 +246,6 @@ class RoteirizacaoResourceIT {
 
     @Test
     @Transactional
-    void checkDataCadastroIsRequired() throws Exception {
-        int databaseSizeBeforeTest = roteirizacaoRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(roteirizacaoSearchRepository.findAll());
-        // set the field null
-        roteirizacao.setDataCadastro(null);
-
-        // Create the Roteirizacao, which fails.
-        RoteirizacaoDTO roteirizacaoDTO = roteirizacaoMapper.toDto(roteirizacao);
-
-        restRoteirizacaoMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(roteirizacaoDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<Roteirizacao> roteirizacaoList = roteirizacaoRepository.findAll();
-        assertThat(roteirizacaoList).hasSize(databaseSizeBeforeTest);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(roteirizacaoSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
     void getAllRoteirizacaos() throws Exception {
         // Initialize the database
         roteirizacaoRepository.saveAndFlush(roteirizacao);
@@ -315,16 +262,8 @@ class RoteirizacaoResourceIT {
             .andExpect(jsonPath("$.[*].dataHoraUltimaEntrega").value(hasItem(sameInstant(DEFAULT_DATA_HORA_ULTIMA_ENTREGA))))
             .andExpect(jsonPath("$.[*].valorTotal").value(hasItem(DEFAULT_VALOR_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].observacao").value(hasItem(DEFAULT_OBSERVACAO)))
-            .andExpect(jsonPath("$.[*].dataCadastro").value(hasItem(sameInstant(DEFAULT_DATA_CADASTRO))))
-            .andExpect(jsonPath("$.[*].usuarioCadastro").value(hasItem(DEFAULT_USUARIO_CADASTRO)))
-            .andExpect(jsonPath("$.[*].dataAtualizacao").value(hasItem(sameInstant(DEFAULT_DATA_ATUALIZACAO))))
-            .andExpect(jsonPath("$.[*].usuarioAtualizacao").value(hasItem(DEFAULT_USUARIO_ATUALIZACAO)))
             .andExpect(jsonPath("$.[*].cancelado").value(hasItem(DEFAULT_CANCELADO.booleanValue())))
-            .andExpect(jsonPath("$.[*].dataCancelamento").value(hasItem(sameInstant(DEFAULT_DATA_CANCELAMENTO))))
-            .andExpect(jsonPath("$.[*].usuarioCancelamento").value(hasItem(DEFAULT_USUARIO_CANCELAMENTO)))
-            .andExpect(jsonPath("$.[*].removido").value(hasItem(DEFAULT_REMOVIDO.booleanValue())))
-            .andExpect(jsonPath("$.[*].dataRemocao").value(hasItem(sameInstant(DEFAULT_DATA_REMOCAO))))
-            .andExpect(jsonPath("$.[*].usuarioRemocao").value(hasItem(DEFAULT_USUARIO_REMOCAO)));
+            .andExpect(jsonPath("$.[*].removido").value(hasItem(DEFAULT_REMOVIDO.booleanValue())));
     }
 
     @Test
@@ -345,16 +284,765 @@ class RoteirizacaoResourceIT {
             .andExpect(jsonPath("$.dataHoraUltimaEntrega").value(sameInstant(DEFAULT_DATA_HORA_ULTIMA_ENTREGA)))
             .andExpect(jsonPath("$.valorTotal").value(DEFAULT_VALOR_TOTAL.doubleValue()))
             .andExpect(jsonPath("$.observacao").value(DEFAULT_OBSERVACAO))
-            .andExpect(jsonPath("$.dataCadastro").value(sameInstant(DEFAULT_DATA_CADASTRO)))
-            .andExpect(jsonPath("$.usuarioCadastro").value(DEFAULT_USUARIO_CADASTRO))
-            .andExpect(jsonPath("$.dataAtualizacao").value(sameInstant(DEFAULT_DATA_ATUALIZACAO)))
-            .andExpect(jsonPath("$.usuarioAtualizacao").value(DEFAULT_USUARIO_ATUALIZACAO))
             .andExpect(jsonPath("$.cancelado").value(DEFAULT_CANCELADO.booleanValue()))
-            .andExpect(jsonPath("$.dataCancelamento").value(sameInstant(DEFAULT_DATA_CANCELAMENTO)))
-            .andExpect(jsonPath("$.usuarioCancelamento").value(DEFAULT_USUARIO_CANCELAMENTO))
-            .andExpect(jsonPath("$.removido").value(DEFAULT_REMOVIDO.booleanValue()))
-            .andExpect(jsonPath("$.dataRemocao").value(sameInstant(DEFAULT_DATA_REMOCAO)))
-            .andExpect(jsonPath("$.usuarioRemocao").value(DEFAULT_USUARIO_REMOCAO));
+            .andExpect(jsonPath("$.removido").value(DEFAULT_REMOVIDO.booleanValue()));
+    }
+
+    @Test
+    @Transactional
+    void getRoteirizacaosByIdFiltering() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        Long id = roteirizacao.getId();
+
+        defaultRoteirizacaoShouldBeFound("id.equals=" + id);
+        defaultRoteirizacaoShouldNotBeFound("id.notEquals=" + id);
+
+        defaultRoteirizacaoShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultRoteirizacaoShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultRoteirizacaoShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultRoteirizacaoShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta equals to DEFAULT_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.equals=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta equals to UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.equals=" + UPDATED_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta in DEFAULT_DATA_HORA_PRIMEIRA_COLETA or UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound(
+            "dataHoraPrimeiraColeta.in=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA + "," + UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        );
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta equals to UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.in=" + UPDATED_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is not null
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.specified=true");
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is null
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is greater than or equal to DEFAULT_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.greaterThanOrEqual=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is greater than or equal to UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.greaterThanOrEqual=" + UPDATED_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is less than or equal to DEFAULT_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.lessThanOrEqual=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is less than or equal to SMALLER_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.lessThanOrEqual=" + SMALLER_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsLessThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is less than DEFAULT_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.lessThan=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is less than UPDATED_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.lessThan=" + UPDATED_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraColetaIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is greater than DEFAULT_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraColeta.greaterThan=" + DEFAULT_DATA_HORA_PRIMEIRA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraColeta is greater than SMALLER_DATA_HORA_PRIMEIRA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraColeta.greaterThan=" + SMALLER_DATA_HORA_PRIMEIRA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta equals to DEFAULT_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.equals=" + DEFAULT_DATA_HORA_ULTIMA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta equals to UPDATED_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.equals=" + UPDATED_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta in DEFAULT_DATA_HORA_ULTIMA_COLETA or UPDATED_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound(
+            "dataHoraUltimaColeta.in=" + DEFAULT_DATA_HORA_ULTIMA_COLETA + "," + UPDATED_DATA_HORA_ULTIMA_COLETA
+        );
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta equals to UPDATED_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.in=" + UPDATED_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is not null
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.specified=true");
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is null
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is greater than or equal to DEFAULT_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.greaterThanOrEqual=" + DEFAULT_DATA_HORA_ULTIMA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is greater than or equal to UPDATED_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.greaterThanOrEqual=" + UPDATED_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is less than or equal to DEFAULT_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.lessThanOrEqual=" + DEFAULT_DATA_HORA_ULTIMA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is less than or equal to SMALLER_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.lessThanOrEqual=" + SMALLER_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsLessThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is less than DEFAULT_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.lessThan=" + DEFAULT_DATA_HORA_ULTIMA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is less than UPDATED_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.lessThan=" + UPDATED_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaColetaIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is greater than DEFAULT_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaColeta.greaterThan=" + DEFAULT_DATA_HORA_ULTIMA_COLETA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaColeta is greater than SMALLER_DATA_HORA_ULTIMA_COLETA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaColeta.greaterThan=" + SMALLER_DATA_HORA_ULTIMA_COLETA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega equals to DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.equals=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega equals to UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.equals=" + UPDATED_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega in DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA or UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound(
+            "dataHoraPrimeiraEntrega.in=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA + "," + UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        );
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega equals to UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.in=" + UPDATED_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is not null
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.specified=true");
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is null
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is greater than or equal to DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.greaterThanOrEqual=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is greater than or equal to UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.greaterThanOrEqual=" + UPDATED_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is less than or equal to DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.lessThanOrEqual=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is less than or equal to SMALLER_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.lessThanOrEqual=" + SMALLER_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsLessThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is less than DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.lessThan=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is less than UPDATED_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.lessThan=" + UPDATED_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraPrimeiraEntregaIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is greater than DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraPrimeiraEntrega.greaterThan=" + DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraPrimeiraEntrega is greater than SMALLER_DATA_HORA_PRIMEIRA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraPrimeiraEntrega.greaterThan=" + SMALLER_DATA_HORA_PRIMEIRA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega equals to DEFAULT_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.equals=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega equals to UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.equals=" + UPDATED_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega in DEFAULT_DATA_HORA_ULTIMA_ENTREGA or UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound(
+            "dataHoraUltimaEntrega.in=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA + "," + UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        );
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega equals to UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.in=" + UPDATED_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is not null
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.specified=true");
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is null
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is greater than or equal to DEFAULT_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.greaterThanOrEqual=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is greater than or equal to UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.greaterThanOrEqual=" + UPDATED_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is less than or equal to DEFAULT_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.lessThanOrEqual=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is less than or equal to SMALLER_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.lessThanOrEqual=" + SMALLER_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsLessThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is less than DEFAULT_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.lessThan=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is less than UPDATED_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.lessThan=" + UPDATED_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByDataHoraUltimaEntregaIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is greater than DEFAULT_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldNotBeFound("dataHoraUltimaEntrega.greaterThan=" + DEFAULT_DATA_HORA_ULTIMA_ENTREGA);
+
+        // Get all the roteirizacaoList where dataHoraUltimaEntrega is greater than SMALLER_DATA_HORA_ULTIMA_ENTREGA
+        defaultRoteirizacaoShouldBeFound("dataHoraUltimaEntrega.greaterThan=" + SMALLER_DATA_HORA_ULTIMA_ENTREGA);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal equals to DEFAULT_VALOR_TOTAL
+        defaultRoteirizacaoShouldBeFound("valorTotal.equals=" + DEFAULT_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal equals to UPDATED_VALOR_TOTAL
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.equals=" + UPDATED_VALOR_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal in DEFAULT_VALOR_TOTAL or UPDATED_VALOR_TOTAL
+        defaultRoteirizacaoShouldBeFound("valorTotal.in=" + DEFAULT_VALOR_TOTAL + "," + UPDATED_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal equals to UPDATED_VALOR_TOTAL
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.in=" + UPDATED_VALOR_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal is not null
+        defaultRoteirizacaoShouldBeFound("valorTotal.specified=true");
+
+        // Get all the roteirizacaoList where valorTotal is null
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal is greater than or equal to DEFAULT_VALOR_TOTAL
+        defaultRoteirizacaoShouldBeFound("valorTotal.greaterThanOrEqual=" + DEFAULT_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal is greater than or equal to (DEFAULT_VALOR_TOTAL + 1)
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.greaterThanOrEqual=" + (DEFAULT_VALOR_TOTAL + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal is less than or equal to DEFAULT_VALOR_TOTAL
+        defaultRoteirizacaoShouldBeFound("valorTotal.lessThanOrEqual=" + DEFAULT_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal is less than or equal to SMALLER_VALOR_TOTAL
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.lessThanOrEqual=" + SMALLER_VALOR_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsLessThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal is less than DEFAULT_VALOR_TOTAL
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.lessThan=" + DEFAULT_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal is less than (DEFAULT_VALOR_TOTAL + 1)
+        defaultRoteirizacaoShouldBeFound("valorTotal.lessThan=" + (DEFAULT_VALOR_TOTAL + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByValorTotalIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where valorTotal is greater than DEFAULT_VALOR_TOTAL
+        defaultRoteirizacaoShouldNotBeFound("valorTotal.greaterThan=" + DEFAULT_VALOR_TOTAL);
+
+        // Get all the roteirizacaoList where valorTotal is greater than SMALLER_VALOR_TOTAL
+        defaultRoteirizacaoShouldBeFound("valorTotal.greaterThan=" + SMALLER_VALOR_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByObservacaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where observacao equals to DEFAULT_OBSERVACAO
+        defaultRoteirizacaoShouldBeFound("observacao.equals=" + DEFAULT_OBSERVACAO);
+
+        // Get all the roteirizacaoList where observacao equals to UPDATED_OBSERVACAO
+        defaultRoteirizacaoShouldNotBeFound("observacao.equals=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByObservacaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where observacao in DEFAULT_OBSERVACAO or UPDATED_OBSERVACAO
+        defaultRoteirizacaoShouldBeFound("observacao.in=" + DEFAULT_OBSERVACAO + "," + UPDATED_OBSERVACAO);
+
+        // Get all the roteirizacaoList where observacao equals to UPDATED_OBSERVACAO
+        defaultRoteirizacaoShouldNotBeFound("observacao.in=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByObservacaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where observacao is not null
+        defaultRoteirizacaoShouldBeFound("observacao.specified=true");
+
+        // Get all the roteirizacaoList where observacao is null
+        defaultRoteirizacaoShouldNotBeFound("observacao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByObservacaoContainsSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where observacao contains DEFAULT_OBSERVACAO
+        defaultRoteirizacaoShouldBeFound("observacao.contains=" + DEFAULT_OBSERVACAO);
+
+        // Get all the roteirizacaoList where observacao contains UPDATED_OBSERVACAO
+        defaultRoteirizacaoShouldNotBeFound("observacao.contains=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByObservacaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where observacao does not contain DEFAULT_OBSERVACAO
+        defaultRoteirizacaoShouldNotBeFound("observacao.doesNotContain=" + DEFAULT_OBSERVACAO);
+
+        // Get all the roteirizacaoList where observacao does not contain UPDATED_OBSERVACAO
+        defaultRoteirizacaoShouldBeFound("observacao.doesNotContain=" + UPDATED_OBSERVACAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByCanceladoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where cancelado equals to DEFAULT_CANCELADO
+        defaultRoteirizacaoShouldBeFound("cancelado.equals=" + DEFAULT_CANCELADO);
+
+        // Get all the roteirizacaoList where cancelado equals to UPDATED_CANCELADO
+        defaultRoteirizacaoShouldNotBeFound("cancelado.equals=" + UPDATED_CANCELADO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByCanceladoIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where cancelado in DEFAULT_CANCELADO or UPDATED_CANCELADO
+        defaultRoteirizacaoShouldBeFound("cancelado.in=" + DEFAULT_CANCELADO + "," + UPDATED_CANCELADO);
+
+        // Get all the roteirizacaoList where cancelado equals to UPDATED_CANCELADO
+        defaultRoteirizacaoShouldNotBeFound("cancelado.in=" + UPDATED_CANCELADO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByCanceladoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where cancelado is not null
+        defaultRoteirizacaoShouldBeFound("cancelado.specified=true");
+
+        // Get all the roteirizacaoList where cancelado is null
+        defaultRoteirizacaoShouldNotBeFound("cancelado.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByRemovidoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where removido equals to DEFAULT_REMOVIDO
+        defaultRoteirizacaoShouldBeFound("removido.equals=" + DEFAULT_REMOVIDO);
+
+        // Get all the roteirizacaoList where removido equals to UPDATED_REMOVIDO
+        defaultRoteirizacaoShouldNotBeFound("removido.equals=" + UPDATED_REMOVIDO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByRemovidoIsInShouldWork() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where removido in DEFAULT_REMOVIDO or UPDATED_REMOVIDO
+        defaultRoteirizacaoShouldBeFound("removido.in=" + DEFAULT_REMOVIDO + "," + UPDATED_REMOVIDO);
+
+        // Get all the roteirizacaoList where removido equals to UPDATED_REMOVIDO
+        defaultRoteirizacaoShouldNotBeFound("removido.in=" + UPDATED_REMOVIDO);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByRemovidoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+
+        // Get all the roteirizacaoList where removido is not null
+        defaultRoteirizacaoShouldBeFound("removido.specified=true");
+
+        // Get all the roteirizacaoList where removido is null
+        defaultRoteirizacaoShouldNotBeFound("removido.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByHistoricoStatusColetaIsEqualToSomething() throws Exception {
+        HistoricoStatusColeta historicoStatusColeta;
+        if (TestUtil.findAll(em, HistoricoStatusColeta.class).isEmpty()) {
+            roteirizacaoRepository.saveAndFlush(roteirizacao);
+            historicoStatusColeta = HistoricoStatusColetaResourceIT.createEntity(em);
+        } else {
+            historicoStatusColeta = TestUtil.findAll(em, HistoricoStatusColeta.class).get(0);
+        }
+        em.persist(historicoStatusColeta);
+        em.flush();
+        roteirizacao.addHistoricoStatusColeta(historicoStatusColeta);
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+        Long historicoStatusColetaId = historicoStatusColeta.getId();
+        // Get all the roteirizacaoList where historicoStatusColeta equals to historicoStatusColetaId
+        defaultRoteirizacaoShouldBeFound("historicoStatusColetaId.equals=" + historicoStatusColetaId);
+
+        // Get all the roteirizacaoList where historicoStatusColeta equals to (historicoStatusColetaId + 1)
+        defaultRoteirizacaoShouldNotBeFound("historicoStatusColetaId.equals=" + (historicoStatusColetaId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosBySolitacaoColetaIsEqualToSomething() throws Exception {
+        SolicitacaoColeta solitacaoColeta;
+        if (TestUtil.findAll(em, SolicitacaoColeta.class).isEmpty()) {
+            roteirizacaoRepository.saveAndFlush(roteirizacao);
+            solitacaoColeta = SolicitacaoColetaResourceIT.createEntity(em);
+        } else {
+            solitacaoColeta = TestUtil.findAll(em, SolicitacaoColeta.class).get(0);
+        }
+        em.persist(solitacaoColeta);
+        em.flush();
+        roteirizacao.addSolitacaoColeta(solitacaoColeta);
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+        Long solitacaoColetaId = solitacaoColeta.getId();
+        // Get all the roteirizacaoList where solitacaoColeta equals to solitacaoColetaId
+        defaultRoteirizacaoShouldBeFound("solitacaoColetaId.equals=" + solitacaoColetaId);
+
+        // Get all the roteirizacaoList where solitacaoColeta equals to (solitacaoColetaId + 1)
+        defaultRoteirizacaoShouldNotBeFound("solitacaoColetaId.equals=" + (solitacaoColetaId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByTomadaPrecoIsEqualToSomething() throws Exception {
+        TomadaPreco tomadaPreco;
+        if (TestUtil.findAll(em, TomadaPreco.class).isEmpty()) {
+            roteirizacaoRepository.saveAndFlush(roteirizacao);
+            tomadaPreco = TomadaPrecoResourceIT.createEntity(em);
+        } else {
+            tomadaPreco = TestUtil.findAll(em, TomadaPreco.class).get(0);
+        }
+        em.persist(tomadaPreco);
+        em.flush();
+        roteirizacao.addTomadaPreco(tomadaPreco);
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+        Long tomadaPrecoId = tomadaPreco.getId();
+        // Get all the roteirizacaoList where tomadaPreco equals to tomadaPrecoId
+        defaultRoteirizacaoShouldBeFound("tomadaPrecoId.equals=" + tomadaPrecoId);
+
+        // Get all the roteirizacaoList where tomadaPreco equals to (tomadaPrecoId + 1)
+        defaultRoteirizacaoShouldNotBeFound("tomadaPrecoId.equals=" + (tomadaPrecoId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllRoteirizacaosByStatusColetaIsEqualToSomething() throws Exception {
+        StatusColeta statusColeta;
+        if (TestUtil.findAll(em, StatusColeta.class).isEmpty()) {
+            roteirizacaoRepository.saveAndFlush(roteirizacao);
+            statusColeta = StatusColetaResourceIT.createEntity(em);
+        } else {
+            statusColeta = TestUtil.findAll(em, StatusColeta.class).get(0);
+        }
+        em.persist(statusColeta);
+        em.flush();
+        roteirizacao.setStatusColeta(statusColeta);
+        roteirizacaoRepository.saveAndFlush(roteirizacao);
+        Long statusColetaId = statusColeta.getId();
+        // Get all the roteirizacaoList where statusColeta equals to statusColetaId
+        defaultRoteirizacaoShouldBeFound("statusColetaId.equals=" + statusColetaId);
+
+        // Get all the roteirizacaoList where statusColeta equals to (statusColetaId + 1)
+        defaultRoteirizacaoShouldNotBeFound("statusColetaId.equals=" + (statusColetaId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultRoteirizacaoShouldBeFound(String filter) throws Exception {
+        restRoteirizacaoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(roteirizacao.getId().intValue())))
+            .andExpect(jsonPath("$.[*].dataHoraPrimeiraColeta").value(hasItem(sameInstant(DEFAULT_DATA_HORA_PRIMEIRA_COLETA))))
+            .andExpect(jsonPath("$.[*].dataHoraUltimaColeta").value(hasItem(sameInstant(DEFAULT_DATA_HORA_ULTIMA_COLETA))))
+            .andExpect(jsonPath("$.[*].dataHoraPrimeiraEntrega").value(hasItem(sameInstant(DEFAULT_DATA_HORA_PRIMEIRA_ENTREGA))))
+            .andExpect(jsonPath("$.[*].dataHoraUltimaEntrega").value(hasItem(sameInstant(DEFAULT_DATA_HORA_ULTIMA_ENTREGA))))
+            .andExpect(jsonPath("$.[*].valorTotal").value(hasItem(DEFAULT_VALOR_TOTAL.doubleValue())))
+            .andExpect(jsonPath("$.[*].observacao").value(hasItem(DEFAULT_OBSERVACAO)))
+            .andExpect(jsonPath("$.[*].cancelado").value(hasItem(DEFAULT_CANCELADO.booleanValue())))
+            .andExpect(jsonPath("$.[*].removido").value(hasItem(DEFAULT_REMOVIDO.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restRoteirizacaoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultRoteirizacaoShouldNotBeFound(String filter) throws Exception {
+        restRoteirizacaoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restRoteirizacaoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test
@@ -385,16 +1073,8 @@ class RoteirizacaoResourceIT {
             .dataHoraUltimaEntrega(UPDATED_DATA_HORA_ULTIMA_ENTREGA)
             .valorTotal(UPDATED_VALOR_TOTAL)
             .observacao(UPDATED_OBSERVACAO)
-            .dataCadastro(UPDATED_DATA_CADASTRO)
-            .usuarioCadastro(UPDATED_USUARIO_CADASTRO)
-            .dataAtualizacao(UPDATED_DATA_ATUALIZACAO)
-            .usuarioAtualizacao(UPDATED_USUARIO_ATUALIZACAO)
             .cancelado(UPDATED_CANCELADO)
-            .dataCancelamento(UPDATED_DATA_CANCELAMENTO)
-            .usuarioCancelamento(UPDATED_USUARIO_CANCELAMENTO)
-            .removido(UPDATED_REMOVIDO)
-            .dataRemocao(UPDATED_DATA_REMOCAO)
-            .usuarioRemocao(UPDATED_USUARIO_REMOCAO);
+            .removido(UPDATED_REMOVIDO);
         RoteirizacaoDTO roteirizacaoDTO = roteirizacaoMapper.toDto(updatedRoteirizacao);
 
         restRoteirizacaoMockMvc
@@ -415,16 +1095,8 @@ class RoteirizacaoResourceIT {
         assertThat(testRoteirizacao.getDataHoraUltimaEntrega()).isEqualTo(UPDATED_DATA_HORA_ULTIMA_ENTREGA);
         assertThat(testRoteirizacao.getValorTotal()).isEqualTo(UPDATED_VALOR_TOTAL);
         assertThat(testRoteirizacao.getObservacao()).isEqualTo(UPDATED_OBSERVACAO);
-        assertThat(testRoteirizacao.getDataCadastro()).isEqualTo(UPDATED_DATA_CADASTRO);
-        assertThat(testRoteirizacao.getUsuarioCadastro()).isEqualTo(UPDATED_USUARIO_CADASTRO);
-        assertThat(testRoteirizacao.getDataAtualizacao()).isEqualTo(UPDATED_DATA_ATUALIZACAO);
-        assertThat(testRoteirizacao.getUsuarioAtualizacao()).isEqualTo(UPDATED_USUARIO_ATUALIZACAO);
         assertThat(testRoteirizacao.getCancelado()).isEqualTo(UPDATED_CANCELADO);
-        assertThat(testRoteirizacao.getDataCancelamento()).isEqualTo(UPDATED_DATA_CANCELAMENTO);
-        assertThat(testRoteirizacao.getUsuarioCancelamento()).isEqualTo(UPDATED_USUARIO_CANCELAMENTO);
         assertThat(testRoteirizacao.getRemovido()).isEqualTo(UPDATED_REMOVIDO);
-        assertThat(testRoteirizacao.getDataRemocao()).isEqualTo(UPDATED_DATA_REMOCAO);
-        assertThat(testRoteirizacao.getUsuarioRemocao()).isEqualTo(UPDATED_USUARIO_REMOCAO);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -438,16 +1110,8 @@ class RoteirizacaoResourceIT {
                 assertThat(testRoteirizacaoSearch.getDataHoraUltimaEntrega()).isEqualTo(UPDATED_DATA_HORA_ULTIMA_ENTREGA);
                 assertThat(testRoteirizacaoSearch.getValorTotal()).isEqualTo(UPDATED_VALOR_TOTAL);
                 assertThat(testRoteirizacaoSearch.getObservacao()).isEqualTo(UPDATED_OBSERVACAO);
-                assertThat(testRoteirizacaoSearch.getDataCadastro()).isEqualTo(UPDATED_DATA_CADASTRO);
-                assertThat(testRoteirizacaoSearch.getUsuarioCadastro()).isEqualTo(UPDATED_USUARIO_CADASTRO);
-                assertThat(testRoteirizacaoSearch.getDataAtualizacao()).isEqualTo(UPDATED_DATA_ATUALIZACAO);
-                assertThat(testRoteirizacaoSearch.getUsuarioAtualizacao()).isEqualTo(UPDATED_USUARIO_ATUALIZACAO);
                 assertThat(testRoteirizacaoSearch.getCancelado()).isEqualTo(UPDATED_CANCELADO);
-                assertThat(testRoteirizacaoSearch.getDataCancelamento()).isEqualTo(UPDATED_DATA_CANCELAMENTO);
-                assertThat(testRoteirizacaoSearch.getUsuarioCancelamento()).isEqualTo(UPDATED_USUARIO_CANCELAMENTO);
                 assertThat(testRoteirizacaoSearch.getRemovido()).isEqualTo(UPDATED_REMOVIDO);
-                assertThat(testRoteirizacaoSearch.getDataRemocao()).isEqualTo(UPDATED_DATA_REMOCAO);
-                assertThat(testRoteirizacaoSearch.getUsuarioRemocao()).isEqualTo(UPDATED_USUARIO_REMOCAO);
             });
     }
 
@@ -544,9 +1208,7 @@ class RoteirizacaoResourceIT {
             .dataHoraUltimaEntrega(UPDATED_DATA_HORA_ULTIMA_ENTREGA)
             .valorTotal(UPDATED_VALOR_TOTAL)
             .observacao(UPDATED_OBSERVACAO)
-            .usuarioCadastro(UPDATED_USUARIO_CADASTRO)
-            .dataCancelamento(UPDATED_DATA_CANCELAMENTO)
-            .usuarioRemocao(UPDATED_USUARIO_REMOCAO);
+            .removido(UPDATED_REMOVIDO);
 
         restRoteirizacaoMockMvc
             .perform(
@@ -566,16 +1228,8 @@ class RoteirizacaoResourceIT {
         assertThat(testRoteirizacao.getDataHoraUltimaEntrega()).isEqualTo(UPDATED_DATA_HORA_ULTIMA_ENTREGA);
         assertThat(testRoteirizacao.getValorTotal()).isEqualTo(UPDATED_VALOR_TOTAL);
         assertThat(testRoteirizacao.getObservacao()).isEqualTo(UPDATED_OBSERVACAO);
-        assertThat(testRoteirizacao.getDataCadastro()).isEqualTo(DEFAULT_DATA_CADASTRO);
-        assertThat(testRoteirizacao.getUsuarioCadastro()).isEqualTo(UPDATED_USUARIO_CADASTRO);
-        assertThat(testRoteirizacao.getDataAtualizacao()).isEqualTo(DEFAULT_DATA_ATUALIZACAO);
-        assertThat(testRoteirizacao.getUsuarioAtualizacao()).isEqualTo(DEFAULT_USUARIO_ATUALIZACAO);
         assertThat(testRoteirizacao.getCancelado()).isEqualTo(DEFAULT_CANCELADO);
-        assertThat(testRoteirizacao.getDataCancelamento()).isEqualTo(UPDATED_DATA_CANCELAMENTO);
-        assertThat(testRoteirizacao.getUsuarioCancelamento()).isEqualTo(DEFAULT_USUARIO_CANCELAMENTO);
-        assertThat(testRoteirizacao.getRemovido()).isEqualTo(DEFAULT_REMOVIDO);
-        assertThat(testRoteirizacao.getDataRemocao()).isEqualTo(DEFAULT_DATA_REMOCAO);
-        assertThat(testRoteirizacao.getUsuarioRemocao()).isEqualTo(UPDATED_USUARIO_REMOCAO);
+        assertThat(testRoteirizacao.getRemovido()).isEqualTo(UPDATED_REMOVIDO);
     }
 
     @Test
@@ -597,16 +1251,8 @@ class RoteirizacaoResourceIT {
             .dataHoraUltimaEntrega(UPDATED_DATA_HORA_ULTIMA_ENTREGA)
             .valorTotal(UPDATED_VALOR_TOTAL)
             .observacao(UPDATED_OBSERVACAO)
-            .dataCadastro(UPDATED_DATA_CADASTRO)
-            .usuarioCadastro(UPDATED_USUARIO_CADASTRO)
-            .dataAtualizacao(UPDATED_DATA_ATUALIZACAO)
-            .usuarioAtualizacao(UPDATED_USUARIO_ATUALIZACAO)
             .cancelado(UPDATED_CANCELADO)
-            .dataCancelamento(UPDATED_DATA_CANCELAMENTO)
-            .usuarioCancelamento(UPDATED_USUARIO_CANCELAMENTO)
-            .removido(UPDATED_REMOVIDO)
-            .dataRemocao(UPDATED_DATA_REMOCAO)
-            .usuarioRemocao(UPDATED_USUARIO_REMOCAO);
+            .removido(UPDATED_REMOVIDO);
 
         restRoteirizacaoMockMvc
             .perform(
@@ -626,16 +1272,8 @@ class RoteirizacaoResourceIT {
         assertThat(testRoteirizacao.getDataHoraUltimaEntrega()).isEqualTo(UPDATED_DATA_HORA_ULTIMA_ENTREGA);
         assertThat(testRoteirizacao.getValorTotal()).isEqualTo(UPDATED_VALOR_TOTAL);
         assertThat(testRoteirizacao.getObservacao()).isEqualTo(UPDATED_OBSERVACAO);
-        assertThat(testRoteirizacao.getDataCadastro()).isEqualTo(UPDATED_DATA_CADASTRO);
-        assertThat(testRoteirizacao.getUsuarioCadastro()).isEqualTo(UPDATED_USUARIO_CADASTRO);
-        assertThat(testRoteirizacao.getDataAtualizacao()).isEqualTo(UPDATED_DATA_ATUALIZACAO);
-        assertThat(testRoteirizacao.getUsuarioAtualizacao()).isEqualTo(UPDATED_USUARIO_ATUALIZACAO);
         assertThat(testRoteirizacao.getCancelado()).isEqualTo(UPDATED_CANCELADO);
-        assertThat(testRoteirizacao.getDataCancelamento()).isEqualTo(UPDATED_DATA_CANCELAMENTO);
-        assertThat(testRoteirizacao.getUsuarioCancelamento()).isEqualTo(UPDATED_USUARIO_CANCELAMENTO);
         assertThat(testRoteirizacao.getRemovido()).isEqualTo(UPDATED_REMOVIDO);
-        assertThat(testRoteirizacao.getDataRemocao()).isEqualTo(UPDATED_DATA_REMOCAO);
-        assertThat(testRoteirizacao.getUsuarioRemocao()).isEqualTo(UPDATED_USUARIO_REMOCAO);
     }
 
     @Test
@@ -759,15 +1397,7 @@ class RoteirizacaoResourceIT {
             .andExpect(jsonPath("$.[*].dataHoraUltimaEntrega").value(hasItem(sameInstant(DEFAULT_DATA_HORA_ULTIMA_ENTREGA))))
             .andExpect(jsonPath("$.[*].valorTotal").value(hasItem(DEFAULT_VALOR_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].observacao").value(hasItem(DEFAULT_OBSERVACAO)))
-            .andExpect(jsonPath("$.[*].dataCadastro").value(hasItem(sameInstant(DEFAULT_DATA_CADASTRO))))
-            .andExpect(jsonPath("$.[*].usuarioCadastro").value(hasItem(DEFAULT_USUARIO_CADASTRO)))
-            .andExpect(jsonPath("$.[*].dataAtualizacao").value(hasItem(sameInstant(DEFAULT_DATA_ATUALIZACAO))))
-            .andExpect(jsonPath("$.[*].usuarioAtualizacao").value(hasItem(DEFAULT_USUARIO_ATUALIZACAO)))
             .andExpect(jsonPath("$.[*].cancelado").value(hasItem(DEFAULT_CANCELADO.booleanValue())))
-            .andExpect(jsonPath("$.[*].dataCancelamento").value(hasItem(sameInstant(DEFAULT_DATA_CANCELAMENTO))))
-            .andExpect(jsonPath("$.[*].usuarioCancelamento").value(hasItem(DEFAULT_USUARIO_CANCELAMENTO)))
-            .andExpect(jsonPath("$.[*].removido").value(hasItem(DEFAULT_REMOVIDO.booleanValue())))
-            .andExpect(jsonPath("$.[*].dataRemocao").value(hasItem(sameInstant(DEFAULT_DATA_REMOCAO))))
-            .andExpect(jsonPath("$.[*].usuarioRemocao").value(hasItem(DEFAULT_USUARIO_REMOCAO)));
+            .andExpect(jsonPath("$.[*].removido").value(hasItem(DEFAULT_REMOVIDO.booleanValue())));
     }
 }

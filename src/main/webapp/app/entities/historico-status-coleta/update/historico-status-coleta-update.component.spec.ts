@@ -58,10 +58,10 @@ describe('HistoricoStatusColeta Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call SolicitacaoColeta query and add missing value', () => {
       const historicoStatusColeta: IHistoricoStatusColeta = { id: 456 };
-      const solicitacaoColeta: ISolicitacaoColeta = { id: 21213 };
+      const solicitacaoColeta: ISolicitacaoColeta = { id: 10385 };
       historicoStatusColeta.solicitacaoColeta = solicitacaoColeta;
 
-      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 16656 }];
+      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 31460 }];
       jest.spyOn(solicitacaoColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: solicitacaoColetaCollection })));
       const additionalSolicitacaoColetas = [solicitacaoColeta];
       const expectedCollection: ISolicitacaoColeta[] = [...additionalSolicitacaoColetas, ...solicitacaoColetaCollection];
@@ -80,10 +80,10 @@ describe('HistoricoStatusColeta Management Update Component', () => {
 
     it('Should call Roteirizacao query and add missing value', () => {
       const historicoStatusColeta: IHistoricoStatusColeta = { id: 456 };
-      const roteirizacao: IRoteirizacao = { id: 623 };
+      const roteirizacao: IRoteirizacao = { id: 2997 };
       historicoStatusColeta.roteirizacao = roteirizacao;
 
-      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 3201 }];
+      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 22692 }];
       jest.spyOn(roteirizacaoService, 'query').mockReturnValue(of(new HttpResponse({ body: roteirizacaoCollection })));
       const additionalRoteirizacaos = [roteirizacao];
       const expectedCollection: IRoteirizacao[] = [...additionalRoteirizacaos, ...roteirizacaoCollection];
@@ -102,12 +102,12 @@ describe('HistoricoStatusColeta Management Update Component', () => {
 
     it('Should call StatusColeta query and add missing value', () => {
       const historicoStatusColeta: IHistoricoStatusColeta = { id: 456 };
-      const statusColetaOrigem: IStatusColeta = { id: 8212 };
+      const statusColetaOrigem: IStatusColeta = { id: 32424 };
       historicoStatusColeta.statusColetaOrigem = statusColetaOrigem;
-      const statusColetaDestino: IStatusColeta = { id: 18582 };
+      const statusColetaDestino: IStatusColeta = { id: 6225 };
       historicoStatusColeta.statusColetaDestino = statusColetaDestino;
 
-      const statusColetaCollection: IStatusColeta[] = [{ id: 30598 }];
+      const statusColetaCollection: IStatusColeta[] = [{ id: 29070 }];
       jest.spyOn(statusColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: statusColetaCollection })));
       const additionalStatusColetas = [statusColetaOrigem, statusColetaDestino];
       const expectedCollection: IStatusColeta[] = [...additionalStatusColetas, ...statusColetaCollection];
@@ -126,13 +126,13 @@ describe('HistoricoStatusColeta Management Update Component', () => {
 
     it('Should update editForm', () => {
       const historicoStatusColeta: IHistoricoStatusColeta = { id: 456 };
-      const solicitacaoColeta: ISolicitacaoColeta = { id: 9879 };
+      const solicitacaoColeta: ISolicitacaoColeta = { id: 30314 };
       historicoStatusColeta.solicitacaoColeta = solicitacaoColeta;
-      const roteirizacao: IRoteirizacao = { id: 379 };
+      const roteirizacao: IRoteirizacao = { id: 27185 };
       historicoStatusColeta.roteirizacao = roteirizacao;
-      const statusColetaOrigem: IStatusColeta = { id: 20862 };
+      const statusColetaOrigem: IStatusColeta = { id: 3355 };
       historicoStatusColeta.statusColetaOrigem = statusColetaOrigem;
-      const statusColetaDestino: IStatusColeta = { id: 21686 };
+      const statusColetaDestino: IStatusColeta = { id: 12005 };
       historicoStatusColeta.statusColetaDestino = statusColetaDestino;
 
       activatedRoute.data = of({ historicoStatusColeta });

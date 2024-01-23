@@ -10,11 +10,27 @@ public class EnderecoTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static Endereco getEnderecoSample1() {
-        return new Endereco().id(1L).cep("cep1").endereco("endereco1").numero("numero1").complemento("complemento1").bairro("bairro1");
+        return new Endereco()
+            .id(1L)
+            .cep("cep1")
+            .endereco("endereco1")
+            .numero("numero1")
+            .complemento("complemento1")
+            .bairro("bairro1")
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static Endereco getEnderecoSample2() {
-        return new Endereco().id(2L).cep("cep2").endereco("endereco2").numero("numero2").complemento("complemento2").bairro("bairro2");
+        return new Endereco()
+            .id(2L)
+            .cep("cep2")
+            .endereco("endereco2")
+            .numero("numero2")
+            .complemento("complemento2")
+            .bairro("bairro2")
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static Endereco getEnderecoRandomSampleGenerator() {
@@ -24,6 +40,8 @@ public class EnderecoTestSamples {
             .endereco(UUID.randomUUID().toString())
             .numero(UUID.randomUUID().toString())
             .complemento(UUID.randomUUID().toString())
-            .bairro(UUID.randomUUID().toString());
+            .bairro(UUID.randomUUID().toString())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

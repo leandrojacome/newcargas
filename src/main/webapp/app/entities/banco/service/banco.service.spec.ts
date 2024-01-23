@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IBanco } from '../banco.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../banco.test-samples';
 
-import { BancoService } from './banco.service';
+import { BancoService, RestBanco } from './banco.service';
 
-const requireRestSample: IBanco = {
+const requireRestSample: RestBanco = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Banco Service', () => {

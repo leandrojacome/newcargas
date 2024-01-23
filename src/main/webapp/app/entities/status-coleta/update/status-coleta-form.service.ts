@@ -19,10 +19,9 @@ type StatusColetaFormGroupInput = IStatusColeta | PartialWithRequiredKeyOf<NewSt
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IStatusColeta | NewStatusColeta> = Omit<T, 'dataCadastro' | 'dataAtualizacao' | 'dataRemocao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataRemocao?: string | null;
+type FormValueOf<T extends IStatusColeta | NewStatusColeta> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type StatusColetaFormRawValue = FormValueOf<IStatusColeta>;
@@ -37,11 +36,10 @@ type StatusColetaFormDefaults = Pick<
   | 'permiteCancelar'
   | 'permiteEditar'
   | 'permiteExcluir'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
   | 'ativo'
   | 'removido'
-  | 'dataRemocao'
+  | 'createdDate'
+  | 'lastModifiedDate'
   | 'statusColetaOrigems'
 >;
 
@@ -56,14 +54,12 @@ type StatusColetaFormGroupContent = {
   permiteEditar: FormControl<StatusColetaFormRawValue['permiteEditar']>;
   permiteExcluir: FormControl<StatusColetaFormRawValue['permiteExcluir']>;
   descricao: FormControl<StatusColetaFormRawValue['descricao']>;
-  dataCadastro: FormControl<StatusColetaFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<StatusColetaFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<StatusColetaFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<StatusColetaFormRawValue['usuarioAtualizacao']>;
   ativo: FormControl<StatusColetaFormRawValue['ativo']>;
   removido: FormControl<StatusColetaFormRawValue['removido']>;
-  dataRemocao: FormControl<StatusColetaFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<StatusColetaFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<StatusColetaFormRawValue['createdBy']>;
+  createdDate: FormControl<StatusColetaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<StatusColetaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<StatusColetaFormRawValue['lastModifiedDate']>;
   statusColetaOrigems: FormControl<StatusColetaFormRawValue['statusColetaOrigems']>;
 };
 
@@ -101,22 +97,12 @@ export class StatusColetaFormService {
       descricao: new FormControl(statusColetaRawValue.descricao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(statusColetaRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(statusColetaRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(statusColetaRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(statusColetaRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       ativo: new FormControl(statusColetaRawValue.ativo),
       removido: new FormControl(statusColetaRawValue.removido),
-      dataRemocao: new FormControl(statusColetaRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(statusColetaRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(statusColetaRawValue.createdBy),
+      createdDate: new FormControl(statusColetaRawValue.createdDate),
+      lastModifiedBy: new FormControl(statusColetaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(statusColetaRawValue.lastModifiedDate),
       statusColetaOrigems: new FormControl(statusColetaRawValue.statusColetaOrigems ?? []),
     });
   }
@@ -145,11 +131,10 @@ export class StatusColetaFormService {
       permiteCancelar: false,
       permiteEditar: false,
       permiteExcluir: false,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       ativo: false,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
       statusColetaOrigems: [],
     };
   }
@@ -159,9 +144,8 @@ export class StatusColetaFormService {
   ): IStatusColeta | NewStatusColeta {
     return {
       ...rawStatusColeta,
-      dataCadastro: dayjs(rawStatusColeta.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawStatusColeta.dataAtualizacao, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawStatusColeta.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawStatusColeta.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawStatusColeta.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -170,9 +154,8 @@ export class StatusColetaFormService {
   ): StatusColetaFormRawValue | PartialWithRequiredKeyOf<NewStatusColetaFormRawValue> {
     return {
       ...statusColeta,
-      dataCadastro: statusColeta.dataCadastro ? statusColeta.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: statusColeta.dataAtualizacao ? statusColeta.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: statusColeta.dataRemocao ? statusColeta.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: statusColeta.createdDate ? statusColeta.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: statusColeta.lastModifiedDate ? statusColeta.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
       statusColetaOrigems: statusColeta.statusColetaOrigems ?? [],
     };
   }

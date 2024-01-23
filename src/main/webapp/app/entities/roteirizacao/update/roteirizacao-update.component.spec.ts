@@ -50,10 +50,10 @@ describe('Roteirizacao Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call StatusColeta query and add missing value', () => {
       const roteirizacao: IRoteirizacao = { id: 456 };
-      const statusColeta: IStatusColeta = { id: 6240 };
+      const statusColeta: IStatusColeta = { id: 21097 };
       roteirizacao.statusColeta = statusColeta;
 
-      const statusColetaCollection: IStatusColeta[] = [{ id: 8455 }];
+      const statusColetaCollection: IStatusColeta[] = [{ id: 13562 }];
       jest.spyOn(statusColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: statusColetaCollection })));
       const additionalStatusColetas = [statusColeta];
       const expectedCollection: IStatusColeta[] = [...additionalStatusColetas, ...statusColetaCollection];
@@ -72,7 +72,7 @@ describe('Roteirizacao Management Update Component', () => {
 
     it('Should update editForm', () => {
       const roteirizacao: IRoteirizacao = { id: 456 };
-      const statusColeta: IStatusColeta = { id: 15895 };
+      const statusColeta: IStatusColeta = { id: 19056 };
       roteirizacao.statusColeta = statusColeta;
 
       activatedRoute.data = of({ roteirizacao });

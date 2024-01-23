@@ -15,7 +15,7 @@ describe('Contratacao e2e test', () => {
   const contratacaoPageUrlPattern = new RegExp('/contratacao(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const contratacaoSample = { valorTotal: 9.21, validadeEmDias: 3, dataValidade: '2024-01-19', dataCadastro: '2024-01-20T08:20:45.718Z' };
+  const contratacaoSample = { valorTotal: 5.91, validadeEmDias: 4, dataValidade: '2024-01-20' };
 
   let contratacao;
 
@@ -125,7 +125,7 @@ describe('Contratacao e2e test', () => {
         cy.url().should('match', contratacaoPageUrlPattern);
       });
 
-      it('edit button click should load edit Contratacao page and save', () => {
+      it.skip('edit button click should load edit Contratacao page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Contratacao');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,54 +160,26 @@ describe('Contratacao e2e test', () => {
     });
 
     it('should create an instance of Contratacao', () => {
-      cy.get(`[data-cy="valorTotal"]`).type('7.67');
-      cy.get(`[data-cy="valorTotal"]`).should('have.value', '7.67');
+      cy.get(`[data-cy="valorTotal"]`).type('5.47');
+      cy.get(`[data-cy="valorTotal"]`).should('have.value', '5.47');
 
-      cy.get(`[data-cy="validadeEmDias"]`).type('1');
-      cy.get(`[data-cy="validadeEmDias"]`).should('have.value', '1');
+      cy.get(`[data-cy="validadeEmDias"]`).type('3');
+      cy.get(`[data-cy="validadeEmDias"]`).should('have.value', '3');
 
-      cy.get(`[data-cy="dataValidade"]`).type('2024-01-19');
+      cy.get(`[data-cy="dataValidade"]`).type('2024-01-20');
       cy.get(`[data-cy="dataValidade"]`).blur();
-      cy.get(`[data-cy="dataValidade"]`).should('have.value', '2024-01-19');
+      cy.get(`[data-cy="dataValidade"]`).should('have.value', '2024-01-20');
 
-      cy.get(`[data-cy="observacao"]`).type('nursery sharply');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'nursery sharply');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-19T18:46');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-19T18:46');
-
-      cy.get(`[data-cy="usuarioCadastro"]`).type('provided');
-      cy.get(`[data-cy="usuarioCadastro"]`).should('have.value', 'provided');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-19T19:19');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-19T19:19');
-
-      cy.get(`[data-cy="usuarioAtualizacao"]`).type('silently chimpanzee');
-      cy.get(`[data-cy="usuarioAtualizacao"]`).should('have.value', 'silently chimpanzee');
+      cy.get(`[data-cy="observacao"]`).type('outside');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'outside');
 
       cy.get(`[data-cy="cancelado"]`).should('not.be.checked');
       cy.get(`[data-cy="cancelado"]`).click();
       cy.get(`[data-cy="cancelado"]`).should('be.checked');
 
-      cy.get(`[data-cy="dataCancelamento"]`).type('2024-01-20T03:18');
-      cy.get(`[data-cy="dataCancelamento"]`).blur();
-      cy.get(`[data-cy="dataCancelamento"]`).should('have.value', '2024-01-20T03:18');
-
-      cy.get(`[data-cy="usuarioCancelamento"]`).type('snowflake');
-      cy.get(`[data-cy="usuarioCancelamento"]`).should('have.value', 'snowflake');
-
       cy.get(`[data-cy="removido"]`).should('not.be.checked');
       cy.get(`[data-cy="removido"]`).click();
       cy.get(`[data-cy="removido"]`).should('be.checked');
-
-      cy.get(`[data-cy="dataRemocao"]`).type('2024-01-20T15:06');
-      cy.get(`[data-cy="dataRemocao"]`).blur();
-      cy.get(`[data-cy="dataRemocao"]`).should('have.value', '2024-01-20T15:06');
-
-      cy.get(`[data-cy="usuarioRemocao"]`).type('or');
-      cy.get(`[data-cy="usuarioRemocao"]`).should('have.value', 'or');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

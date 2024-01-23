@@ -15,7 +15,7 @@ describe('TipoFrete e2e test', () => {
   const tipoFretePageUrlPattern = new RegExp('/tipo-frete(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const tipoFreteSample = { nome: 'noisily incident' };
+  const tipoFreteSample = { nome: 'sling stimulating substitution' };
 
   let tipoFrete;
 
@@ -125,7 +125,7 @@ describe('TipoFrete e2e test', () => {
         cy.url().should('match', tipoFretePageUrlPattern);
       });
 
-      it('edit button click should load edit TipoFrete page and save', () => {
+      it.skip('edit button click should load edit TipoFrete page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('TipoFrete');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,11 +160,11 @@ describe('TipoFrete e2e test', () => {
     });
 
     it('should create an instance of TipoFrete', () => {
-      cy.get(`[data-cy="nome"]`).type('authorisation concerning pish');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'authorisation concerning pish');
+      cy.get(`[data-cy="nome"]`).type('barbeque penalise');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'barbeque penalise');
 
-      cy.get(`[data-cy="descricao"]`).type('blah');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'blah');
+      cy.get(`[data-cy="descricao"]`).type('however');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'however');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

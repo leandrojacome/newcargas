@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.EnderecoRepository;
+import br.com.revenuebrasil.newcargas.service.EnderecoQueryService;
 import br.com.revenuebrasil.newcargas.service.EnderecoService;
+import br.com.revenuebrasil.newcargas.service.criteria.EnderecoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.EnderecoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class EnderecoResource {
 
     private final EnderecoRepository enderecoRepository;
 
-    public EnderecoResource(EnderecoService enderecoService, EnderecoRepository enderecoRepository) {
+    private final EnderecoQueryService enderecoQueryService;
+
+    public EnderecoResource(
+        EnderecoService enderecoService,
+        EnderecoRepository enderecoRepository,
+        EnderecoQueryService enderecoQueryService
+    ) {
         this.enderecoService = enderecoService;
         this.enderecoRepository = enderecoRepository;
+        this.enderecoQueryService = enderecoQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class EnderecoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<EnderecoDTO> updateEndereco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody EnderecoDTO enderecoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Endereco : {}, {}", id, enderecoDTO);
@@ -115,7 +124,7 @@ public class EnderecoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EnderecoDTO> partialUpdateEndereco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody EnderecoDTO enderecoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Endereco partially : {}, {}", id, enderecoDTO);
@@ -142,14 +151,31 @@ public class EnderecoResource {
      * {@code GET  /enderecos} : get all the enderecos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of enderecos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<EnderecoDTO>> getAllEnderecos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Enderecos");
-        Page<EnderecoDTO> page = enderecoService.findAll(pageable);
+    public ResponseEntity<List<EnderecoDTO>> getAllEnderecos(
+        EnderecoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Enderecos by criteria: {}", criteria);
+
+        Page<EnderecoDTO> page = enderecoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /enderecos/count} : count all the enderecos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEnderecos(EnderecoCriteria criteria) {
+        log.debug("REST request to count Enderecos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(enderecoQueryService.countByCriteria(criteria));
     }
 
     /**

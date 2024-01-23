@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.User;
 import br.com.revenuebrasil.newcargas.repository.UserRepository;
+import br.com.revenuebrasil.newcargas.repository.search.UserSearchRepository;
 import br.com.revenuebrasil.newcargas.security.AuthoritiesConstants;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +33,14 @@ class PublicUserResourceIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * This repository is mocked in the br.com.revenuebrasil.newcargas.repository.search test package.
+     *
+     * @see br.com.revenuebrasil.newcargas.repository.search.UserSearchRepositoryMockConfiguration
+     */
+    @Autowired
+    private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
     private EntityManager em;

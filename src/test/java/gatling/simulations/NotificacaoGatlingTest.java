@@ -84,13 +84,13 @@ public class NotificacaoGatlingTest extends Simulation {
                                 ", \"mensagem\": \"SAMPLE_TEXT\"" +
                                 ", \"dataHoraEnvio\": \"2020-01-01T00:00:00.000Z\"" +
                                 ", \"dataHoraLeitura\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
                                 ", \"lido\": null" +
                                 ", \"dataLeitura\": \"2020-01-01T00:00:00.000Z\"" +
                                 ", \"removido\": null" +
-                                ", \"dataRemocao\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioRemocao\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

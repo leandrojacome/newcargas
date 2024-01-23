@@ -26,8 +26,8 @@ public class TransportadoraTestSamples {
             .telefone("telefone1")
             .email("email1")
             .observacao("observacao1")
-            .usuarioCadastro("usuarioCadastro1")
-            .usuarioAtualizacao("usuarioAtualizacao1");
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static Transportadora getTransportadoraSample2() {
@@ -47,8 +47,8 @@ public class TransportadoraTestSamples {
             .telefone("telefone2")
             .email("email2")
             .observacao("observacao2")
-            .usuarioCadastro("usuarioCadastro2")
-            .usuarioAtualizacao("usuarioAtualizacao2");
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static Transportadora getTransportadoraRandomSampleGenerator() {
@@ -68,7 +68,7 @@ public class TransportadoraTestSamples {
             .telefone(UUID.randomUUID().toString())
             .email(UUID.randomUUID().toString())
             .observacao(UUID.randomUUID().toString())
-            .usuarioCadastro(UUID.randomUUID().toString())
-            .usuarioAtualizacao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

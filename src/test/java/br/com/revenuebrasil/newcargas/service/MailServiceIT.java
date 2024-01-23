@@ -30,12 +30,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.aot.DisabledInAotMode;
 import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Integration tests for {@link MailService}.
  */
 @IntegrationTest
+@DisabledInAotMode // workaround for https://github.com/spring-projects/spring-boot/issues/32195
 class MailServiceIT {
 
     private static final String[] languages = {

@@ -74,7 +74,18 @@ public class TipoCargaGatlingTest extends Simulation {
                     http("Create new tipoCarga")
                         .post("/api/tipo-cargas")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"nome\": \"SAMPLE_TEXT\"" + ", \"descricao\": \"SAMPLE_TEXT\"" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"nome\": \"SAMPLE_TEXT\"" +
+                                ", \"descricao\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_tipoCarga_url"))

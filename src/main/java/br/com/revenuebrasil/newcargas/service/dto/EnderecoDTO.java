@@ -3,6 +3,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 import br.com.revenuebrasil.newcargas.domain.enumeration.TipoEndereco;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -33,6 +34,14 @@ public class EnderecoDTO implements Serializable {
     @NotNull
     @Size(min = 2, max = 150)
     private String bairro;
+
+    private String createdBy;
+
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private CidadeDTO cidade;
 
@@ -102,6 +111,38 @@ public class EnderecoDTO implements Serializable {
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public CidadeDTO getCidade() {
@@ -192,6 +233,10 @@ public class EnderecoDTO implements Serializable {
             ", numero='" + getNumero() + "'" +
             ", complemento='" + getComplemento() + "'" +
             ", bairro='" + getBairro() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", cidade=" + getCidade() +
             ", embarcador=" + getEmbarcador() +
             ", transportadora=" + getTransportadora() +

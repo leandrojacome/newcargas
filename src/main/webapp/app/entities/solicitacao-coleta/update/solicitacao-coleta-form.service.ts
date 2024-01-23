@@ -21,14 +21,12 @@ type SolicitacaoColetaFormGroupInput = ISolicitacaoColeta | PartialWithRequiredK
  */
 type FormValueOf<T extends ISolicitacaoColeta | NewSolicitacaoColeta> = Omit<
   T,
-  'dataHoraColeta' | 'dataHoraEntrega' | 'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
+  'dataHoraColeta' | 'dataHoraEntrega' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataHoraColeta?: string | null;
   dataHoraEntrega?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type SolicitacaoColetaFormRawValue = FormValueOf<ISolicitacaoColeta>;
@@ -37,17 +35,7 @@ type NewSolicitacaoColetaFormRawValue = FormValueOf<NewSolicitacaoColeta>;
 
 type SolicitacaoColetaFormDefaults = Pick<
   NewSolicitacaoColeta,
-  | 'id'
-  | 'coletado'
-  | 'dataHoraColeta'
-  | 'entregue'
-  | 'dataHoraEntrega'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
-  | 'cancelado'
-  | 'dataCancelamento'
-  | 'removido'
-  | 'dataRemocao'
+  'id' | 'coletado' | 'dataHoraColeta' | 'entregue' | 'dataHoraEntrega' | 'cancelado' | 'removido' | 'createdDate' | 'lastModifiedDate'
 >;
 
 type SolicitacaoColetaFormGroupContent = {
@@ -58,14 +46,12 @@ type SolicitacaoColetaFormGroupContent = {
   dataHoraEntrega: FormControl<SolicitacaoColetaFormRawValue['dataHoraEntrega']>;
   valorTotal: FormControl<SolicitacaoColetaFormRawValue['valorTotal']>;
   observacao: FormControl<SolicitacaoColetaFormRawValue['observacao']>;
-  dataCadastro: FormControl<SolicitacaoColetaFormRawValue['dataCadastro']>;
-  dataAtualizacao: FormControl<SolicitacaoColetaFormRawValue['dataAtualizacao']>;
   cancelado: FormControl<SolicitacaoColetaFormRawValue['cancelado']>;
-  dataCancelamento: FormControl<SolicitacaoColetaFormRawValue['dataCancelamento']>;
-  usuarioCancelamento: FormControl<SolicitacaoColetaFormRawValue['usuarioCancelamento']>;
   removido: FormControl<SolicitacaoColetaFormRawValue['removido']>;
-  dataRemocao: FormControl<SolicitacaoColetaFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<SolicitacaoColetaFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<SolicitacaoColetaFormRawValue['createdBy']>;
+  createdDate: FormControl<SolicitacaoColetaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<SolicitacaoColetaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<SolicitacaoColetaFormRawValue['lastModifiedDate']>;
   embarcador: FormControl<SolicitacaoColetaFormRawValue['embarcador']>;
   statusColeta: FormControl<SolicitacaoColetaFormRawValue['statusColeta']>;
   roteirizacao: FormControl<SolicitacaoColetaFormRawValue['roteirizacao']>;
@@ -105,20 +91,12 @@ export class SolicitacaoColetaFormService {
       observacao: new FormControl(solicitacaoColetaRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(solicitacaoColetaRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      dataAtualizacao: new FormControl(solicitacaoColetaRawValue.dataAtualizacao),
       cancelado: new FormControl(solicitacaoColetaRawValue.cancelado),
-      dataCancelamento: new FormControl(solicitacaoColetaRawValue.dataCancelamento),
-      usuarioCancelamento: new FormControl(solicitacaoColetaRawValue.usuarioCancelamento, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       removido: new FormControl(solicitacaoColetaRawValue.removido),
-      dataRemocao: new FormControl(solicitacaoColetaRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(solicitacaoColetaRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(solicitacaoColetaRawValue.createdBy),
+      createdDate: new FormControl(solicitacaoColetaRawValue.createdDate),
+      lastModifiedBy: new FormControl(solicitacaoColetaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(solicitacaoColetaRawValue.lastModifiedDate),
       embarcador: new FormControl(solicitacaoColetaRawValue.embarcador),
       statusColeta: new FormControl(solicitacaoColetaRawValue.statusColeta),
       roteirizacao: new FormControl(solicitacaoColetaRawValue.roteirizacao),
@@ -154,12 +132,10 @@ export class SolicitacaoColetaFormService {
       dataHoraColeta: currentTime,
       entregue: false,
       dataHoraEntrega: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       cancelado: false,
-      dataCancelamento: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -170,10 +146,8 @@ export class SolicitacaoColetaFormService {
       ...rawSolicitacaoColeta,
       dataHoraColeta: dayjs(rawSolicitacaoColeta.dataHoraColeta, DATE_TIME_FORMAT),
       dataHoraEntrega: dayjs(rawSolicitacaoColeta.dataHoraEntrega, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawSolicitacaoColeta.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawSolicitacaoColeta.dataAtualizacao, DATE_TIME_FORMAT),
-      dataCancelamento: dayjs(rawSolicitacaoColeta.dataCancelamento, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawSolicitacaoColeta.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawSolicitacaoColeta.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawSolicitacaoColeta.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -184,10 +158,8 @@ export class SolicitacaoColetaFormService {
       ...solicitacaoColeta,
       dataHoraColeta: solicitacaoColeta.dataHoraColeta ? solicitacaoColeta.dataHoraColeta.format(DATE_TIME_FORMAT) : undefined,
       dataHoraEntrega: solicitacaoColeta.dataHoraEntrega ? solicitacaoColeta.dataHoraEntrega.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: solicitacaoColeta.dataCadastro ? solicitacaoColeta.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: solicitacaoColeta.dataAtualizacao ? solicitacaoColeta.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataCancelamento: solicitacaoColeta.dataCancelamento ? solicitacaoColeta.dataCancelamento.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: solicitacaoColeta.dataRemocao ? solicitacaoColeta.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: solicitacaoColeta.createdDate ? solicitacaoColeta.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: solicitacaoColeta.lastModifiedDate ? solicitacaoColeta.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

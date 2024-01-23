@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { ITipoFrete, NewTipoFrete } from './tipo-frete.model';
 
 export const sampleWithRequiredData: ITipoFrete = {
@@ -6,19 +8,26 @@ export const sampleWithRequiredData: ITipoFrete = {
 };
 
 export const sampleWithPartialData: ITipoFrete = {
-  id: 13590,
-  nome: 'roof',
-  descricao: 'stormy round severe',
+  id: 23750,
+  nome: 'taut famously',
+  descricao: 'loud circa queasy',
+  createdBy: 'seemingly',
+  createdDate: dayjs('2024-01-20T13:35'),
+  lastModifiedDate: dayjs('2024-01-20T08:47'),
 };
 
 export const sampleWithFullData: ITipoFrete = {
-  id: 19619,
-  nome: 'innocently',
-  descricao: 'attach without deserted',
+  id: 25543,
+  nome: 'quixotic how track',
+  descricao: 'brr',
+  createdBy: 'swill',
+  createdDate: dayjs('2024-01-19T19:43'),
+  lastModifiedBy: 'blah',
+  lastModifiedDate: dayjs('2024-01-20T06:00'),
 };
 
 export const sampleWithNewData: NewTipoFrete = {
-  nome: 'gah',
+  nome: 'intercede hm',
   id: null,
 };
 

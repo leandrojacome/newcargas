@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.ContaBancariaRepository;
+import br.com.revenuebrasil.newcargas.service.ContaBancariaQueryService;
 import br.com.revenuebrasil.newcargas.service.ContaBancariaService;
+import br.com.revenuebrasil.newcargas.service.criteria.ContaBancariaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.ContaBancariaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class ContaBancariaResource {
 
     private final ContaBancariaRepository contaBancariaRepository;
 
-    public ContaBancariaResource(ContaBancariaService contaBancariaService, ContaBancariaRepository contaBancariaRepository) {
+    private final ContaBancariaQueryService contaBancariaQueryService;
+
+    public ContaBancariaResource(
+        ContaBancariaService contaBancariaService,
+        ContaBancariaRepository contaBancariaRepository,
+        ContaBancariaQueryService contaBancariaQueryService
+    ) {
         this.contaBancariaService = contaBancariaService;
         this.contaBancariaRepository = contaBancariaRepository;
+        this.contaBancariaQueryService = contaBancariaQueryService;
     }
 
     /**
@@ -81,7 +90,7 @@ public class ContaBancariaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ContaBancariaDTO> updateContaBancaria(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody ContaBancariaDTO contaBancariaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update ContaBancaria : {}, {}", id, contaBancariaDTO);
@@ -116,7 +125,7 @@ public class ContaBancariaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContaBancariaDTO> partialUpdateContaBancaria(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody ContaBancariaDTO contaBancariaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update ContaBancaria partially : {}, {}", id, contaBancariaDTO);
@@ -143,14 +152,31 @@ public class ContaBancariaResource {
      * {@code GET  /conta-bancarias} : get all the contaBancarias.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contaBancarias in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<ContaBancariaDTO>> getAllContaBancarias(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of ContaBancarias");
-        Page<ContaBancariaDTO> page = contaBancariaService.findAll(pageable);
+    public ResponseEntity<List<ContaBancariaDTO>> getAllContaBancarias(
+        ContaBancariaCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get ContaBancarias by criteria: {}", criteria);
+
+        Page<ContaBancariaDTO> page = contaBancariaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /conta-bancarias/count} : count all the contaBancarias.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countContaBancarias(ContaBancariaCriteria criteria) {
+        log.debug("REST request to count ContaBancarias by criteria: {}", criteria);
+        return ResponseEntity.ok().body(contaBancariaQueryService.countByCriteria(criteria));
     }
 
     /**

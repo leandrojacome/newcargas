@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.CidadeRepository;
+import br.com.revenuebrasil.newcargas.service.CidadeQueryService;
 import br.com.revenuebrasil.newcargas.service.CidadeService;
+import br.com.revenuebrasil.newcargas.service.criteria.CidadeCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.CidadeDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,12 @@ public class CidadeResource {
 
     private final CidadeRepository cidadeRepository;
 
-    public CidadeResource(CidadeService cidadeService, CidadeRepository cidadeRepository) {
+    private final CidadeQueryService cidadeQueryService;
+
+    public CidadeResource(CidadeService cidadeService, CidadeRepository cidadeRepository, CidadeQueryService cidadeQueryService) {
         this.cidadeService = cidadeService;
         this.cidadeRepository = cidadeRepository;
+        this.cidadeQueryService = cidadeQueryService;
     }
 
     /**
@@ -80,7 +85,7 @@ public class CidadeResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<CidadeDTO> updateCidade(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody CidadeDTO cidadeDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Cidade : {}, {}", id, cidadeDTO);
@@ -115,7 +120,7 @@ public class CidadeResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<CidadeDTO> partialUpdateCidade(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody CidadeDTO cidadeDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Cidade partially : {}, {}", id, cidadeDTO);
@@ -142,14 +147,31 @@ public class CidadeResource {
      * {@code GET  /cidades} : get all the cidades.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of cidades in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<CidadeDTO>> getAllCidades(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Cidades");
-        Page<CidadeDTO> page = cidadeService.findAll(pageable);
+    public ResponseEntity<List<CidadeDTO>> getAllCidades(
+        CidadeCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Cidades by criteria: {}", criteria);
+
+        Page<CidadeDTO> page = cidadeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /cidades/count} : count all the cidades.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countCidades(CidadeCriteria criteria) {
+        log.debug("REST request to count Cidades by criteria: {}", criteria);
+        return ResponseEntity.ok().body(cidadeQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -74,7 +74,18 @@ public class CidadeGatlingTest extends Simulation {
                     http("Create new cidade")
                         .post("/api/cidades")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"nome\": \"SAMPLE_TEXT\"" + ", \"codigoIbge\": 0" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"nome\": \"SAMPLE_TEXT\"" +
+                                ", \"codigoIbge\": 0" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_cidade_url"))

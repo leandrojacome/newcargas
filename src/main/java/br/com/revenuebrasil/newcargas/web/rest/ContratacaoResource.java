@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.ContratacaoRepository;
+import br.com.revenuebrasil.newcargas.service.ContratacaoQueryService;
 import br.com.revenuebrasil.newcargas.service.ContratacaoService;
+import br.com.revenuebrasil.newcargas.service.criteria.ContratacaoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.ContratacaoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -18,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,9 +45,16 @@ public class ContratacaoResource {
 
     private final ContratacaoRepository contratacaoRepository;
 
-    public ContratacaoResource(ContratacaoService contratacaoService, ContratacaoRepository contratacaoRepository) {
+    private final ContratacaoQueryService contratacaoQueryService;
+
+    public ContratacaoResource(
+        ContratacaoService contratacaoService,
+        ContratacaoRepository contratacaoRepository,
+        ContratacaoQueryService contratacaoQueryService
+    ) {
         this.contratacaoService = contratacaoService;
         this.contratacaoRepository = contratacaoRepository;
+        this.contratacaoQueryService = contratacaoQueryService;
     }
 
     /**
@@ -81,7 +89,7 @@ public class ContratacaoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ContratacaoDTO> updateContratacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody ContratacaoDTO contratacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Contratacao : {}, {}", id, contratacaoDTO);
@@ -116,7 +124,7 @@ public class ContratacaoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContratacaoDTO> partialUpdateContratacao(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody ContratacaoDTO contratacaoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Contratacao partially : {}, {}", id, contratacaoDTO);
@@ -143,22 +151,31 @@ public class ContratacaoResource {
      * {@code GET  /contratacaos} : get all the contratacaos.
      *
      * @param pageable the pagination information.
-     * @param filter the filter of the request.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contratacaos in body.
      */
     @GetMapping("")
     public ResponseEntity<List<ContratacaoDTO>> getAllContratacaos(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "filter", required = false) String filter
+        ContratacaoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        if ("solicitacaocoleta-is-null".equals(filter)) {
-            log.debug("REST request to get all Contratacaos where solicitacaoColeta is null");
-            return new ResponseEntity<>(contratacaoService.findAllWhereSolicitacaoColetaIsNull(), HttpStatus.OK);
-        }
-        log.debug("REST request to get a page of Contratacaos");
-        Page<ContratacaoDTO> page = contratacaoService.findAll(pageable);
+        log.debug("REST request to get Contratacaos by criteria: {}", criteria);
+
+        Page<ContratacaoDTO> page = contratacaoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /contratacaos/count} : count all the contratacaos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countContratacaos(ContratacaoCriteria criteria) {
+        log.debug("REST request to count Contratacaos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(contratacaoQueryService.countByCriteria(criteria));
     }
 
     /**

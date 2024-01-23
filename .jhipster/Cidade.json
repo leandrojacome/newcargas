@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "cidade",
   "fields": [
     {
@@ -19,8 +20,43 @@
       "fieldValidateRules": ["max", "min"],
       "fieldValidateRulesMax": "7",
       "fieldValidateRulesMin": "7"
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Cidade",
   "pagination": "pagination",
   "relationships": [
@@ -32,23 +68,23 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "estado",
-      "otherEntityRelationshipName": "cidade",
-      "relationshipName": "estado",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "embarcador",
       "otherEntityRelationshipName": "cidade",
       "relationshipName": "embarcador",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "transportadora",
       "otherEntityRelationshipName": "cidade",
       "relationshipName": "transportadora",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "estado",
+      "otherEntityRelationshipName": "cidade",
+      "relationshipName": "estado",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
     }

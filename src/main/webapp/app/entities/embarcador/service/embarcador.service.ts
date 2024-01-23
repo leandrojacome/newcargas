@@ -14,9 +14,9 @@ import { IEmbarcador, NewEmbarcador } from '../embarcador.model';
 
 export type PartialUpdateEmbarcador = Partial<IEmbarcador> & Pick<IEmbarcador, 'id'>;
 
-type RestOf<T extends IEmbarcador | NewEmbarcador> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type RestOf<T extends IEmbarcador | NewEmbarcador> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestEmbarcador = RestOf<IEmbarcador>;
@@ -115,16 +115,16 @@ export class EmbarcadorService {
   protected convertDateFromClient<T extends IEmbarcador | NewEmbarcador | PartialUpdateEmbarcador>(embarcador: T): RestOf<T> {
     return {
       ...embarcador,
-      dataCadastro: embarcador.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: embarcador.dataAtualizacao?.toJSON() ?? null,
+      createdDate: embarcador.createdDate?.toJSON() ?? null,
+      lastModifiedDate: embarcador.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
   protected convertDateFromServer(restEmbarcador: RestEmbarcador): IEmbarcador {
     return {
       ...restEmbarcador,
-      dataCadastro: restEmbarcador.dataCadastro ? dayjs(restEmbarcador.dataCadastro) : undefined,
-      dataAtualizacao: restEmbarcador.dataAtualizacao ? dayjs(restEmbarcador.dataAtualizacao) : undefined,
+      createdDate: restEmbarcador.createdDate ? dayjs(restEmbarcador.createdDate) : undefined,
+      lastModifiedDate: restEmbarcador.lastModifiedDate ? dayjs(restEmbarcador.lastModifiedDate) : undefined,
     };
   }
 

@@ -1,10 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,8 +15,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "conta_bancaria")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "contabancaria")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ContaBancaria implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class ContaBancaria extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,35 +31,39 @@ public class ContaBancaria implements Serializable {
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "agencia", length = 10, nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String agencia;
 
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "conta", length = 10, nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String conta;
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
     @Size(min = 2, max = 150)
     @Column(name = "tipo", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String tipo;
 
     @Size(min = 2, max = 150)
     @Column(name = "pix", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String pix;
 
     @Size(min = 2, max = 150)
     @Column(name = "titular", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String titular;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "contaBancarias" }, allowSetters = true)
@@ -64,14 +71,14 @@ public class ContaBancaria implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Embarcador embarcador;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Transportadora transportadora;
@@ -169,30 +176,28 @@ public class ContaBancaria implements Serializable {
         this.titular = titular;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public ContaBancaria dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
+    // Inherited createdBy methods
+    public ContaBancaria createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public ContaBancaria dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
+    // Inherited createdDate methods
+    public ContaBancaria createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    // Inherited lastModifiedBy methods
+    public ContaBancaria lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public ContaBancaria lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Banco getBanco() {
@@ -264,8 +269,10 @@ public class ContaBancaria implements Serializable {
             ", tipo='" + getTipo() + "'" +
             ", pix='" + getPix() + "'" +
             ", titular='" + getTitular() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

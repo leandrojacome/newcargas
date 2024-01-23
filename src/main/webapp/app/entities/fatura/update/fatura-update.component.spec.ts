@@ -62,10 +62,10 @@ describe('Fatura Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Embarcador query and add missing value', () => {
       const fatura: IFatura = { id: 456 };
-      const embarcador: IEmbarcador = { id: 9360 };
+      const embarcador: IEmbarcador = { id: 20068 };
       fatura.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 13 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 21565 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -84,10 +84,10 @@ describe('Fatura Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const fatura: IFatura = { id: 456 };
-      const transportadora: ITransportadora = { id: 9285 };
+      const transportadora: ITransportadora = { id: 30091 };
       fatura.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 26011 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 12944 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -106,10 +106,10 @@ describe('Fatura Management Update Component', () => {
 
     it('Should call Contratacao query and add missing value', () => {
       const fatura: IFatura = { id: 456 };
-      const contratacao: IContratacao = { id: 30364 };
+      const contratacao: IContratacao = { id: 2634 };
       fatura.contratacao = contratacao;
 
-      const contratacaoCollection: IContratacao[] = [{ id: 21971 }];
+      const contratacaoCollection: IContratacao[] = [{ id: 25491 }];
       jest.spyOn(contratacaoService, 'query').mockReturnValue(of(new HttpResponse({ body: contratacaoCollection })));
       const additionalContratacaos = [contratacao];
       const expectedCollection: IContratacao[] = [...additionalContratacaos, ...contratacaoCollection];
@@ -128,10 +128,10 @@ describe('Fatura Management Update Component', () => {
 
     it('Should call FormaCobranca query and add missing value', () => {
       const fatura: IFatura = { id: 456 };
-      const formaCobranca: IFormaCobranca = { id: 5619 };
+      const formaCobranca: IFormaCobranca = { id: 32306 };
       fatura.formaCobranca = formaCobranca;
 
-      const formaCobrancaCollection: IFormaCobranca[] = [{ id: 29 }];
+      const formaCobrancaCollection: IFormaCobranca[] = [{ id: 2205 }];
       jest.spyOn(formaCobrancaService, 'query').mockReturnValue(of(new HttpResponse({ body: formaCobrancaCollection })));
       const additionalFormaCobrancas = [formaCobranca];
       const expectedCollection: IFormaCobranca[] = [...additionalFormaCobrancas, ...formaCobrancaCollection];
@@ -150,13 +150,13 @@ describe('Fatura Management Update Component', () => {
 
     it('Should update editForm', () => {
       const fatura: IFatura = { id: 456 };
-      const embarcador: IEmbarcador = { id: 23275 };
+      const embarcador: IEmbarcador = { id: 16372 };
       fatura.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 17403 };
+      const transportadora: ITransportadora = { id: 21232 };
       fatura.transportadora = transportadora;
-      const contratacao: IContratacao = { id: 14783 };
+      const contratacao: IContratacao = { id: 2693 };
       fatura.contratacao = contratacao;
-      const formaCobranca: IFormaCobranca = { id: 24107 };
+      const formaCobranca: IFormaCobranca = { id: 23109 };
       fatura.formaCobranca = formaCobranca;
 
       activatedRoute.data = of({ fatura });

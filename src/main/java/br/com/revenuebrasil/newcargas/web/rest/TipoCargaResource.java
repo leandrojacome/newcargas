@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TipoCargaRepository;
+import br.com.revenuebrasil.newcargas.service.TipoCargaQueryService;
 import br.com.revenuebrasil.newcargas.service.TipoCargaService;
+import br.com.revenuebrasil.newcargas.service.criteria.TipoCargaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TipoCargaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TipoCargaResource {
 
     private final TipoCargaRepository tipoCargaRepository;
 
-    public TipoCargaResource(TipoCargaService tipoCargaService, TipoCargaRepository tipoCargaRepository) {
+    private final TipoCargaQueryService tipoCargaQueryService;
+
+    public TipoCargaResource(
+        TipoCargaService tipoCargaService,
+        TipoCargaRepository tipoCargaRepository,
+        TipoCargaQueryService tipoCargaQueryService
+    ) {
         this.tipoCargaService = tipoCargaService;
         this.tipoCargaRepository = tipoCargaRepository;
+        this.tipoCargaQueryService = tipoCargaQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class TipoCargaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TipoCargaDTO> updateTipoCarga(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TipoCargaDTO tipoCargaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TipoCarga : {}, {}", id, tipoCargaDTO);
@@ -115,7 +124,7 @@ public class TipoCargaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TipoCargaDTO> partialUpdateTipoCarga(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TipoCargaDTO tipoCargaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TipoCarga partially : {}, {}", id, tipoCargaDTO);
@@ -142,14 +151,31 @@ public class TipoCargaResource {
      * {@code GET  /tipo-cargas} : get all the tipoCargas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tipoCargas in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TipoCargaDTO>> getAllTipoCargas(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TipoCargas");
-        Page<TipoCargaDTO> page = tipoCargaService.findAll(pageable);
+    public ResponseEntity<List<TipoCargaDTO>> getAllTipoCargas(
+        TipoCargaCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TipoCargas by criteria: {}", criteria);
+
+        Page<TipoCargaDTO> page = tipoCargaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tipo-cargas/count} : count all the tipoCargas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTipoCargas(TipoCargaCriteria criteria) {
+        log.debug("REST request to count TipoCargas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tipoCargaQueryService.countByCriteria(criteria));
     }
 
     /**

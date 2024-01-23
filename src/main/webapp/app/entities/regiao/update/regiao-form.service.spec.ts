@@ -23,6 +23,10 @@ describe('Regiao Form Service', () => {
             nome: expect.any(Object),
             sigla: expect.any(Object),
             descricao: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
           }),
         );
       });
@@ -36,6 +40,10 @@ describe('Regiao Form Service', () => {
             nome: expect.any(Object),
             sigla: expect.any(Object),
             descricao: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
           }),
         );
       });

@@ -3,44 +3,48 @@ import dayjs from 'dayjs/esm';
 import { INotaFiscalColeta, NewNotaFiscalColeta } from './nota-fiscal-coleta.model';
 
 export const sampleWithRequiredData: INotaFiscalColeta = {
-  id: 849,
-  numero: 'surprisingly',
-  serie: 'ick',
+  id: 16678,
+  numero: 'pro',
+  serie: 'ferry yoga',
 };
 
 export const sampleWithPartialData: INotaFiscalColeta = {
-  id: 17241,
-  numero: 'internalize includin',
+  id: 31605,
+  numero: 'including disruption',
   serie: 'among',
-  remetente: 'consequently',
-  quantidade: 6.21,
-  quantidadeTotal: 3,
-  observacao: 'responsible haversack',
-  dataAtualizacao: dayjs('2024-01-19T22:53'),
+  peso: 2.76,
+  dataEmissao: dayjs('2024-01-19T21:45'),
+  valorTotal: 8.45,
+  observacao: 'during',
+  createdDate: dayjs('2024-01-20T12:34'),
+  lastModifiedBy: 'daring er rewire',
+  lastModifiedDate: dayjs('2024-01-19T20:44'),
 };
 
 export const sampleWithFullData: INotaFiscalColeta = {
-  id: 30561,
-  numero: 'terrific append',
-  serie: 'continually steamrol',
-  remetente: 'hm silicon pastor',
-  destinatario: 'oh openly than',
-  metroCubico: 9.83,
-  quantidade: 9.48,
-  peso: 2.88,
-  dataEmissao: dayjs('2024-01-20T01:17'),
-  dataSaida: dayjs('2024-01-20T11:53'),
-  valorTotal: 6.63,
-  pesoTotal: 9.77,
-  quantidadeTotal: 1,
-  observacao: 'decriminalize snuggle potentially',
-  dataCadastro: dayjs('2024-01-20T04:37'),
-  dataAtualizacao: dayjs('2024-01-20T01:54'),
+  id: 21396,
+  numero: 'whereas what content',
+  serie: 'back before celebrat',
+  remetente: 'geez gah',
+  destinatario: 'mature versus spiral',
+  metroCubico: 4.67,
+  quantidade: 6.94,
+  peso: 8.04,
+  dataEmissao: dayjs('2024-01-20T15:21'),
+  dataSaida: dayjs('2024-01-20T04:35'),
+  valorTotal: 4.97,
+  pesoTotal: 2.92,
+  quantidadeTotal: 3,
+  observacao: 'intern plaster gather',
+  createdBy: 'remediate furiously respectful',
+  createdDate: dayjs('2024-01-20T04:16'),
+  lastModifiedBy: 'frivolous pish hm',
+  lastModifiedDate: dayjs('2024-01-20T13:54'),
 };
 
 export const sampleWithNewData: NewNotaFiscalColeta = {
-  numero: 'um',
-  serie: 'near rudely',
+  numero: 'consumption as',
+  serie: 'yet freely till',
   id: null,
 };
 

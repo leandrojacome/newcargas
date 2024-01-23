@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { IBanco, NewBanco } from './banco.model';
 
 export const sampleWithRequiredData: IBanco = {
@@ -6,18 +8,24 @@ export const sampleWithRequiredData: IBanco = {
 };
 
 export const sampleWithPartialData: IBanco = {
-  id: 2465,
-  nome: 'lest',
+  id: 11843,
+  nome: 'extremely ew incidentally',
+  createdBy: 'nor what tingling',
+  createdDate: dayjs('2024-01-19T22:01'),
 };
 
 export const sampleWithFullData: IBanco = {
-  id: 24758,
-  nome: 'encamp of variable',
-  codigo: 'loo',
+  id: 483,
+  nome: 'colorless',
+  codigo: 'pag',
+  createdBy: 'busk secret yippee',
+  createdDate: dayjs('2024-01-20T05:02'),
+  lastModifiedBy: 'yowza incompatible',
+  lastModifiedDate: dayjs('2024-01-20T12:20'),
 };
 
 export const sampleWithNewData: NewBanco = {
-  nome: 'wasp',
+  nome: 'excitedly',
   id: null,
 };
 

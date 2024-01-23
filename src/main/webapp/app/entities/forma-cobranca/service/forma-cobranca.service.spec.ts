@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IFormaCobranca } from '../forma-cobranca.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../forma-cobranca.test-samples';
 
-import { FormaCobrancaService } from './forma-cobranca.service';
+import { FormaCobrancaService, RestFormaCobranca } from './forma-cobranca.service';
 
-const requireRestSample: IFormaCobranca = {
+const requireRestSample: RestFormaCobranca = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('FormaCobranca Service', () => {

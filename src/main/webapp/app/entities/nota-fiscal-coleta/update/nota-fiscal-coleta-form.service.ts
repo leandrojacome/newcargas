@@ -21,19 +21,19 @@ type NotaFiscalColetaFormGroupInput = INotaFiscalColeta | PartialWithRequiredKey
  */
 type FormValueOf<T extends INotaFiscalColeta | NewNotaFiscalColeta> = Omit<
   T,
-  'dataEmissao' | 'dataSaida' | 'dataCadastro' | 'dataAtualizacao'
+  'dataEmissao' | 'dataSaida' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataEmissao?: string | null;
   dataSaida?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type NotaFiscalColetaFormRawValue = FormValueOf<INotaFiscalColeta>;
 
 type NewNotaFiscalColetaFormRawValue = FormValueOf<NewNotaFiscalColeta>;
 
-type NotaFiscalColetaFormDefaults = Pick<NewNotaFiscalColeta, 'id' | 'dataEmissao' | 'dataSaida' | 'dataCadastro' | 'dataAtualizacao'>;
+type NotaFiscalColetaFormDefaults = Pick<NewNotaFiscalColeta, 'id' | 'dataEmissao' | 'dataSaida' | 'createdDate' | 'lastModifiedDate'>;
 
 type NotaFiscalColetaFormGroupContent = {
   id: FormControl<NotaFiscalColetaFormRawValue['id'] | NewNotaFiscalColeta['id']>;
@@ -50,8 +50,10 @@ type NotaFiscalColetaFormGroupContent = {
   pesoTotal: FormControl<NotaFiscalColetaFormRawValue['pesoTotal']>;
   quantidadeTotal: FormControl<NotaFiscalColetaFormRawValue['quantidadeTotal']>;
   observacao: FormControl<NotaFiscalColetaFormRawValue['observacao']>;
-  dataCadastro: FormControl<NotaFiscalColetaFormRawValue['dataCadastro']>;
-  dataAtualizacao: FormControl<NotaFiscalColetaFormRawValue['dataAtualizacao']>;
+  createdBy: FormControl<NotaFiscalColetaFormRawValue['createdBy']>;
+  createdDate: FormControl<NotaFiscalColetaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<NotaFiscalColetaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<NotaFiscalColetaFormRawValue['lastModifiedDate']>;
   solicitacaoColeta: FormControl<NotaFiscalColetaFormRawValue['solicitacaoColeta']>;
 };
 
@@ -107,8 +109,10 @@ export class NotaFiscalColetaFormService {
       observacao: new FormControl(notaFiscalColetaRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(notaFiscalColetaRawValue.dataCadastro),
-      dataAtualizacao: new FormControl(notaFiscalColetaRawValue.dataAtualizacao),
+      createdBy: new FormControl(notaFiscalColetaRawValue.createdBy),
+      createdDate: new FormControl(notaFiscalColetaRawValue.createdDate),
+      lastModifiedBy: new FormControl(notaFiscalColetaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(notaFiscalColetaRawValue.lastModifiedDate),
       solicitacaoColeta: new FormControl(notaFiscalColetaRawValue.solicitacaoColeta),
     });
   }
@@ -139,8 +143,8 @@ export class NotaFiscalColetaFormService {
       id: null,
       dataEmissao: currentTime,
       dataSaida: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -151,8 +155,8 @@ export class NotaFiscalColetaFormService {
       ...rawNotaFiscalColeta,
       dataEmissao: dayjs(rawNotaFiscalColeta.dataEmissao, DATE_TIME_FORMAT),
       dataSaida: dayjs(rawNotaFiscalColeta.dataSaida, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawNotaFiscalColeta.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawNotaFiscalColeta.dataAtualizacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawNotaFiscalColeta.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawNotaFiscalColeta.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -163,8 +167,8 @@ export class NotaFiscalColetaFormService {
       ...notaFiscalColeta,
       dataEmissao: notaFiscalColeta.dataEmissao ? notaFiscalColeta.dataEmissao.format(DATE_TIME_FORMAT) : undefined,
       dataSaida: notaFiscalColeta.dataSaida ? notaFiscalColeta.dataSaida.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: notaFiscalColeta.dataCadastro ? notaFiscalColeta.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: notaFiscalColeta.dataAtualizacao ? notaFiscalColeta.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: notaFiscalColeta.createdDate ? notaFiscalColeta.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: notaFiscalColeta.lastModifiedDate ? notaFiscalColeta.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

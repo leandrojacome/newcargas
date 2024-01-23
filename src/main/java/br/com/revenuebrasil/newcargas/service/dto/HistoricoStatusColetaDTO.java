@@ -2,6 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -18,6 +19,14 @@ public class HistoricoStatusColetaDTO implements Serializable {
 
     @Size(min = 2, max = 500)
     private String observacao;
+
+    private String createdBy;
+
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private SolicitacaoColetaDTO solicitacaoColeta;
 
@@ -49,6 +58,38 @@ public class HistoricoStatusColetaDTO implements Serializable {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public SolicitacaoColetaDTO getSolicitacaoColeta() {
@@ -111,6 +152,10 @@ public class HistoricoStatusColetaDTO implements Serializable {
             "id=" + getId() +
             ", dataCriacao='" + getDataCriacao() + "'" +
             ", observacao='" + getObservacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", solicitacaoColeta=" + getSolicitacaoColeta() +
             ", roteirizacao=" + getRoteirizacao() +
             ", statusColetaOrigem=" + getStatusColetaOrigem() +

@@ -14,6 +14,8 @@ import { HistoricoStatusColetaService, RestHistoricoStatusColeta } from './histo
 const requireRestSample: RestHistoricoStatusColeta = {
   ...sampleWithRequiredData,
   dataCriacao: sampleWithRequiredData.dataCriacao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('HistoricoStatusColeta Service', () => {

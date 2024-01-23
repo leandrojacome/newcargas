@@ -21,15 +21,13 @@ type FaturaFormGroupInput = IFatura | PartialWithRequiredKeyOf<NewFatura>;
  */
 type FormValueOf<T extends IFatura | NewFatura> = Omit<
   T,
-  'dataFatura' | 'dataVencimento' | 'dataPagamento' | 'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
+  'dataFatura' | 'dataVencimento' | 'dataPagamento' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataFatura?: string | null;
   dataVencimento?: string | null;
   dataPagamento?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type FaturaFormRawValue = FormValueOf<IFatura>;
@@ -38,16 +36,7 @@ type NewFaturaFormRawValue = FormValueOf<NewFatura>;
 
 type FaturaFormDefaults = Pick<
   NewFatura,
-  | 'id'
-  | 'dataFatura'
-  | 'dataVencimento'
-  | 'dataPagamento'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
-  | 'cancelado'
-  | 'dataCancelamento'
-  | 'removido'
-  | 'dataRemocao'
+  'id' | 'dataFatura' | 'dataVencimento' | 'dataPagamento' | 'cancelado' | 'removido' | 'createdDate' | 'lastModifiedDate'
 >;
 
 type FaturaFormGroupContent = {
@@ -59,16 +48,12 @@ type FaturaFormGroupContent = {
   numeroParcela: FormControl<FaturaFormRawValue['numeroParcela']>;
   valorTotal: FormControl<FaturaFormRawValue['valorTotal']>;
   observacao: FormControl<FaturaFormRawValue['observacao']>;
-  dataCadastro: FormControl<FaturaFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<FaturaFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<FaturaFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<FaturaFormRawValue['usuarioAtualizacao']>;
   cancelado: FormControl<FaturaFormRawValue['cancelado']>;
-  dataCancelamento: FormControl<FaturaFormRawValue['dataCancelamento']>;
-  usuarioCancelamento: FormControl<FaturaFormRawValue['usuarioCancelamento']>;
   removido: FormControl<FaturaFormRawValue['removido']>;
-  dataRemocao: FormControl<FaturaFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<FaturaFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<FaturaFormRawValue['createdBy']>;
+  createdDate: FormControl<FaturaFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<FaturaFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<FaturaFormRawValue['lastModifiedDate']>;
   embarcador: FormControl<FaturaFormRawValue['embarcador']>;
   transportadora: FormControl<FaturaFormRawValue['transportadora']>;
   contratacao: FormControl<FaturaFormRawValue['contratacao']>;
@@ -111,26 +96,12 @@ export class FaturaFormService {
       observacao: new FormControl(faturaRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(faturaRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(faturaRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(faturaRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(faturaRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       cancelado: new FormControl(faturaRawValue.cancelado),
-      dataCancelamento: new FormControl(faturaRawValue.dataCancelamento),
-      usuarioCancelamento: new FormControl(faturaRawValue.usuarioCancelamento, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       removido: new FormControl(faturaRawValue.removido),
-      dataRemocao: new FormControl(faturaRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(faturaRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(faturaRawValue.createdBy),
+      createdDate: new FormControl(faturaRawValue.createdDate),
+      lastModifiedBy: new FormControl(faturaRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(faturaRawValue.lastModifiedDate),
       embarcador: new FormControl(faturaRawValue.embarcador),
       transportadora: new FormControl(faturaRawValue.transportadora),
       contratacao: new FormControl(faturaRawValue.contratacao),
@@ -160,12 +131,10 @@ export class FaturaFormService {
       dataFatura: currentTime,
       dataVencimento: currentTime,
       dataPagamento: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       cancelado: false,
-      dataCancelamento: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -175,10 +144,8 @@ export class FaturaFormService {
       dataFatura: dayjs(rawFatura.dataFatura, DATE_TIME_FORMAT),
       dataVencimento: dayjs(rawFatura.dataVencimento, DATE_TIME_FORMAT),
       dataPagamento: dayjs(rawFatura.dataPagamento, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawFatura.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawFatura.dataAtualizacao, DATE_TIME_FORMAT),
-      dataCancelamento: dayjs(rawFatura.dataCancelamento, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawFatura.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawFatura.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawFatura.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -190,10 +157,8 @@ export class FaturaFormService {
       dataFatura: fatura.dataFatura ? fatura.dataFatura.format(DATE_TIME_FORMAT) : undefined,
       dataVencimento: fatura.dataVencimento ? fatura.dataVencimento.format(DATE_TIME_FORMAT) : undefined,
       dataPagamento: fatura.dataPagamento ? fatura.dataPagamento.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: fatura.dataCadastro ? fatura.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: fatura.dataAtualizacao ? fatura.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataCancelamento: fatura.dataCancelamento ? fatura.dataCancelamento.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: fatura.dataRemocao ? fatura.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: fatura.createdDate ? fatura.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: fatura.lastModifiedDate ? fatura.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

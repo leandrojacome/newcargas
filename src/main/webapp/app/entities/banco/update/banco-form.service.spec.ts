@@ -22,6 +22,10 @@ describe('Banco Form Service', () => {
             id: expect.any(Object),
             nome: expect.any(Object),
             codigo: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
           }),
         );
       });
@@ -34,6 +38,10 @@ describe('Banco Form Service', () => {
             id: expect.any(Object),
             nome: expect.any(Object),
             codigo: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
           }),
         );
       });

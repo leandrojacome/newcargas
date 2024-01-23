@@ -14,16 +14,10 @@ import { ITomadaPreco, NewTomadaPreco } from '../tomada-preco.model';
 
 export type PartialUpdateTomadaPreco = Partial<ITomadaPreco> & Pick<ITomadaPreco, 'id'>;
 
-type RestOf<T extends ITomadaPreco | NewTomadaPreco> = Omit<
-  T,
-  'dataHoraEnvio' | 'dataCadastro' | 'dataAtualizacao' | 'dataAprovacao' | 'dataCancelamento' | 'dataRemocao'
-> & {
+type RestOf<T extends ITomadaPreco | NewTomadaPreco> = Omit<T, 'dataHoraEnvio' | 'createdDate' | 'lastModifiedDate'> & {
   dataHoraEnvio?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataAprovacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestTomadaPreco = RestOf<ITomadaPreco>;
@@ -125,11 +119,8 @@ export class TomadaPrecoService {
     return {
       ...tomadaPreco,
       dataHoraEnvio: tomadaPreco.dataHoraEnvio?.toJSON() ?? null,
-      dataCadastro: tomadaPreco.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: tomadaPreco.dataAtualizacao?.toJSON() ?? null,
-      dataAprovacao: tomadaPreco.dataAprovacao?.toJSON() ?? null,
-      dataCancelamento: tomadaPreco.dataCancelamento?.toJSON() ?? null,
-      dataRemocao: tomadaPreco.dataRemocao?.toJSON() ?? null,
+      createdDate: tomadaPreco.createdDate?.toJSON() ?? null,
+      lastModifiedDate: tomadaPreco.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -137,11 +128,8 @@ export class TomadaPrecoService {
     return {
       ...restTomadaPreco,
       dataHoraEnvio: restTomadaPreco.dataHoraEnvio ? dayjs(restTomadaPreco.dataHoraEnvio) : undefined,
-      dataCadastro: restTomadaPreco.dataCadastro ? dayjs(restTomadaPreco.dataCadastro) : undefined,
-      dataAtualizacao: restTomadaPreco.dataAtualizacao ? dayjs(restTomadaPreco.dataAtualizacao) : undefined,
-      dataAprovacao: restTomadaPreco.dataAprovacao ? dayjs(restTomadaPreco.dataAprovacao) : undefined,
-      dataCancelamento: restTomadaPreco.dataCancelamento ? dayjs(restTomadaPreco.dataCancelamento) : undefined,
-      dataRemocao: restTomadaPreco.dataRemocao ? dayjs(restTomadaPreco.dataRemocao) : undefined,
+      createdDate: restTomadaPreco.createdDate ? dayjs(restTomadaPreco.createdDate) : undefined,
+      lastModifiedDate: restTomadaPreco.lastModifiedDate ? dayjs(restTomadaPreco.lastModifiedDate) : undefined,
     };
   }
 

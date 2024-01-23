@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.HistoricoStatusColetaRepository;
+import br.com.revenuebrasil.newcargas.service.HistoricoStatusColetaQueryService;
 import br.com.revenuebrasil.newcargas.service.HistoricoStatusColetaService;
+import br.com.revenuebrasil.newcargas.service.criteria.HistoricoStatusColetaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.HistoricoStatusColetaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,12 +45,16 @@ public class HistoricoStatusColetaResource {
 
     private final HistoricoStatusColetaRepository historicoStatusColetaRepository;
 
+    private final HistoricoStatusColetaQueryService historicoStatusColetaQueryService;
+
     public HistoricoStatusColetaResource(
         HistoricoStatusColetaService historicoStatusColetaService,
-        HistoricoStatusColetaRepository historicoStatusColetaRepository
+        HistoricoStatusColetaRepository historicoStatusColetaRepository,
+        HistoricoStatusColetaQueryService historicoStatusColetaQueryService
     ) {
         this.historicoStatusColetaService = historicoStatusColetaService;
         this.historicoStatusColetaRepository = historicoStatusColetaRepository;
+        this.historicoStatusColetaQueryService = historicoStatusColetaQueryService;
     }
 
     /**
@@ -85,7 +91,7 @@ public class HistoricoStatusColetaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<HistoricoStatusColetaDTO> updateHistoricoStatusColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody HistoricoStatusColetaDTO historicoStatusColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update HistoricoStatusColeta : {}, {}", id, historicoStatusColetaDTO);
@@ -120,7 +126,7 @@ public class HistoricoStatusColetaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HistoricoStatusColetaDTO> partialUpdateHistoricoStatusColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody HistoricoStatusColetaDTO historicoStatusColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update HistoricoStatusColeta partially : {}, {}", id, historicoStatusColetaDTO);
@@ -147,16 +153,31 @@ public class HistoricoStatusColetaResource {
      * {@code GET  /historico-status-coletas} : get all the historicoStatusColetas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of historicoStatusColetas in body.
      */
     @GetMapping("")
     public ResponseEntity<List<HistoricoStatusColetaDTO>> getAllHistoricoStatusColetas(
+        HistoricoStatusColetaCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of HistoricoStatusColetas");
-        Page<HistoricoStatusColetaDTO> page = historicoStatusColetaService.findAll(pageable);
+        log.debug("REST request to get HistoricoStatusColetas by criteria: {}", criteria);
+
+        Page<HistoricoStatusColetaDTO> page = historicoStatusColetaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /historico-status-coletas/count} : count all the historicoStatusColetas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countHistoricoStatusColetas(HistoricoStatusColetaCriteria criteria) {
+        log.debug("REST request to count HistoricoStatusColetas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(historicoStatusColetaQueryService.countByCriteria(criteria));
     }
 
     /**

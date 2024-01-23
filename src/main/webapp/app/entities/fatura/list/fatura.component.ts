@@ -9,10 +9,11 @@ import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
-
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { FilterComponent, FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter';
 import { IFatura } from '../fatura.model';
+
 import { EntityArrayResponseType, FaturaService } from '../service/fatura.service';
 import { FaturaDeleteDialogComponent } from '../delete/fatura-delete-dialog.component';
 
@@ -29,18 +30,12 @@ import { FaturaDeleteDialogComponent } from '../delete/fatura-delete-dialog.comp
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    FilterComponent,
     ItemCountComponent,
   ],
 })
 export class FaturaComponent implements OnInit {
-  private static readonly NOT_SORTABLE_FIELDS_AFTER_SEARCH = [
-    'tipo',
-    'observacao',
-    'usuarioCadastro',
-    'usuarioAtualizacao',
-    'usuarioCancelamento',
-    'usuarioRemocao',
-  ];
+  private static readonly NOT_SORTABLE_FIELDS_AFTER_SEARCH = ['tipo', 'observacao', 'createdBy', 'lastModifiedBy'];
 
   faturas?: IFatura[];
   isLoading = false;
@@ -48,6 +43,7 @@ export class FaturaComponent implements OnInit {
   predicate = 'id';
   ascending = true;
   currentSearch = '';
+  filters: IFilterOptions = new FilterOptions();
 
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -74,6 +70,8 @@ export class FaturaComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+
+    this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
   }
 
   delete(fatura: IFatura): void {
@@ -101,17 +99,17 @@ export class FaturaComponent implements OnInit {
   }
 
   navigateToWithComponentValues(): void {
-    this.handleNavigation(this.page, this.predicate, this.ascending, this.currentSearch);
+    this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions, this.currentSearch);
   }
 
   navigateToPage(page = this.page): void {
-    this.handleNavigation(page, this.predicate, this.ascending, this.currentSearch);
+    this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions, this.currentSearch);
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending, this.currentSearch)),
+      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending, this.filters.filterOptions, this.currentSearch)),
     );
   }
 
@@ -121,6 +119,7 @@ export class FaturaComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+    this.filters.initializeFromParams(params);
     if (params.has('search') && params.get('search') !== '') {
       this.currentSearch = params.get('search') as string;
       if (FaturaComponent.NOT_SORTABLE_FIELDS_AFTER_SEARCH.includes(this.predicate)) {
@@ -147,6 +146,7 @@ export class FaturaComponent implements OnInit {
     page?: number,
     predicate?: string,
     ascending?: boolean,
+    filterOptions?: IFilterOption[],
     currentSearch?: string,
   ): Observable<EntityArrayResponseType> {
     this.isLoading = true;
@@ -157,6 +157,9 @@ export class FaturaComponent implements OnInit {
       query: currentSearch,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    filterOptions?.forEach(filterOption => {
+      queryObject[filterOption.name] = filterOption.values;
+    });
     if (this.currentSearch && this.currentSearch !== '') {
       return this.faturaService.search(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
@@ -164,13 +167,23 @@ export class FaturaComponent implements OnInit {
     }
   }
 
-  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean, currentSearch?: string): void {
-    const queryParamsObj = {
+  protected handleNavigation(
+    page = this.page,
+    predicate?: string,
+    ascending?: boolean,
+    filterOptions?: IFilterOption[],
+    currentSearch?: string,
+  ): void {
+    const queryParamsObj: any = {
       search: currentSearch,
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+
+    filterOptions?.forEach(filterOption => {
+      queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+    });
 
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,

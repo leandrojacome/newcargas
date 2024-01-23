@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import dayjs from 'dayjs/esm';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IRegiao, NewRegiao } from '../regiao.model';
 
 /**
@@ -14,13 +16,29 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type RegiaoFormGroupInput = IRegiao | PartialWithRequiredKeyOf<NewRegiao>;
 
-type RegiaoFormDefaults = Pick<NewRegiao, 'id'>;
+/**
+ * Type that converts some properties for forms.
+ */
+type FormValueOf<T extends IRegiao | NewRegiao> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+type RegiaoFormRawValue = FormValueOf<IRegiao>;
+
+type NewRegiaoFormRawValue = FormValueOf<NewRegiao>;
+
+type RegiaoFormDefaults = Pick<NewRegiao, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type RegiaoFormGroupContent = {
-  id: FormControl<IRegiao['id'] | NewRegiao['id']>;
-  nome: FormControl<IRegiao['nome']>;
-  sigla: FormControl<IRegiao['sigla']>;
-  descricao: FormControl<IRegiao['descricao']>;
+  id: FormControl<RegiaoFormRawValue['id'] | NewRegiao['id']>;
+  nome: FormControl<RegiaoFormRawValue['nome']>;
+  sigla: FormControl<RegiaoFormRawValue['sigla']>;
+  descricao: FormControl<RegiaoFormRawValue['descricao']>;
+  createdBy: FormControl<RegiaoFormRawValue['createdBy']>;
+  createdDate: FormControl<RegiaoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<RegiaoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<RegiaoFormRawValue['lastModifiedDate']>;
 };
 
 export type RegiaoFormGroup = FormGroup<RegiaoFormGroupContent>;
@@ -28,10 +46,10 @@ export type RegiaoFormGroup = FormGroup<RegiaoFormGroupContent>;
 @Injectable({ providedIn: 'root' })
 export class RegiaoFormService {
   createRegiaoFormGroup(regiao: RegiaoFormGroupInput = { id: null }): RegiaoFormGroup {
-    const regiaoRawValue = {
+    const regiaoRawValue = this.convertRegiaoToRegiaoRawValue({
       ...this.getFormDefaults(),
       ...regiao,
-    };
+    });
     return new FormGroup<RegiaoFormGroupContent>({
       id: new FormControl(
         { value: regiaoRawValue.id, disabled: true },
@@ -49,15 +67,19 @@ export class RegiaoFormService {
       descricao: new FormControl(regiaoRawValue.descricao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
+      createdBy: new FormControl(regiaoRawValue.createdBy),
+      createdDate: new FormControl(regiaoRawValue.createdDate),
+      lastModifiedBy: new FormControl(regiaoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(regiaoRawValue.lastModifiedDate),
     });
   }
 
   getRegiao(form: RegiaoFormGroup): IRegiao | NewRegiao {
-    return form.getRawValue() as IRegiao | NewRegiao;
+    return this.convertRegiaoRawValueToRegiao(form.getRawValue() as RegiaoFormRawValue | NewRegiaoFormRawValue);
   }
 
   resetForm(form: RegiaoFormGroup, regiao: RegiaoFormGroupInput): void {
-    const regiaoRawValue = { ...this.getFormDefaults(), ...regiao };
+    const regiaoRawValue = this.convertRegiaoToRegiaoRawValue({ ...this.getFormDefaults(), ...regiao });
     form.reset(
       {
         ...regiaoRawValue,
@@ -67,8 +89,30 @@ export class RegiaoFormService {
   }
 
   private getFormDefaults(): RegiaoFormDefaults {
+    const currentTime = dayjs();
+
     return {
       id: null,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
+    };
+  }
+
+  private convertRegiaoRawValueToRegiao(rawRegiao: RegiaoFormRawValue | NewRegiaoFormRawValue): IRegiao | NewRegiao {
+    return {
+      ...rawRegiao,
+      createdDate: dayjs(rawRegiao.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawRegiao.lastModifiedDate, DATE_TIME_FORMAT),
+    };
+  }
+
+  private convertRegiaoToRegiaoRawValue(
+    regiao: IRegiao | (Partial<NewRegiao> & RegiaoFormDefaults),
+  ): RegiaoFormRawValue | PartialWithRequiredKeyOf<NewRegiaoFormRawValue> {
+    return {
+      ...regiao,
+      createdDate: regiao.createdDate ? regiao.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: regiao.lastModifiedDate ? regiao.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +18,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "solicitacao_coleta")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "solicitacaocoleta")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class SolicitacaoColeta implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class SolicitacaoColeta extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +33,7 @@ public class SolicitacaoColeta implements Serializable {
 
     @NotNull
     @Column(name = "coletado", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean coletado;
 
     @NotNull
@@ -37,6 +42,7 @@ public class SolicitacaoColeta implements Serializable {
 
     @NotNull
     @Column(name = "entregue", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean entregue;
 
     @Column(name = "data_hora_entrega")
@@ -49,42 +55,31 @@ public class SolicitacaoColeta implements Serializable {
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
     @Column(name = "cancelado")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean cancelado;
 
-    @Column(name = "data_cancelamento")
-    private ZonedDateTime dataCancelamento;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cancelamento", length = 150)
-    private String usuarioCancelamento;
-
     @Column(name = "removido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean removido;
 
-    @Column(name = "data_remocao")
-    private ZonedDateTime dataRemocao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_remocao", length = 150)
-    private String usuarioRemocao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacaoColeta")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "enderecoOrigems", "enderecoDestinos", "solicitacaoColeta" }, allowSetters = true)
     private Set<NotaFiscalColeta> notaFiscalColetas = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacaoColetaOrigem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -101,6 +96,7 @@ public class SolicitacaoColeta implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacaoColetaDestino")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -117,12 +113,13 @@ public class SolicitacaoColeta implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacaoColeta")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "solicitacaoColeta", "roteirizacao", "statusColetaOrigem", "statusColetaDestino" }, allowSetters = true)
     private Set<HistoricoStatusColeta> historicoStatusColetas = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Embarcador embarcador;
@@ -242,32 +239,6 @@ public class SolicitacaoColeta implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public SolicitacaoColeta dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
-        return this;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public SolicitacaoColeta dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
-        return this;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
     public Boolean getCancelado() {
         return this.cancelado;
     }
@@ -279,32 +250,6 @@ public class SolicitacaoColeta implements Serializable {
 
     public void setCancelado(Boolean cancelado) {
         this.cancelado = cancelado;
-    }
-
-    public ZonedDateTime getDataCancelamento() {
-        return this.dataCancelamento;
-    }
-
-    public SolicitacaoColeta dataCancelamento(ZonedDateTime dataCancelamento) {
-        this.setDataCancelamento(dataCancelamento);
-        return this;
-    }
-
-    public void setDataCancelamento(ZonedDateTime dataCancelamento) {
-        this.dataCancelamento = dataCancelamento;
-    }
-
-    public String getUsuarioCancelamento() {
-        return this.usuarioCancelamento;
-    }
-
-    public SolicitacaoColeta usuarioCancelamento(String usuarioCancelamento) {
-        this.setUsuarioCancelamento(usuarioCancelamento);
-        return this;
-    }
-
-    public void setUsuarioCancelamento(String usuarioCancelamento) {
-        this.usuarioCancelamento = usuarioCancelamento;
     }
 
     public Boolean getRemovido() {
@@ -320,30 +265,28 @@ public class SolicitacaoColeta implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return this.dataRemocao;
-    }
-
-    public SolicitacaoColeta dataRemocao(ZonedDateTime dataRemocao) {
-        this.setDataRemocao(dataRemocao);
+    // Inherited createdBy methods
+    public SolicitacaoColeta createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
-    }
-
-    public String getUsuarioRemocao() {
-        return this.usuarioRemocao;
-    }
-
-    public SolicitacaoColeta usuarioRemocao(String usuarioRemocao) {
-        this.setUsuarioRemocao(usuarioRemocao);
+    // Inherited createdDate methods
+    public SolicitacaoColeta createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    // Inherited lastModifiedBy methods
+    public SolicitacaoColeta lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public SolicitacaoColeta lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Set<NotaFiscalColeta> getNotaFiscalColetas() {
@@ -552,14 +495,12 @@ public class SolicitacaoColeta implements Serializable {
             ", dataHoraEntrega='" + getDataHoraEntrega() + "'" +
             ", valorTotal=" + getValorTotal() +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
             ", cancelado='" + getCancelado() + "'" +
-            ", dataCancelamento='" + getDataCancelamento() + "'" +
-            ", usuarioCancelamento='" + getUsuarioCancelamento() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

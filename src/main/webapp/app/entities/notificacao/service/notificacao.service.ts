@@ -16,14 +16,13 @@ export type PartialUpdateNotificacao = Partial<INotificacao> & Pick<INotificacao
 
 type RestOf<T extends INotificacao | NewNotificacao> = Omit<
   T,
-  'dataHoraEnvio' | 'dataHoraLeitura' | 'dataCadastro' | 'dataAtualizacao' | 'dataLeitura' | 'dataRemocao'
+  'dataHoraEnvio' | 'dataHoraLeitura' | 'dataLeitura' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataHoraEnvio?: string | null;
   dataHoraLeitura?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
   dataLeitura?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestNotificacao = RestOf<INotificacao>;
@@ -126,10 +125,9 @@ export class NotificacaoService {
       ...notificacao,
       dataHoraEnvio: notificacao.dataHoraEnvio?.toJSON() ?? null,
       dataHoraLeitura: notificacao.dataHoraLeitura?.toJSON() ?? null,
-      dataCadastro: notificacao.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: notificacao.dataAtualizacao?.toJSON() ?? null,
       dataLeitura: notificacao.dataLeitura?.toJSON() ?? null,
-      dataRemocao: notificacao.dataRemocao?.toJSON() ?? null,
+      createdDate: notificacao.createdDate?.toJSON() ?? null,
+      lastModifiedDate: notificacao.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -138,10 +136,9 @@ export class NotificacaoService {
       ...restNotificacao,
       dataHoraEnvio: restNotificacao.dataHoraEnvio ? dayjs(restNotificacao.dataHoraEnvio) : undefined,
       dataHoraLeitura: restNotificacao.dataHoraLeitura ? dayjs(restNotificacao.dataHoraLeitura) : undefined,
-      dataCadastro: restNotificacao.dataCadastro ? dayjs(restNotificacao.dataCadastro) : undefined,
-      dataAtualizacao: restNotificacao.dataAtualizacao ? dayjs(restNotificacao.dataAtualizacao) : undefined,
       dataLeitura: restNotificacao.dataLeitura ? dayjs(restNotificacao.dataLeitura) : undefined,
-      dataRemocao: restNotificacao.dataRemocao ? dayjs(restNotificacao.dataRemocao) : undefined,
+      createdDate: restNotificacao.createdDate ? dayjs(restNotificacao.createdDate) : undefined,
+      lastModifiedDate: restNotificacao.lastModifiedDate ? dayjs(restNotificacao.lastModifiedDate) : undefined,
     };
   }
 

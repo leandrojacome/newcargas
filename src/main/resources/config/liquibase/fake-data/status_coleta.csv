@@ -1,11 +1,11 @@
-id;nome;cor;ordem;estado_inicial;estado_final;permite_cancelar;permite_editar;permite_excluir;descricao;data_cadastro;usuario_cadastro;data_atualizacao;usuario_atualizacao;ativo;removido;data_remocao;usuario_remocao
-1;divide for;inexperi;1;false;false;false;true;true;hm;2024-01-20T13:22:29;soften constant;2024-01-20T08:44:48;recruit;true;true;2024-01-20T05:58:17;whose lunge yawningly
-2;via;thundero;1;true;true;true;false;true;consequently braces yearly;2024-01-20T08:12:42;haunting;2024-01-20T02:50:11;psst;true;true;2024-01-20T06:36:18;actual normal sleepily
-3;ha shy;bravely ;3;true;true;true;false;true;reappraise tutu next;2024-01-20T07:34:03;after young lest;2024-01-20T09:01:20;upward plow oof;false;true;2024-01-20T10:56:51;voluntarily
-4;oof yowza;meh;4;true;false;true;true;true;judgementally glare actually;2024-01-19T20:31:57;plow;2024-01-20T07:52:27;afterwards;false;false;2024-01-20T02:05:09;leg uneven positively
-5;ouch badly;underper;2;true;false;false;true;false;intermingle popular slouch;2024-01-20T10:07:22;awkward readily beside;2024-01-20T14:42:24;upright mediocre era;false;true;2024-01-20T09:28:29;inside
-6;as square ferociously;glow rop;3;true;true;false;false;false;so furrow;2024-01-20T00:13:40;report;2024-01-20T16:03:35;tremendous finally;true;false;2024-01-20T02:31:18;alongside
-7;utterly knavishly;until wh;2;true;false;false;true;false;interface;2024-01-20T15:45:16;dresser greedily;2024-01-19T22:34:42;connive;true;false;2024-01-20T13:19:15;typify unsightly
-8;bland;true foo;3;false;false;true;true;false;aha though times;2024-01-20T00:23:30;lollop;2024-01-20T05:36:09;brief;true;true;2024-01-20T06:48:36;rosemary yowza
-9;hurtful rent kiddingly;astride ;3;false;true;true;true;true;wisely throughout tinge;2024-01-19T18:24:07;dream boohoo imaginative;2024-01-19T23:16:37;temporariness flank inhale;true;false;2024-01-20T02:51:07;grimy circle
-10;mobilize boohoo destruction;beside e;1;true;false;false;false;true;nor;2024-01-20T01:04:29;ball;2024-01-20T16:54:04;pish er;false;false;2024-01-19T22:55:56;yippee staid
+id;nome;cor;ordem;estado_inicial;estado_final;permite_cancelar;permite_editar;permite_excluir;descricao;ativo;removido;created_by;created_date;last_modified_by;last_modified_date
+1;divide for;inexperi;1;false;false;false;true;true;hm;true;false;underneath immediately inside;2024-01-20T00:14:08;settle;2024-01-20T08:57:56
+2;astride harrow;dull zeb;3;true;true;true;true;true;crossly westernise;true;true;indeed somber for;2024-01-20T00:26:46;molder;2024-01-19T17:05:35
+3;raccoon authorized annul;circa am;1;false;true;true;true;false;blend ick;true;false;homestead;2024-01-19T18:31:55;graft;2024-01-19T23:43:07
+4;win circular beyond;upward p;4;true;true;true;true;false;whenever;false;true;kneel once cylindrical;2024-01-20T09:50:04;equatorial;2024-01-20T07:33:49
+5;annually whether;plow;2;true;false;true;true;false;besides;false;true;before critical yum;2024-01-20T07:45:53;roughly artifact what;2024-01-20T14:17:38
+6;than weigh;slouch u;3;true;false;false;false;true;decline than nursery;true;false;interrelate yowza fond;2024-01-20T13:23:21;tether above;2024-01-19T17:18:07
+7;since;unto;3;false;false;false;true;false;shoes brightly unnaturally;true;true;since nasalise cooperative;2024-01-20T12:08:46;caterpillar parachute till;2024-01-19T21:32:46
+8;alarming surprisingly vice;than;3;true;false;true;true;false;phew which speedily;true;false;really;2024-01-20T13:19:15;typify unsightly;2024-01-20T12:30:54
+9;liquidise true fooey;suspende;2;false;false;false;true;false;anxious frown ugh;false;true;bleakly;2024-01-20T02:45:20;beside treasured;2024-01-20T04:54:43
+10;knowledgeably;positive;1;false;false;true;true;true;delightfully;false;false;victoriously oof dream;2024-01-20T01:18:23;interval;2024-01-20T02:50:10

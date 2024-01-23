@@ -10,10 +10,9 @@ const requireRestSample: RestNotificacao = {
   ...sampleWithRequiredData,
   dataHoraEnvio: sampleWithRequiredData.dataHoraEnvio?.toJSON(),
   dataHoraLeitura: sampleWithRequiredData.dataHoraLeitura?.toJSON(),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
   dataLeitura: sampleWithRequiredData.dataLeitura?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Notificacao Service', () => {

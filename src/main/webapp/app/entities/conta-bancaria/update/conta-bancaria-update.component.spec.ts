@@ -58,10 +58,10 @@ describe('ContaBancaria Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Banco query and add missing value', () => {
       const contaBancaria: IContaBancaria = { id: 456 };
-      const banco: IBanco = { id: 29875 };
+      const banco: IBanco = { id: 6231 };
       contaBancaria.banco = banco;
 
-      const bancoCollection: IBanco[] = [{ id: 25709 }];
+      const bancoCollection: IBanco[] = [{ id: 21629 }];
       jest.spyOn(bancoService, 'query').mockReturnValue(of(new HttpResponse({ body: bancoCollection })));
       const additionalBancos = [banco];
       const expectedCollection: IBanco[] = [...additionalBancos, ...bancoCollection];
@@ -80,10 +80,10 @@ describe('ContaBancaria Management Update Component', () => {
 
     it('Should call Embarcador query and add missing value', () => {
       const contaBancaria: IContaBancaria = { id: 456 };
-      const embarcador: IEmbarcador = { id: 8433 };
+      const embarcador: IEmbarcador = { id: 21425 };
       contaBancaria.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 3233 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 24715 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -102,10 +102,10 @@ describe('ContaBancaria Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const contaBancaria: IContaBancaria = { id: 456 };
-      const transportadora: ITransportadora = { id: 11718 };
+      const transportadora: ITransportadora = { id: 19267 };
       contaBancaria.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 24869 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 29656 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -124,11 +124,11 @@ describe('ContaBancaria Management Update Component', () => {
 
     it('Should update editForm', () => {
       const contaBancaria: IContaBancaria = { id: 456 };
-      const banco: IBanco = { id: 483 };
+      const banco: IBanco = { id: 4360 };
       contaBancaria.banco = banco;
-      const embarcador: IEmbarcador = { id: 7551 };
+      const embarcador: IEmbarcador = { id: 741 };
       contaBancaria.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 32524 };
+      const transportadora: ITransportadora = { id: 4559 };
       contaBancaria.transportadora = transportadora;
 
       activatedRoute.data = of({ contaBancaria });

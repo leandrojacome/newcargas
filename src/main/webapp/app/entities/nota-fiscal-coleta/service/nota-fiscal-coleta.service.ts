@@ -16,12 +16,12 @@ export type PartialUpdateNotaFiscalColeta = Partial<INotaFiscalColeta> & Pick<IN
 
 type RestOf<T extends INotaFiscalColeta | NewNotaFiscalColeta> = Omit<
   T,
-  'dataEmissao' | 'dataSaida' | 'dataCadastro' | 'dataAtualizacao'
+  'dataEmissao' | 'dataSaida' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataEmissao?: string | null;
   dataSaida?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestNotaFiscalColeta = RestOf<INotaFiscalColeta>;
@@ -130,8 +130,8 @@ export class NotaFiscalColetaService {
       ...notaFiscalColeta,
       dataEmissao: notaFiscalColeta.dataEmissao?.toJSON() ?? null,
       dataSaida: notaFiscalColeta.dataSaida?.toJSON() ?? null,
-      dataCadastro: notaFiscalColeta.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: notaFiscalColeta.dataAtualizacao?.toJSON() ?? null,
+      createdDate: notaFiscalColeta.createdDate?.toJSON() ?? null,
+      lastModifiedDate: notaFiscalColeta.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -140,8 +140,8 @@ export class NotaFiscalColetaService {
       ...restNotaFiscalColeta,
       dataEmissao: restNotaFiscalColeta.dataEmissao ? dayjs(restNotaFiscalColeta.dataEmissao) : undefined,
       dataSaida: restNotaFiscalColeta.dataSaida ? dayjs(restNotaFiscalColeta.dataSaida) : undefined,
-      dataCadastro: restNotaFiscalColeta.dataCadastro ? dayjs(restNotaFiscalColeta.dataCadastro) : undefined,
-      dataAtualizacao: restNotaFiscalColeta.dataAtualizacao ? dayjs(restNotaFiscalColeta.dataAtualizacao) : undefined,
+      createdDate: restNotaFiscalColeta.createdDate ? dayjs(restNotaFiscalColeta.createdDate) : undefined,
+      lastModifiedDate: restNotaFiscalColeta.lastModifiedDate ? dayjs(restNotaFiscalColeta.lastModifiedDate) : undefined,
     };
   }
 

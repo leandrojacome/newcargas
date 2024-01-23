@@ -66,10 +66,10 @@ describe('Endereco Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Cidade query and add missing value', () => {
       const endereco: IEndereco = { id: 456 };
-      const cidade: ICidade = { id: 14890 };
+      const cidade: ICidade = { id: 26319 };
       endereco.cidade = cidade;
 
-      const cidadeCollection: ICidade[] = [{ id: 2138 }];
+      const cidadeCollection: ICidade[] = [{ id: 12484 }];
       jest.spyOn(cidadeService, 'query').mockReturnValue(of(new HttpResponse({ body: cidadeCollection })));
       const additionalCidades = [cidade];
       const expectedCollection: ICidade[] = [...additionalCidades, ...cidadeCollection];
@@ -88,10 +88,10 @@ describe('Endereco Management Update Component', () => {
 
     it('Should call Embarcador query and add missing value', () => {
       const endereco: IEndereco = { id: 456 };
-      const embarcador: IEmbarcador = { id: 22281 };
+      const embarcador: IEmbarcador = { id: 13764 };
       endereco.embarcador = embarcador;
 
-      const embarcadorCollection: IEmbarcador[] = [{ id: 25835 }];
+      const embarcadorCollection: IEmbarcador[] = [{ id: 31464 }];
       jest.spyOn(embarcadorService, 'query').mockReturnValue(of(new HttpResponse({ body: embarcadorCollection })));
       const additionalEmbarcadors = [embarcador];
       const expectedCollection: IEmbarcador[] = [...additionalEmbarcadors, ...embarcadorCollection];
@@ -110,10 +110,10 @@ describe('Endereco Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const endereco: IEndereco = { id: 456 };
-      const transportadora: ITransportadora = { id: 442 };
+      const transportadora: ITransportadora = { id: 2587 };
       endereco.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 24684 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 18405 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -132,12 +132,12 @@ describe('Endereco Management Update Component', () => {
 
     it('Should call NotaFiscalColeta query and add missing value', () => {
       const endereco: IEndereco = { id: 456 };
-      const notaFiscalColetaOrigem: INotaFiscalColeta = { id: 15567 };
+      const notaFiscalColetaOrigem: INotaFiscalColeta = { id: 6120 };
       endereco.notaFiscalColetaOrigem = notaFiscalColetaOrigem;
-      const notaFiscalColetaDestino: INotaFiscalColeta = { id: 22354 };
+      const notaFiscalColetaDestino: INotaFiscalColeta = { id: 16016 };
       endereco.notaFiscalColetaDestino = notaFiscalColetaDestino;
 
-      const notaFiscalColetaCollection: INotaFiscalColeta[] = [{ id: 20476 }];
+      const notaFiscalColetaCollection: INotaFiscalColeta[] = [{ id: 15567 }];
       jest.spyOn(notaFiscalColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: notaFiscalColetaCollection })));
       const additionalNotaFiscalColetas = [notaFiscalColetaOrigem, notaFiscalColetaDestino];
       const expectedCollection: INotaFiscalColeta[] = [...additionalNotaFiscalColetas, ...notaFiscalColetaCollection];
@@ -156,12 +156,12 @@ describe('Endereco Management Update Component', () => {
 
     it('Should call SolicitacaoColeta query and add missing value', () => {
       const endereco: IEndereco = { id: 456 };
-      const solicitacaoColetaOrigem: ISolicitacaoColeta = { id: 4690 };
+      const solicitacaoColetaOrigem: ISolicitacaoColeta = { id: 24297 };
       endereco.solicitacaoColetaOrigem = solicitacaoColetaOrigem;
-      const solicitacaoColetaDestino: ISolicitacaoColeta = { id: 29353 };
+      const solicitacaoColetaDestino: ISolicitacaoColeta = { id: 470 };
       endereco.solicitacaoColetaDestino = solicitacaoColetaDestino;
 
-      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 3291 }];
+      const solicitacaoColetaCollection: ISolicitacaoColeta[] = [{ id: 3382 }];
       jest.spyOn(solicitacaoColetaService, 'query').mockReturnValue(of(new HttpResponse({ body: solicitacaoColetaCollection })));
       const additionalSolicitacaoColetas = [solicitacaoColetaOrigem, solicitacaoColetaDestino];
       const expectedCollection: ISolicitacaoColeta[] = [...additionalSolicitacaoColetas, ...solicitacaoColetaCollection];
@@ -180,19 +180,19 @@ describe('Endereco Management Update Component', () => {
 
     it('Should update editForm', () => {
       const endereco: IEndereco = { id: 456 };
-      const cidade: ICidade = { id: 11619 };
+      const cidade: ICidade = { id: 15056 };
       endereco.cidade = cidade;
-      const embarcador: IEmbarcador = { id: 7180 };
+      const embarcador: IEmbarcador = { id: 13384 };
       endereco.embarcador = embarcador;
-      const transportadora: ITransportadora = { id: 28466 };
+      const transportadora: ITransportadora = { id: 14813 };
       endereco.transportadora = transportadora;
-      const notaFiscalColetaOrigem: INotaFiscalColeta = { id: 16678 };
+      const notaFiscalColetaOrigem: INotaFiscalColeta = { id: 22354 };
       endereco.notaFiscalColetaOrigem = notaFiscalColetaOrigem;
-      const notaFiscalColetaDestino: INotaFiscalColeta = { id: 4456 };
+      const notaFiscalColetaDestino: INotaFiscalColeta = { id: 20476 };
       endereco.notaFiscalColetaDestino = notaFiscalColetaDestino;
-      const solicitacaoColetaOrigem: ISolicitacaoColeta = { id: 7802 };
+      const solicitacaoColetaOrigem: ISolicitacaoColeta = { id: 7268 };
       endereco.solicitacaoColetaOrigem = solicitacaoColetaOrigem;
-      const solicitacaoColetaDestino: ISolicitacaoColeta = { id: 11264 };
+      const solicitacaoColetaDestino: ISolicitacaoColeta = { id: 24717 };
       endereco.solicitacaoColetaDestino = solicitacaoColetaDestino;
 
       activatedRoute.data = of({ endereco });

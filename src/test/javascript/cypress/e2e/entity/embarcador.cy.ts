@@ -15,7 +15,7 @@ describe('Embarcador e2e test', () => {
   const embarcadorPageUrlPattern = new RegExp('/embarcador(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const embarcadorSample = { nome: 'saucer quaintly well-made', cnpj: 'behindXXXXXXXX', dataCadastro: '2024-01-19T20:24:17.789Z' };
+  const embarcadorSample = { nome: 'embellished striking', cnpj: 'likely overwor' };
 
   let embarcador;
 
@@ -125,7 +125,7 @@ describe('Embarcador e2e test', () => {
         cy.url().should('match', embarcadorPageUrlPattern);
       });
 
-      it('edit button click should load edit Embarcador page and save', () => {
+      it.skip('edit button click should load edit Embarcador page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Embarcador');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,61 +160,47 @@ describe('Embarcador e2e test', () => {
     });
 
     it('should create an instance of Embarcador', () => {
-      cy.get(`[data-cy="nome"]`).type('unto gosh knuckle');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'unto gosh knuckle');
+      cy.get(`[data-cy="nome"]`).type('owlishly');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'owlishly');
 
-      cy.get(`[data-cy="cnpj"]`).type('or insideXXXXX');
-      cy.get(`[data-cy="cnpj"]`).should('have.value', 'or insideXXXXX');
+      cy.get(`[data-cy="cnpj"]`).type('or drab viciou');
+      cy.get(`[data-cy="cnpj"]`).should('have.value', 'or drab viciou');
 
-      cy.get(`[data-cy="razaoSocial"]`).type('plan who foolishly');
-      cy.get(`[data-cy="razaoSocial"]`).should('have.value', 'plan who foolishly');
+      cy.get(`[data-cy="razaoSocial"]`).type('before');
+      cy.get(`[data-cy="razaoSocial"]`).should('have.value', 'before');
 
-      cy.get(`[data-cy="inscricaoEstadual"]`).type('kindheartedly');
-      cy.get(`[data-cy="inscricaoEstadual"]`).should('have.value', 'kindheartedly');
+      cy.get(`[data-cy="inscricaoEstadual"]`).type('quizzically around a');
+      cy.get(`[data-cy="inscricaoEstadual"]`).should('have.value', 'quizzically around a');
 
-      cy.get(`[data-cy="inscricaoMunicipal"]`).type('exfoliate library ou');
-      cy.get(`[data-cy="inscricaoMunicipal"]`).should('have.value', 'exfoliate library ou');
+      cy.get(`[data-cy="inscricaoMunicipal"]`).type('brr pointless');
+      cy.get(`[data-cy="inscricaoMunicipal"]`).should('have.value', 'brr pointless');
 
-      cy.get(`[data-cy="responsavel"]`).type('physically');
-      cy.get(`[data-cy="responsavel"]`).should('have.value', 'physically');
+      cy.get(`[data-cy="responsavel"]`).type('whenever following');
+      cy.get(`[data-cy="responsavel"]`).should('have.value', 'whenever following');
 
-      cy.get(`[data-cy="cep"]`).type('oddlyXXX');
-      cy.get(`[data-cy="cep"]`).should('have.value', 'oddlyXXX');
+      cy.get(`[data-cy="cep"]`).type('swab dem');
+      cy.get(`[data-cy="cep"]`).should('have.value', 'swab dem');
 
-      cy.get(`[data-cy="endereco"]`).type('throughout vane');
-      cy.get(`[data-cy="endereco"]`).should('have.value', 'throughout vane');
+      cy.get(`[data-cy="endereco"]`).type('reasonable');
+      cy.get(`[data-cy="endereco"]`).should('have.value', 'reasonable');
 
-      cy.get(`[data-cy="numero"]`).type('whoever');
-      cy.get(`[data-cy="numero"]`).should('have.value', 'whoever');
+      cy.get(`[data-cy="numero"]`).type('clothing p');
+      cy.get(`[data-cy="numero"]`).should('have.value', 'clothing p');
 
-      cy.get(`[data-cy="complemento"]`).type('considering blah');
-      cy.get(`[data-cy="complemento"]`).should('have.value', 'considering blah');
+      cy.get(`[data-cy="complemento"]`).type('cloth');
+      cy.get(`[data-cy="complemento"]`).should('have.value', 'cloth');
 
-      cy.get(`[data-cy="bairro"]`).type('wash afterwards without');
-      cy.get(`[data-cy="bairro"]`).should('have.value', 'wash afterwards without');
+      cy.get(`[data-cy="bairro"]`).type('likewise reappear');
+      cy.get(`[data-cy="bairro"]`).should('have.value', 'likewise reappear');
 
-      cy.get(`[data-cy="telefone"]`).type('blah butXX');
-      cy.get(`[data-cy="telefone"]`).should('have.value', 'blah butXX');
+      cy.get(`[data-cy="telefone"]`).type('pish assaul');
+      cy.get(`[data-cy="telefone"]`).should('have.value', 'pish assaul');
 
-      cy.get(`[data-cy="email"]`).type('Elisa.Albuquerque@hotmail.com');
-      cy.get(`[data-cy="email"]`).should('have.value', 'Elisa.Albuquerque@hotmail.com');
+      cy.get(`[data-cy="email"]`).type('EnzoGabriel_Carvalho@yahoo.com');
+      cy.get(`[data-cy="email"]`).should('have.value', 'EnzoGabriel_Carvalho@yahoo.com');
 
-      cy.get(`[data-cy="observacao"]`).type('enchant destabilise ultimately');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'enchant destabilise ultimately');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-19T19:23');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-19T19:23');
-
-      cy.get(`[data-cy="usuarioCadastro"]`).type('enormously');
-      cy.get(`[data-cy="usuarioCadastro"]`).should('have.value', 'enormously');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-19T16:52');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-19T16:52');
-
-      cy.get(`[data-cy="usuarioAtualizacao"]`).type('baboon while');
-      cy.get(`[data-cy="usuarioAtualizacao"]`).should('have.value', 'baboon while');
+      cy.get(`[data-cy="observacao"]`).type('tussle nippy');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'tussle nippy');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

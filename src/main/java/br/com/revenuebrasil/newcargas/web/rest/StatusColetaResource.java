@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.StatusColetaRepository;
+import br.com.revenuebrasil.newcargas.service.StatusColetaQueryService;
 import br.com.revenuebrasil.newcargas.service.StatusColetaService;
+import br.com.revenuebrasil.newcargas.service.criteria.StatusColetaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.StatusColetaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class StatusColetaResource {
 
     private final StatusColetaRepository statusColetaRepository;
 
-    public StatusColetaResource(StatusColetaService statusColetaService, StatusColetaRepository statusColetaRepository) {
+    private final StatusColetaQueryService statusColetaQueryService;
+
+    public StatusColetaResource(
+        StatusColetaService statusColetaService,
+        StatusColetaRepository statusColetaRepository,
+        StatusColetaQueryService statusColetaQueryService
+    ) {
         this.statusColetaService = statusColetaService;
         this.statusColetaRepository = statusColetaRepository;
+        this.statusColetaQueryService = statusColetaQueryService;
     }
 
     /**
@@ -81,7 +90,7 @@ public class StatusColetaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<StatusColetaDTO> updateStatusColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody StatusColetaDTO statusColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update StatusColeta : {}, {}", id, statusColetaDTO);
@@ -116,7 +125,7 @@ public class StatusColetaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<StatusColetaDTO> partialUpdateStatusColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody StatusColetaDTO statusColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update StatusColeta partially : {}, {}", id, statusColetaDTO);
@@ -143,23 +152,31 @@ public class StatusColetaResource {
      * {@code GET  /status-coletas} : get all the statusColetas.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of statusColetas in body.
      */
     @GetMapping("")
     public ResponseEntity<List<StatusColetaDTO>> getAllStatusColetas(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        StatusColetaCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of StatusColetas");
-        Page<StatusColetaDTO> page;
-        if (eagerload) {
-            page = statusColetaService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = statusColetaService.findAll(pageable);
-        }
+        log.debug("REST request to get StatusColetas by criteria: {}", criteria);
+
+        Page<StatusColetaDTO> page = statusColetaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /status-coletas/count} : count all the statusColetas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countStatusColetas(StatusColetaCriteria criteria) {
+        log.debug("REST request to count StatusColetas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(statusColetaQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -84,16 +84,12 @@ public class FaturaGatlingTest extends Simulation {
                                 ", \"numeroParcela\": 0" +
                                 ", \"valorTotal\": 0" +
                                 ", \"observacao\": \"SAMPLE_TEXT\"" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioCadastro\": \"SAMPLE_TEXT\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioAtualizacao\": \"SAMPLE_TEXT\"" +
                                 ", \"cancelado\": null" +
-                                ", \"dataCancelamento\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioCancelamento\": \"SAMPLE_TEXT\"" +
                                 ", \"removido\": null" +
-                                ", \"dataRemocao\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"usuarioRemocao\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

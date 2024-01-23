@@ -23,27 +23,27 @@
           <dd>
             <span>{{ cidade.codigoIbge }}</span>
           </dd>
+          <dt><span>Created By</span></dt>
+          <dd>
+            <span>{{ cidade.createdBy }}</span>
+          </dd>
+          <dt><span>Created Date</span></dt>
+          <dd>
+            <span>{{ cidade.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ cidade.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ cidade.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
           <dt><span>Estado</span></dt>
           <dd>
             @if (cidade.estado) {
               <div>
                 <a [routerLink]="['/estado', cidade.estado.id, 'view']">{{ cidade.estado.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Embarcador</span></dt>
-          <dd>
-            @if (cidade.embarcador) {
-              <div>
-                <a [routerLink]="['/embarcador', cidade.embarcador.id, 'view']">{{ cidade.embarcador.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Transportadora</span></dt>
-          <dd>
-            @if (cidade.transportadora) {
-              <div>
-                <a [routerLink]="['/transportadora', cidade.transportadora.id, 'view']">{{ cidade.transportadora.id }}</a>
               </div>
             }
           </dd>

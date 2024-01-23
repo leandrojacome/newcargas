@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.EstadoRepository;
+import br.com.revenuebrasil.newcargas.service.EstadoQueryService;
 import br.com.revenuebrasil.newcargas.service.EstadoService;
+import br.com.revenuebrasil.newcargas.service.criteria.EstadoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.EstadoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,12 @@ public class EstadoResource {
 
     private final EstadoRepository estadoRepository;
 
-    public EstadoResource(EstadoService estadoService, EstadoRepository estadoRepository) {
+    private final EstadoQueryService estadoQueryService;
+
+    public EstadoResource(EstadoService estadoService, EstadoRepository estadoRepository, EstadoQueryService estadoQueryService) {
         this.estadoService = estadoService;
         this.estadoRepository = estadoRepository;
+        this.estadoQueryService = estadoQueryService;
     }
 
     /**
@@ -80,7 +85,7 @@ public class EstadoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<EstadoDTO> updateEstado(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody EstadoDTO estadoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Estado : {}, {}", id, estadoDTO);
@@ -115,7 +120,7 @@ public class EstadoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EstadoDTO> partialUpdateEstado(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody EstadoDTO estadoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Estado partially : {}, {}", id, estadoDTO);
@@ -142,14 +147,31 @@ public class EstadoResource {
      * {@code GET  /estados} : get all the estados.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of estados in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<EstadoDTO>> getAllEstados(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Estados");
-        Page<EstadoDTO> page = estadoService.findAll(pageable);
+    public ResponseEntity<List<EstadoDTO>> getAllEstados(
+        EstadoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Estados by criteria: {}", criteria);
+
+        Page<EstadoDTO> page = estadoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /estados/count} : count all the estados.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEstados(EstadoCriteria criteria) {
+        log.debug("REST request to count Estados by criteria: {}", criteria);
+        return ResponseEntity.ok().body(estadoQueryService.countByCriteria(criteria));
     }
 
     /**

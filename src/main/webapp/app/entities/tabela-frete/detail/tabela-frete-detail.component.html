@@ -71,13 +71,21 @@
           <dd>
             <span>{{ tabelaFrete.valorKmAdicional }}</span>
           </dd>
-          <dt><span>Data Cadastro</span></dt>
+          <dt><span>Created By</span></dt>
           <dd>
-            <span>{{ tabelaFrete.dataCadastro | formatMediumDatetime }}</span>
+            <span>{{ tabelaFrete.createdBy }}</span>
           </dd>
-          <dt><span>Data Atualizacao</span></dt>
+          <dt><span>Created Date</span></dt>
           <dd>
-            <span>{{ tabelaFrete.dataAtualizacao | formatMediumDatetime }}</span>
+            <span>{{ tabelaFrete.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ tabelaFrete.lastModifiedDate | formatMediumDatetime }}</span>
           </dd>
           <dt><span>Embarcador</span></dt>
           <dd>

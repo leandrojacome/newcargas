@@ -35,6 +35,8 @@
     <include file="config/liquibase/changelog/20240120170817_added_entity_Regiao.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20240120164817_added_entity_constraints_Cidade.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120164917_added_entity_constraints_Embarcador.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240120165017_added_entity_constraints_Transportadora.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240120165217_added_entity_constraints_ContaBancaria.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240120165317_added_entity_constraints_TabelaFrete.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240120165417_added_entity_constraints_Endereco.xml" relativeToChangelogFile="false"/>

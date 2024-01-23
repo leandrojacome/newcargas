@@ -50,10 +50,10 @@ describe('Contratacao Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Transportadora query and add missing value', () => {
       const contratacao: IContratacao = { id: 456 };
-      const transportadora: ITransportadora = { id: 1641 };
+      const transportadora: ITransportadora = { id: 19781 };
       contratacao.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 29963 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 7786 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -72,7 +72,7 @@ describe('Contratacao Management Update Component', () => {
 
     it('Should update editForm', () => {
       const contratacao: IContratacao = { id: 456 };
-      const transportadora: ITransportadora = { id: 1887 };
+      const transportadora: ITransportadora = { id: 4612 };
       contratacao.transportadora = transportadora;
 
       activatedRoute.data = of({ contratacao });

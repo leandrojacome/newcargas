@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -11,6 +13,17 @@ import { SearchWithPagination } from 'app/core/request/request.model';
 import { IEstado, NewEstado } from '../estado.model';
 
 export type PartialUpdateEstado = Partial<IEstado> & Pick<IEstado, 'id'>;
+
+type RestOf<T extends IEstado | NewEstado> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+export type RestEstado = RestOf<IEstado>;
+
+export type NewRestEstado = RestOf<NewEstado>;
+
+export type PartialUpdateRestEstado = RestOf<PartialUpdateEstado>;
 
 export type EntityResponseType = HttpResponse<IEstado>;
 export type EntityArrayResponseType = HttpResponse<IEstado[]>;
@@ -26,24 +39,37 @@ export class EstadoService {
   ) {}
 
   create(estado: NewEstado): Observable<EntityResponseType> {
-    return this.http.post<IEstado>(this.resourceUrl, estado, { observe: 'response' });
+    const copy = this.convertDateFromClient(estado);
+    return this.http
+      .post<RestEstado>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(estado: IEstado): Observable<EntityResponseType> {
-    return this.http.put<IEstado>(`${this.resourceUrl}/${this.getEstadoIdentifier(estado)}`, estado, { observe: 'response' });
+    const copy = this.convertDateFromClient(estado);
+    return this.http
+      .put<RestEstado>(`${this.resourceUrl}/${this.getEstadoIdentifier(estado)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(estado: PartialUpdateEstado): Observable<EntityResponseType> {
-    return this.http.patch<IEstado>(`${this.resourceUrl}/${this.getEstadoIdentifier(estado)}`, estado, { observe: 'response' });
+    const copy = this.convertDateFromClient(estado);
+    return this.http
+      .patch<RestEstado>(`${this.resourceUrl}/${this.getEstadoIdentifier(estado)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IEstado>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestEstado>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IEstado[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestEstado[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -52,9 +78,10 @@ export class EstadoService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<IEstado[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(catchError(() => scheduled([new HttpResponse<IEstado[]>()], asapScheduler)));
+    return this.http.get<RestEstado[]>(this.resourceSearchUrl, { params: options, observe: 'response' }).pipe(
+      map(res => this.convertResponseArrayFromServer(res)),
+      catchError(() => scheduled([new HttpResponse<IEstado[]>()], asapScheduler)),
+    );
   }
 
   getEstadoIdentifier(estado: Pick<IEstado, 'id'>): number {
@@ -83,5 +110,33 @@ export class EstadoService {
       return [...estadosToAdd, ...estadoCollection];
     }
     return estadoCollection;
+  }
+
+  protected convertDateFromClient<T extends IEstado | NewEstado | PartialUpdateEstado>(estado: T): RestOf<T> {
+    return {
+      ...estado,
+      createdDate: estado.createdDate?.toJSON() ?? null,
+      lastModifiedDate: estado.lastModifiedDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restEstado: RestEstado): IEstado {
+    return {
+      ...restEstado,
+      createdDate: restEstado.createdDate ? dayjs(restEstado.createdDate) : undefined,
+      lastModifiedDate: restEstado.lastModifiedDate ? dayjs(restEstado.lastModifiedDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestEstado>): HttpResponse<IEstado> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestEstado[]>): HttpResponse<IEstado[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TransportadoraRepository;
+import br.com.revenuebrasil.newcargas.service.TransportadoraQueryService;
 import br.com.revenuebrasil.newcargas.service.TransportadoraService;
+import br.com.revenuebrasil.newcargas.service.criteria.TransportadoraCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TransportadoraDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TransportadoraResource {
 
     private final TransportadoraRepository transportadoraRepository;
 
-    public TransportadoraResource(TransportadoraService transportadoraService, TransportadoraRepository transportadoraRepository) {
+    private final TransportadoraQueryService transportadoraQueryService;
+
+    public TransportadoraResource(
+        TransportadoraService transportadoraService,
+        TransportadoraRepository transportadoraRepository,
+        TransportadoraQueryService transportadoraQueryService
+    ) {
         this.transportadoraService = transportadoraService;
         this.transportadoraRepository = transportadoraRepository;
+        this.transportadoraQueryService = transportadoraQueryService;
     }
 
     /**
@@ -81,7 +90,7 @@ public class TransportadoraResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TransportadoraDTO> updateTransportadora(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TransportadoraDTO transportadoraDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Transportadora : {}, {}", id, transportadoraDTO);
@@ -116,7 +125,7 @@ public class TransportadoraResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TransportadoraDTO> partialUpdateTransportadora(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TransportadoraDTO transportadoraDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Transportadora partially : {}, {}", id, transportadoraDTO);
@@ -143,16 +152,31 @@ public class TransportadoraResource {
      * {@code GET  /transportadoras} : get all the transportadoras.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transportadoras in body.
      */
     @GetMapping("")
     public ResponseEntity<List<TransportadoraDTO>> getAllTransportadoras(
+        TransportadoraCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of Transportadoras");
-        Page<TransportadoraDTO> page = transportadoraService.findAll(pageable);
+        log.debug("REST request to get Transportadoras by criteria: {}", criteria);
+
+        Page<TransportadoraDTO> page = transportadoraQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transportadoras/count} : count all the transportadoras.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTransportadoras(TransportadoraCriteria criteria) {
+        log.debug("REST request to count Transportadoras by criteria: {}", criteria);
+        return ResponseEntity.ok().body(transportadoraQueryService.countByCriteria(criteria));
     }
 
     /**

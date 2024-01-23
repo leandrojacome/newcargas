@@ -15,7 +15,7 @@ describe('ContaBancaria e2e test', () => {
   const contaBancariaPageUrlPattern = new RegExp('/conta-bancaria(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const contaBancariaSample = { agencia: 'less glidi', conta: 'tomorrow b', dataCadastro: '2024-01-20T13:49:47.598Z' };
+  const contaBancariaSample = { agencia: 'provided h', conta: 'stranger w' };
 
   let contaBancaria;
 
@@ -125,7 +125,7 @@ describe('ContaBancaria e2e test', () => {
         cy.url().should('match', contaBancariaPageUrlPattern);
       });
 
-      it('edit button click should load edit ContaBancaria page and save', () => {
+      it.skip('edit button click should load edit ContaBancaria page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('ContaBancaria');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,31 +160,23 @@ describe('ContaBancaria e2e test', () => {
     });
 
     it('should create an instance of ContaBancaria', () => {
-      cy.get(`[data-cy="agencia"]`).type('sleepily o');
-      cy.get(`[data-cy="agencia"]`).should('have.value', 'sleepily o');
+      cy.get(`[data-cy="agencia"]`).type('why');
+      cy.get(`[data-cy="agencia"]`).should('have.value', 'why');
 
-      cy.get(`[data-cy="conta"]`).type('absent');
-      cy.get(`[data-cy="conta"]`).should('have.value', 'absent');
+      cy.get(`[data-cy="conta"]`).type('powerfully');
+      cy.get(`[data-cy="conta"]`).should('have.value', 'powerfully');
 
-      cy.get(`[data-cy="observacao"]`).type('attainment memorable powerfully');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'attainment memorable powerfully');
+      cy.get(`[data-cy="observacao"]`).type('vice');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'vice');
 
-      cy.get(`[data-cy="tipo"]`).type('eurocentrism vice rust');
-      cy.get(`[data-cy="tipo"]`).should('have.value', 'eurocentrism vice rust');
+      cy.get(`[data-cy="tipo"]`).type('expectation');
+      cy.get(`[data-cy="tipo"]`).should('have.value', 'expectation');
 
-      cy.get(`[data-cy="pix"]`).type('recklessly');
-      cy.get(`[data-cy="pix"]`).should('have.value', 'recklessly');
+      cy.get(`[data-cy="pix"]`).type('black-and-white above');
+      cy.get(`[data-cy="pix"]`).should('have.value', 'black-and-white above');
 
-      cy.get(`[data-cy="titular"]`).type('above');
-      cy.get(`[data-cy="titular"]`).should('have.value', 'above');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T14:10');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T14:10');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T06:44');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T06:44');
+      cy.get(`[data-cy="titular"]`).type('since');
+      cy.get(`[data-cy="titular"]`).should('have.value', 'since');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

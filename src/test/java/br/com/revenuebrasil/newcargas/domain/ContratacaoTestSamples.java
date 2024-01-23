@@ -16,10 +16,8 @@ public class ContratacaoTestSamples {
             .id(1L)
             .validadeEmDias(1)
             .observacao("observacao1")
-            .usuarioCadastro("usuarioCadastro1")
-            .usuarioAtualizacao("usuarioAtualizacao1")
-            .usuarioCancelamento("usuarioCancelamento1")
-            .usuarioRemocao("usuarioRemocao1");
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static Contratacao getContratacaoSample2() {
@@ -27,10 +25,8 @@ public class ContratacaoTestSamples {
             .id(2L)
             .validadeEmDias(2)
             .observacao("observacao2")
-            .usuarioCadastro("usuarioCadastro2")
-            .usuarioAtualizacao("usuarioAtualizacao2")
-            .usuarioCancelamento("usuarioCancelamento2")
-            .usuarioRemocao("usuarioRemocao2");
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static Contratacao getContratacaoRandomSampleGenerator() {
@@ -38,9 +34,7 @@ public class ContratacaoTestSamples {
             .id(longCount.incrementAndGet())
             .validadeEmDias(intCount.incrementAndGet())
             .observacao(UUID.randomUUID().toString())
-            .usuarioCadastro(UUID.randomUUID().toString())
-            .usuarioAtualizacao(UUID.randomUUID().toString())
-            .usuarioCancelamento(UUID.randomUUID().toString())
-            .usuarioRemocao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

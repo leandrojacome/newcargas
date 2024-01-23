@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (cidades?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Cidade encontrado</span>
@@ -76,21 +78,39 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="estado.id">
               <div class="d-flex">
                 <span>Estado</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="embarcador.id">
-              <div class="d-flex">
-                <span>Embarcador</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="transportadora.id">
-              <div class="d-flex">
-                <span>Transportadora</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -105,6 +125,10 @@
               </td>
               <td>{{ cidade.nome }}</td>
               <td>{{ cidade.codigoIbge }}</td>
+              <td>{{ cidade.createdBy }}</td>
+              <td>{{ cidade.createdDate | formatMediumDatetime }}</td>
+              <td>{{ cidade.lastModifiedBy }}</td>
+              <td>{{ cidade.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (cidade.estado) {
                   <div>
@@ -112,22 +136,38 @@
                   </div>
                 }
               </td>
-              <td>
-                @if (cidade.embarcador) {
-                  <div>
-                    <a [routerLink]="['/embarcador', cidade.embarcador.id, 'view']">{{ cidade.embarcador.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (cidade.transportadora) {
-                  <div>
-                    <a [routerLink]="['/transportadora', cidade.transportadora.id, 'view']">{{ cidade.transportadora.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/endereco']"
+                    [queryParams]="{ 'filter[cidadeId.in]': cidade.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Endereco</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/embarcador']"
+                    [queryParams]="{ 'filter[cidadeId.in]': cidade.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Embarcador</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/transportadora']"
+                    [queryParams]="{ 'filter[cidadeId.in]': cidade.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Transportadora</span>
+                  </button>
                   <a [routerLink]="['/cidade', cidade.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

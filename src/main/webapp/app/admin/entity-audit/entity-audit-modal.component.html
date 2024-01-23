@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">Audit Details</h4>
+  <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body pad">
+  <div>
+    <strong> {{ action }} action was performed on below data </strong>
+    <br /><br />
+
+    <del class="diff diff-key"> Old/Removed value </del>
+    &nbsp;
+    <ins class="diff diff-key"> New/Added value </ins>
+  </div>
+  <br />
+
+  <label>Changed Fields</label>
+  <inline-diff *ngIf="left && right" class="code" [oldText]="left" [newText]="right" />
+</div>
+<div class="modal-footer">
+  <button data-dismiss="modal" class="btn btn-secondary float-left" type="button" (click)="activeModal.dismiss('closed')">Done</button>
+</div>

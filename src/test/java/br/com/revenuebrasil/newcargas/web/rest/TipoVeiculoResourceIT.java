@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.SolicitacaoColeta;
 import br.com.revenuebrasil.newcargas.domain.TipoVeiculo;
 import br.com.revenuebrasil.newcargas.repository.TipoVeiculoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.TipoVeiculoSearchRepository;
@@ -205,6 +206,215 @@ class TipoVeiculoResourceIT {
             .andExpect(jsonPath("$.id").value(tipoVeiculo.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO));
+    }
+
+    @Test
+    @Transactional
+    void getTipoVeiculosByIdFiltering() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        Long id = tipoVeiculo.getId();
+
+        defaultTipoVeiculoShouldBeFound("id.equals=" + id);
+        defaultTipoVeiculoShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTipoVeiculoShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTipoVeiculoShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTipoVeiculoShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTipoVeiculoShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where nome equals to DEFAULT_NOME
+        defaultTipoVeiculoShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the tipoVeiculoList where nome equals to UPDATED_NOME
+        defaultTipoVeiculoShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultTipoVeiculoShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the tipoVeiculoList where nome equals to UPDATED_NOME
+        defaultTipoVeiculoShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where nome is not null
+        defaultTipoVeiculoShouldBeFound("nome.specified=true");
+
+        // Get all the tipoVeiculoList where nome is null
+        defaultTipoVeiculoShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where nome contains DEFAULT_NOME
+        defaultTipoVeiculoShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the tipoVeiculoList where nome contains UPDATED_NOME
+        defaultTipoVeiculoShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where nome does not contain DEFAULT_NOME
+        defaultTipoVeiculoShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the tipoVeiculoList where nome does not contain UPDATED_NOME
+        defaultTipoVeiculoShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByDescricaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where descricao equals to DEFAULT_DESCRICAO
+        defaultTipoVeiculoShouldBeFound("descricao.equals=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoVeiculoList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoVeiculoShouldNotBeFound("descricao.equals=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByDescricaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where descricao in DEFAULT_DESCRICAO or UPDATED_DESCRICAO
+        defaultTipoVeiculoShouldBeFound("descricao.in=" + DEFAULT_DESCRICAO + "," + UPDATED_DESCRICAO);
+
+        // Get all the tipoVeiculoList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoVeiculoShouldNotBeFound("descricao.in=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByDescricaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where descricao is not null
+        defaultTipoVeiculoShouldBeFound("descricao.specified=true");
+
+        // Get all the tipoVeiculoList where descricao is null
+        defaultTipoVeiculoShouldNotBeFound("descricao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByDescricaoContainsSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where descricao contains DEFAULT_DESCRICAO
+        defaultTipoVeiculoShouldBeFound("descricao.contains=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoVeiculoList where descricao contains UPDATED_DESCRICAO
+        defaultTipoVeiculoShouldNotBeFound("descricao.contains=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosByDescricaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+
+        // Get all the tipoVeiculoList where descricao does not contain DEFAULT_DESCRICAO
+        defaultTipoVeiculoShouldNotBeFound("descricao.doesNotContain=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoVeiculoList where descricao does not contain UPDATED_DESCRICAO
+        defaultTipoVeiculoShouldBeFound("descricao.doesNotContain=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoVeiculosBySolitacaoColetaIsEqualToSomething() throws Exception {
+        SolicitacaoColeta solitacaoColeta;
+        if (TestUtil.findAll(em, SolicitacaoColeta.class).isEmpty()) {
+            tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+            solitacaoColeta = SolicitacaoColetaResourceIT.createEntity(em);
+        } else {
+            solitacaoColeta = TestUtil.findAll(em, SolicitacaoColeta.class).get(0);
+        }
+        em.persist(solitacaoColeta);
+        em.flush();
+        tipoVeiculo.addSolitacaoColeta(solitacaoColeta);
+        tipoVeiculoRepository.saveAndFlush(tipoVeiculo);
+        Long solitacaoColetaId = solitacaoColeta.getId();
+        // Get all the tipoVeiculoList where solitacaoColeta equals to solitacaoColetaId
+        defaultTipoVeiculoShouldBeFound("solitacaoColetaId.equals=" + solitacaoColetaId);
+
+        // Get all the tipoVeiculoList where solitacaoColeta equals to (solitacaoColetaId + 1)
+        defaultTipoVeiculoShouldNotBeFound("solitacaoColetaId.equals=" + (solitacaoColetaId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTipoVeiculoShouldBeFound(String filter) throws Exception {
+        restTipoVeiculoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoVeiculo.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO)));
+
+        // Check, that the count call also returns 1
+        restTipoVeiculoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTipoVeiculoShouldNotBeFound(String filter) throws Exception {
+        restTipoVeiculoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTipoVeiculoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

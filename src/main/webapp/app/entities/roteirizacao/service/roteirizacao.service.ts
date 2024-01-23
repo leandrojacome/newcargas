@@ -20,19 +20,15 @@ type RestOf<T extends IRoteirizacao | NewRoteirizacao> = Omit<
   | 'dataHoraUltimaColeta'
   | 'dataHoraPrimeiraEntrega'
   | 'dataHoraUltimaEntrega'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
-  | 'dataCancelamento'
-  | 'dataRemocao'
+  | 'createdDate'
+  | 'lastModifiedDate'
 > & {
   dataHoraPrimeiraColeta?: string | null;
   dataHoraUltimaColeta?: string | null;
   dataHoraPrimeiraEntrega?: string | null;
   dataHoraUltimaEntrega?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestRoteirizacao = RestOf<IRoteirizacao>;
@@ -137,10 +133,8 @@ export class RoteirizacaoService {
       dataHoraUltimaColeta: roteirizacao.dataHoraUltimaColeta?.toJSON() ?? null,
       dataHoraPrimeiraEntrega: roteirizacao.dataHoraPrimeiraEntrega?.toJSON() ?? null,
       dataHoraUltimaEntrega: roteirizacao.dataHoraUltimaEntrega?.toJSON() ?? null,
-      dataCadastro: roteirizacao.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: roteirizacao.dataAtualizacao?.toJSON() ?? null,
-      dataCancelamento: roteirizacao.dataCancelamento?.toJSON() ?? null,
-      dataRemocao: roteirizacao.dataRemocao?.toJSON() ?? null,
+      createdDate: roteirizacao.createdDate?.toJSON() ?? null,
+      lastModifiedDate: roteirizacao.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -151,10 +145,8 @@ export class RoteirizacaoService {
       dataHoraUltimaColeta: restRoteirizacao.dataHoraUltimaColeta ? dayjs(restRoteirizacao.dataHoraUltimaColeta) : undefined,
       dataHoraPrimeiraEntrega: restRoteirizacao.dataHoraPrimeiraEntrega ? dayjs(restRoteirizacao.dataHoraPrimeiraEntrega) : undefined,
       dataHoraUltimaEntrega: restRoteirizacao.dataHoraUltimaEntrega ? dayjs(restRoteirizacao.dataHoraUltimaEntrega) : undefined,
-      dataCadastro: restRoteirizacao.dataCadastro ? dayjs(restRoteirizacao.dataCadastro) : undefined,
-      dataAtualizacao: restRoteirizacao.dataAtualizacao ? dayjs(restRoteirizacao.dataAtualizacao) : undefined,
-      dataCancelamento: restRoteirizacao.dataCancelamento ? dayjs(restRoteirizacao.dataCancelamento) : undefined,
-      dataRemocao: restRoteirizacao.dataRemocao ? dayjs(restRoteirizacao.dataRemocao) : undefined,
+      createdDate: restRoteirizacao.createdDate ? dayjs(restRoteirizacao.createdDate) : undefined,
+      lastModifiedDate: restRoteirizacao.lastModifiedDate ? dayjs(restRoteirizacao.lastModifiedDate) : undefined,
     };
   }
 

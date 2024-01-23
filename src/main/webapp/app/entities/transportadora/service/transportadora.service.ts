@@ -14,9 +14,9 @@ import { ITransportadora, NewTransportadora } from '../transportadora.model';
 
 export type PartialUpdateTransportadora = Partial<ITransportadora> & Pick<ITransportadora, 'id'>;
 
-type RestOf<T extends ITransportadora | NewTransportadora> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type RestOf<T extends ITransportadora | NewTransportadora> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestTransportadora = RestOf<ITransportadora>;
@@ -119,16 +119,16 @@ export class TransportadoraService {
   ): RestOf<T> {
     return {
       ...transportadora,
-      dataCadastro: transportadora.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: transportadora.dataAtualizacao?.toJSON() ?? null,
+      createdDate: transportadora.createdDate?.toJSON() ?? null,
+      lastModifiedDate: transportadora.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
   protected convertDateFromServer(restTransportadora: RestTransportadora): ITransportadora {
     return {
       ...restTransportadora,
-      dataCadastro: restTransportadora.dataCadastro ? dayjs(restTransportadora.dataCadastro) : undefined,
-      dataAtualizacao: restTransportadora.dataAtualizacao ? dayjs(restTransportadora.dataAtualizacao) : undefined,
+      createdDate: restTransportadora.createdDate ? dayjs(restTransportadora.createdDate) : undefined,
+      lastModifiedDate: restTransportadora.lastModifiedDate ? dayjs(restTransportadora.lastModifiedDate) : undefined,
     };
   }
 

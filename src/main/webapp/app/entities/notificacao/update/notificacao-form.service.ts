@@ -21,14 +21,13 @@ type NotificacaoFormGroupInput = INotificacao | PartialWithRequiredKeyOf<NewNoti
  */
 type FormValueOf<T extends INotificacao | NewNotificacao> = Omit<
   T,
-  'dataHoraEnvio' | 'dataHoraLeitura' | 'dataCadastro' | 'dataAtualizacao' | 'dataLeitura' | 'dataRemocao'
+  'dataHoraEnvio' | 'dataHoraLeitura' | 'dataLeitura' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataHoraEnvio?: string | null;
   dataHoraLeitura?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
   dataLeitura?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type NotificacaoFormRawValue = FormValueOf<INotificacao>;
@@ -37,7 +36,7 @@ type NewNotificacaoFormRawValue = FormValueOf<NewNotificacao>;
 
 type NotificacaoFormDefaults = Pick<
   NewNotificacao,
-  'id' | 'dataHoraEnvio' | 'dataHoraLeitura' | 'dataCadastro' | 'dataAtualizacao' | 'lido' | 'dataLeitura' | 'removido' | 'dataRemocao'
+  'id' | 'dataHoraEnvio' | 'dataHoraLeitura' | 'lido' | 'dataLeitura' | 'removido' | 'createdDate' | 'lastModifiedDate'
 >;
 
 type NotificacaoFormGroupContent = {
@@ -49,13 +48,13 @@ type NotificacaoFormGroupContent = {
   mensagem: FormControl<NotificacaoFormRawValue['mensagem']>;
   dataHoraEnvio: FormControl<NotificacaoFormRawValue['dataHoraEnvio']>;
   dataHoraLeitura: FormControl<NotificacaoFormRawValue['dataHoraLeitura']>;
-  dataCadastro: FormControl<NotificacaoFormRawValue['dataCadastro']>;
-  dataAtualizacao: FormControl<NotificacaoFormRawValue['dataAtualizacao']>;
   lido: FormControl<NotificacaoFormRawValue['lido']>;
   dataLeitura: FormControl<NotificacaoFormRawValue['dataLeitura']>;
   removido: FormControl<NotificacaoFormRawValue['removido']>;
-  dataRemocao: FormControl<NotificacaoFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<NotificacaoFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<NotificacaoFormRawValue['createdBy']>;
+  createdDate: FormControl<NotificacaoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<NotificacaoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<NotificacaoFormRawValue['lastModifiedDate']>;
   embarcador: FormControl<NotificacaoFormRawValue['embarcador']>;
   transportadora: FormControl<NotificacaoFormRawValue['transportadora']>;
 };
@@ -96,17 +95,13 @@ export class NotificacaoFormService {
         validators: [Validators.required],
       }),
       dataHoraLeitura: new FormControl(notificacaoRawValue.dataHoraLeitura),
-      dataCadastro: new FormControl(notificacaoRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      dataAtualizacao: new FormControl(notificacaoRawValue.dataAtualizacao),
       lido: new FormControl(notificacaoRawValue.lido),
       dataLeitura: new FormControl(notificacaoRawValue.dataLeitura),
       removido: new FormControl(notificacaoRawValue.removido),
-      dataRemocao: new FormControl(notificacaoRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(notificacaoRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(notificacaoRawValue.createdBy),
+      createdDate: new FormControl(notificacaoRawValue.createdDate),
+      lastModifiedBy: new FormControl(notificacaoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(notificacaoRawValue.lastModifiedDate),
       embarcador: new FormControl(notificacaoRawValue.embarcador),
       transportadora: new FormControl(notificacaoRawValue.transportadora),
     });
@@ -133,12 +128,11 @@ export class NotificacaoFormService {
       id: null,
       dataHoraEnvio: currentTime,
       dataHoraLeitura: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       lido: false,
       dataLeitura: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -149,10 +143,9 @@ export class NotificacaoFormService {
       ...rawNotificacao,
       dataHoraEnvio: dayjs(rawNotificacao.dataHoraEnvio, DATE_TIME_FORMAT),
       dataHoraLeitura: dayjs(rawNotificacao.dataHoraLeitura, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawNotificacao.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawNotificacao.dataAtualizacao, DATE_TIME_FORMAT),
       dataLeitura: dayjs(rawNotificacao.dataLeitura, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawNotificacao.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawNotificacao.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawNotificacao.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -163,10 +156,9 @@ export class NotificacaoFormService {
       ...notificacao,
       dataHoraEnvio: notificacao.dataHoraEnvio ? notificacao.dataHoraEnvio.format(DATE_TIME_FORMAT) : undefined,
       dataHoraLeitura: notificacao.dataHoraLeitura ? notificacao.dataHoraLeitura.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: notificacao.dataCadastro ? notificacao.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: notificacao.dataAtualizacao ? notificacao.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
       dataLeitura: notificacao.dataLeitura ? notificacao.dataLeitura.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: notificacao.dataRemocao ? notificacao.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: notificacao.createdDate ? notificacao.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: notificacao.lastModifiedDate ? notificacao.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

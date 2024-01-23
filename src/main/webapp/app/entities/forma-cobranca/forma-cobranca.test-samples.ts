@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { IFormaCobranca, NewFormaCobranca } from './forma-cobranca.model';
 
 export const sampleWithRequiredData: IFormaCobranca = {
@@ -6,19 +8,24 @@ export const sampleWithRequiredData: IFormaCobranca = {
 };
 
 export const sampleWithPartialData: IFormaCobranca = {
-  id: 21678,
-  nome: 'who bother',
-  descricao: 'rigidly below aha',
+  id: 11419,
+  nome: 'quizzically which potable',
+  descricao: 'that',
+  lastModifiedDate: dayjs('2024-01-20T08:41'),
 };
 
 export const sampleWithFullData: IFormaCobranca = {
-  id: 29092,
-  nome: 'nor',
-  descricao: 'influx hide',
+  id: 11824,
+  nome: 'instead atop',
+  descricao: 'contaminate',
+  createdBy: 'blah',
+  createdDate: dayjs('2024-01-20T00:54'),
+  lastModifiedBy: 'democratise',
+  lastModifiedDate: dayjs('2024-01-20T00:01'),
 };
 
 export const sampleWithNewData: NewFormaCobranca = {
-  nome: 'pfft',
+  nome: 'rejuvenate than',
   id: null,
 };
 

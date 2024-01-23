@@ -16,14 +16,12 @@ export type PartialUpdateSolicitacaoColeta = Partial<ISolicitacaoColeta> & Pick<
 
 type RestOf<T extends ISolicitacaoColeta | NewSolicitacaoColeta> = Omit<
   T,
-  'dataHoraColeta' | 'dataHoraEntrega' | 'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
+  'dataHoraColeta' | 'dataHoraEntrega' | 'createdDate' | 'lastModifiedDate'
 > & {
   dataHoraColeta?: string | null;
   dataHoraEntrega?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestSolicitacaoColeta = RestOf<ISolicitacaoColeta>;
@@ -132,10 +130,8 @@ export class SolicitacaoColetaService {
       ...solicitacaoColeta,
       dataHoraColeta: solicitacaoColeta.dataHoraColeta?.toJSON() ?? null,
       dataHoraEntrega: solicitacaoColeta.dataHoraEntrega?.toJSON() ?? null,
-      dataCadastro: solicitacaoColeta.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: solicitacaoColeta.dataAtualizacao?.toJSON() ?? null,
-      dataCancelamento: solicitacaoColeta.dataCancelamento?.toJSON() ?? null,
-      dataRemocao: solicitacaoColeta.dataRemocao?.toJSON() ?? null,
+      createdDate: solicitacaoColeta.createdDate?.toJSON() ?? null,
+      lastModifiedDate: solicitacaoColeta.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -144,10 +140,8 @@ export class SolicitacaoColetaService {
       ...restSolicitacaoColeta,
       dataHoraColeta: restSolicitacaoColeta.dataHoraColeta ? dayjs(restSolicitacaoColeta.dataHoraColeta) : undefined,
       dataHoraEntrega: restSolicitacaoColeta.dataHoraEntrega ? dayjs(restSolicitacaoColeta.dataHoraEntrega) : undefined,
-      dataCadastro: restSolicitacaoColeta.dataCadastro ? dayjs(restSolicitacaoColeta.dataCadastro) : undefined,
-      dataAtualizacao: restSolicitacaoColeta.dataAtualizacao ? dayjs(restSolicitacaoColeta.dataAtualizacao) : undefined,
-      dataCancelamento: restSolicitacaoColeta.dataCancelamento ? dayjs(restSolicitacaoColeta.dataCancelamento) : undefined,
-      dataRemocao: restSolicitacaoColeta.dataRemocao ? dayjs(restSolicitacaoColeta.dataRemocao) : undefined,
+      createdDate: restSolicitacaoColeta.createdDate ? dayjs(restSolicitacaoColeta.createdDate) : undefined,
+      lastModifiedDate: restSolicitacaoColeta.lastModifiedDate ? dayjs(restSolicitacaoColeta.lastModifiedDate) : undefined,
     };
   }
 

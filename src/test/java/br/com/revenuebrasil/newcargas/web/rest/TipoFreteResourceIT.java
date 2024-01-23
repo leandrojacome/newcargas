@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.TabelaFrete;
 import br.com.revenuebrasil.newcargas.domain.TipoFrete;
 import br.com.revenuebrasil.newcargas.repository.TipoFreteRepository;
 import br.com.revenuebrasil.newcargas.repository.search.TipoFreteSearchRepository;
@@ -199,6 +200,215 @@ class TipoFreteResourceIT {
             .andExpect(jsonPath("$.id").value(tipoFrete.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO));
+    }
+
+    @Test
+    @Transactional
+    void getTipoFretesByIdFiltering() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        Long id = tipoFrete.getId();
+
+        defaultTipoFreteShouldBeFound("id.equals=" + id);
+        defaultTipoFreteShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTipoFreteShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTipoFreteShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTipoFreteShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTipoFreteShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where nome equals to DEFAULT_NOME
+        defaultTipoFreteShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the tipoFreteList where nome equals to UPDATED_NOME
+        defaultTipoFreteShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultTipoFreteShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the tipoFreteList where nome equals to UPDATED_NOME
+        defaultTipoFreteShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where nome is not null
+        defaultTipoFreteShouldBeFound("nome.specified=true");
+
+        // Get all the tipoFreteList where nome is null
+        defaultTipoFreteShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where nome contains DEFAULT_NOME
+        defaultTipoFreteShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the tipoFreteList where nome contains UPDATED_NOME
+        defaultTipoFreteShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where nome does not contain DEFAULT_NOME
+        defaultTipoFreteShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the tipoFreteList where nome does not contain UPDATED_NOME
+        defaultTipoFreteShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByDescricaoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where descricao equals to DEFAULT_DESCRICAO
+        defaultTipoFreteShouldBeFound("descricao.equals=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoFreteList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoFreteShouldNotBeFound("descricao.equals=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByDescricaoIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where descricao in DEFAULT_DESCRICAO or UPDATED_DESCRICAO
+        defaultTipoFreteShouldBeFound("descricao.in=" + DEFAULT_DESCRICAO + "," + UPDATED_DESCRICAO);
+
+        // Get all the tipoFreteList where descricao equals to UPDATED_DESCRICAO
+        defaultTipoFreteShouldNotBeFound("descricao.in=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByDescricaoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where descricao is not null
+        defaultTipoFreteShouldBeFound("descricao.specified=true");
+
+        // Get all the tipoFreteList where descricao is null
+        defaultTipoFreteShouldNotBeFound("descricao.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByDescricaoContainsSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where descricao contains DEFAULT_DESCRICAO
+        defaultTipoFreteShouldBeFound("descricao.contains=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoFreteList where descricao contains UPDATED_DESCRICAO
+        defaultTipoFreteShouldNotBeFound("descricao.contains=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByDescricaoNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+
+        // Get all the tipoFreteList where descricao does not contain DEFAULT_DESCRICAO
+        defaultTipoFreteShouldNotBeFound("descricao.doesNotContain=" + DEFAULT_DESCRICAO);
+
+        // Get all the tipoFreteList where descricao does not contain UPDATED_DESCRICAO
+        defaultTipoFreteShouldBeFound("descricao.doesNotContain=" + UPDATED_DESCRICAO);
+    }
+
+    @Test
+    @Transactional
+    void getAllTipoFretesByTabelaFreteIsEqualToSomething() throws Exception {
+        TabelaFrete tabelaFrete;
+        if (TestUtil.findAll(em, TabelaFrete.class).isEmpty()) {
+            tipoFreteRepository.saveAndFlush(tipoFrete);
+            tabelaFrete = TabelaFreteResourceIT.createEntity(em);
+        } else {
+            tabelaFrete = TestUtil.findAll(em, TabelaFrete.class).get(0);
+        }
+        em.persist(tabelaFrete);
+        em.flush();
+        tipoFrete.addTabelaFrete(tabelaFrete);
+        tipoFreteRepository.saveAndFlush(tipoFrete);
+        Long tabelaFreteId = tabelaFrete.getId();
+        // Get all the tipoFreteList where tabelaFrete equals to tabelaFreteId
+        defaultTipoFreteShouldBeFound("tabelaFreteId.equals=" + tabelaFreteId);
+
+        // Get all the tipoFreteList where tabelaFrete equals to (tabelaFreteId + 1)
+        defaultTipoFreteShouldNotBeFound("tabelaFreteId.equals=" + (tabelaFreteId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTipoFreteShouldBeFound(String filter) throws Exception {
+        restTipoFreteMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoFrete.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO)));
+
+        // Check, that the count call also returns 1
+        restTipoFreteMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTipoFreteShouldNotBeFound(String filter) throws Exception {
+        restTipoFreteMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTipoFreteMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

@@ -79,7 +79,18 @@ public class HistoricoStatusColetaGatlingTest extends Simulation {
                     http("Create new historicoStatusColeta")
                         .post("/api/historico-status-coletas")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"dataCriacao\": \"2020-01-01T00:00:00.000Z\"" + ", \"observacao\": \"SAMPLE_TEXT\"" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"dataCriacao\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"observacao\": \"SAMPLE_TEXT\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_historicoStatusColeta_url"))

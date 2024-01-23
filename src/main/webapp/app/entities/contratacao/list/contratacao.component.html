@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (contratacaos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Contratacao encontrado</span>
@@ -90,56 +92,11 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
-              <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCadastro">
-              <div class="d-flex">
-                <span>Usuario Cadastro</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
-              <div class="d-flex">
-                <span>Data Atualizacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioAtualizacao">
-              <div class="d-flex">
-                <span>Usuario Atualizacao</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
             <th scope="col" jhiSortBy="cancelado">
               <div class="d-flex">
                 <span>Cancelado</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataCancelamento">
-              <div class="d-flex">
-                <span>Data Cancelamento</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCancelamento">
-              <div class="d-flex">
-                <span>Usuario Cancelamento</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
               </div>
             </th>
             <th scope="col" jhiSortBy="removido">
@@ -149,19 +106,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataRemocao">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Remocao</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioRemocao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Remocao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="transportadora.id">
@@ -183,16 +155,12 @@
               <td>{{ contratacao.validadeEmDias }}</td>
               <td>{{ contratacao.dataValidade | formatMediumDate }}</td>
               <td>{{ contratacao.observacao }}</td>
-              <td>{{ contratacao.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ contratacao.usuarioCadastro }}</td>
-              <td>{{ contratacao.dataAtualizacao | formatMediumDatetime }}</td>
-              <td>{{ contratacao.usuarioAtualizacao }}</td>
               <td>{{ contratacao.cancelado }}</td>
-              <td>{{ contratacao.dataCancelamento | formatMediumDatetime }}</td>
-              <td>{{ contratacao.usuarioCancelamento }}</td>
               <td>{{ contratacao.removido }}</td>
-              <td>{{ contratacao.dataRemocao | formatMediumDatetime }}</td>
-              <td>{{ contratacao.usuarioRemocao }}</td>
+              <td>{{ contratacao.createdBy }}</td>
+              <td>{{ contratacao.createdDate | formatMediumDatetime }}</td>
+              <td>{{ contratacao.lastModifiedBy }}</td>
+              <td>{{ contratacao.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (contratacao.transportadora) {
                   <div>
@@ -202,6 +170,16 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/fatura']"
+                    [queryParams]="{ 'filter[contratacaoId.in]': contratacao.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Fatura</span>
+                  </button>
                   <a [routerLink]="['/contratacao', contratacao.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">Visualizar</span>

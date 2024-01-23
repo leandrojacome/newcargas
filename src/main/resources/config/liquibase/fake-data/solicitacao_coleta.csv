@@ -1,11 +1,11 @@
-id;coletado;data_hora_coleta;entregue;data_hora_entrega;valor_total;observacao;data_cadastro;data_atualizacao;cancelado;data_cancelamento;usuario_cancelamento;removido;data_remocao;usuario_remocao
-1;true;2024-01-20T13:46:22;false;2024-01-20T08:31:18;4.65;palm triple;2024-01-20T03:49:59;2024-01-20T02:15:49;false;2024-01-20T13:37:32;incidentally bin;true;2024-01-20T06:22:15;about selfishly
-2;true;2024-01-19T22:08:47;false;2024-01-20T07:22:58;2.33;nestling ha;2024-01-19T22:40:42;2024-01-19T22:11:52;false;2024-01-20T12:32:54;grace gamma-ray handcuff;true;2024-01-19T17:50:58;curiously apprentice direct
-3;false;2024-01-20T14:34:06;true;2024-01-20T09:50:52;9.28;psst modulo scary;2024-01-20T05:42:25;2024-01-19T23:33:23;true;2024-01-20T08:19:59;ugh uh-huh tummy;false;2024-01-20T10:29:09;although drummer
-4;false;2024-01-20T01:01:55;true;2024-01-20T08:19:48;4.9;behind diet whinny;2024-01-20T03:25:13;2024-01-20T07:50:28;true;2024-01-20T16:05:56;tiger;false;2024-01-20T00:16:24;ew
-5;true;2024-01-19T19:44:01;true;2024-01-19T22:39:19;3.74;contrast unnaturally;2024-01-19T21:49:24;2024-01-19T22:48:05;true;2024-01-20T13:40:46;reluctantly ah;false;2024-01-20T07:33:36;bratwurst
-6;true;2024-01-19T18:40:00;false;2024-01-20T02:21:52;9.52;cry network;2024-01-20T11:01:45;2024-01-20T06:56:54;true;2024-01-20T07:02:48;through penny deceivingly;true;2024-01-20T12:46:59;amongst stable
-7;false;2024-01-20T16:59:02;false;2024-01-20T10:28:51;6.37;clot centralise;2024-01-20T05:15:43;2024-01-20T01:28:00;true;2024-01-19T22:34:29;aside correctly thermostat;false;2024-01-20T02:06:36;far physically quadruple
-8;false;2024-01-20T08:11:21;true;2024-01-19T21:29:21;4.67;gem;2024-01-20T04:01:24;2024-01-20T04:36:07;true;2024-01-20T09:27:45;responsible;false;2024-01-20T03:38:54;baptise anticodon valiantly
-9;false;2024-01-20T05:08:52;true;2024-01-19T17:04:30;1.91;worst;2024-01-20T10:58:38;2024-01-19T19:26:22;false;2024-01-19T21:37:36;bowl suddenly;false;2024-01-20T08:40:22;actor where
-10;true;2024-01-20T03:53:25;false;2024-01-20T00:46:21;7.86;wherever out;2024-01-20T04:47:01;2024-01-19T18:08:36;false;2024-01-20T04:47:41;red silicon;false;2024-01-20T01:50:03;mmm
+id;coletado;data_hora_coleta;entregue;data_hora_entrega;valor_total;observacao;cancelado;removido;created_by;created_date;last_modified_by;last_modified_date
+1;true;2024-01-20T13:46:22;false;2024-01-20T08:31:18;4.65;palm triple;false;false;but geez meanwhile;2024-01-20T16:28:57;oddly grid;2024-01-20T13:26:18
+2;true;2024-01-20T15:31:10;false;2024-01-20T05:20:03;3.68;now whenever;false;false;cofactor or spruce;2024-01-20T14:18:43;or beyond;2024-01-20T04:57:46
+3;true;2024-01-20T03:26:45;false;2024-01-20T12:13:44;9.67;instead;true;false;oscillate pish bootie;2024-01-20T10:41:22;mom jut plane;2024-01-20T11:19:10
+4;false;2024-01-20T02:29:35;true;2024-01-20T14:46:04;8.17;drummer;false;false;behind splutter;2024-01-19T23:16:53;meanwhile triumph;2024-01-20T14:51:50
+5;true;2024-01-19T20:20:25;false;2024-01-20T11:46:17;9.17;provided if flay;true;false;root;2024-01-20T09:46:16;agitate;2024-01-20T01:03:58
+6;true;2024-01-19T17:29:08;false;2024-01-20T15:14:07;8.29;round gadzooks um;true;true;network;2024-01-20T11:01:45;last woot;2024-01-20T11:23:52
+7;true;2024-01-20T01:26:41;false;2024-01-20T07:46:08;1.47;for optimistically stained;true;false;viciously;2024-01-19T18:49:17;centralise;2024-01-20T05:15:43
+8;false;2024-01-20T11:59:44;false;2024-01-19T18:51:51;6.08;beginner from;false;true;outlying;2024-01-19T20:15:13;ruckus fooey skunk;2024-01-20T07:12:20
+9;true;2024-01-19T20:24:12;true;2024-01-20T10:39:33;8.07;greatly;false;false;soulful baptise;2024-01-20T09:15:10;gee;2024-01-19T18:06:06
+10;false;2024-01-19T23:21:20;true;2024-01-19T19:01:25;9.89;when wherever;false;false;pronunciation regarding selfishly;2024-01-20T10:38:18;where;2024-01-20T10:50:25

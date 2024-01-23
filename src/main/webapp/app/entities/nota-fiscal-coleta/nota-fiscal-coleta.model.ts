@@ -17,8 +17,10 @@ export interface INotaFiscalColeta {
   pesoTotal?: number | null;
   quantidadeTotal?: number | null;
   observacao?: string | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   enderecoOrigems?: Pick<IEndereco, 'id'>[] | null;
   enderecoDestinos?: Pick<IEndereco, 'id'>[] | null;
   solicitacaoColeta?: Pick<ISolicitacaoColeta, 'id'> | null;

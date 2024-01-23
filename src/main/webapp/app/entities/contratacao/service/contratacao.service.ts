@@ -15,15 +15,10 @@ import { IContratacao, NewContratacao } from '../contratacao.model';
 
 export type PartialUpdateContratacao = Partial<IContratacao> & Pick<IContratacao, 'id'>;
 
-type RestOf<T extends IContratacao | NewContratacao> = Omit<
-  T,
-  'dataValidade' | 'dataCadastro' | 'dataAtualizacao' | 'dataCancelamento' | 'dataRemocao'
-> & {
+type RestOf<T extends IContratacao | NewContratacao> = Omit<T, 'dataValidade' | 'createdDate' | 'lastModifiedDate'> & {
   dataValidade?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestContratacao = RestOf<IContratacao>;
@@ -125,10 +120,8 @@ export class ContratacaoService {
     return {
       ...contratacao,
       dataValidade: contratacao.dataValidade?.format(DATE_FORMAT) ?? null,
-      dataCadastro: contratacao.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: contratacao.dataAtualizacao?.toJSON() ?? null,
-      dataCancelamento: contratacao.dataCancelamento?.toJSON() ?? null,
-      dataRemocao: contratacao.dataRemocao?.toJSON() ?? null,
+      createdDate: contratacao.createdDate?.toJSON() ?? null,
+      lastModifiedDate: contratacao.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -136,10 +129,8 @@ export class ContratacaoService {
     return {
       ...restContratacao,
       dataValidade: restContratacao.dataValidade ? dayjs(restContratacao.dataValidade) : undefined,
-      dataCadastro: restContratacao.dataCadastro ? dayjs(restContratacao.dataCadastro) : undefined,
-      dataAtualizacao: restContratacao.dataAtualizacao ? dayjs(restContratacao.dataAtualizacao) : undefined,
-      dataCancelamento: restContratacao.dataCancelamento ? dayjs(restContratacao.dataCancelamento) : undefined,
-      dataRemocao: restContratacao.dataRemocao ? dayjs(restContratacao.dataRemocao) : undefined,
+      createdDate: restContratacao.createdDate ? dayjs(restContratacao.createdDate) : undefined,
+      lastModifiedDate: restContratacao.lastModifiedDate ? dayjs(restContratacao.lastModifiedDate) : undefined,
     };
   }
 

@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (tomadaPrecos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Tomada Preco encontrado</span>
@@ -90,56 +92,11 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
-              <div class="d-flex">
-                <span>Data Cadastro</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCadastro">
-              <div class="d-flex">
-                <span>Usuario Cadastro</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
-              <div class="d-flex">
-                <span>Data Atualizacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioAtualizacao">
-              <div class="d-flex">
-                <span>Usuario Atualizacao</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
             <th scope="col" jhiSortBy="aprovado">
               <div class="d-flex">
                 <span>Aprovado</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataAprovacao">
-              <div class="d-flex">
-                <span>Data Aprovacao</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioAprovacao">
-              <div class="d-flex">
-                <span>Usuario Aprovacao</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
               </div>
             </th>
             <th scope="col" jhiSortBy="cancelado">
@@ -149,21 +106,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCancelamento">
-              <div class="d-flex">
-                <span>Data Cancelamento</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usuarioCancelamento">
-              <div class="d-flex">
-                <span>Usuario Cancelamento</span>
-                @if (!currentSearch) {
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                }
-              </div>
-            </th>
             <th scope="col" jhiSortBy="removido">
               <div class="d-flex">
                 <span>Removido</span>
@@ -171,19 +113,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataRemocao">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Remocao</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usuarioRemocao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Usuario Remocao</span>
+                <span>Last Modified By</span>
                 @if (!currentSearch) {
                   <fa-icon class="p-1" icon="sort"></fa-icon>
                 }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="contratacao.id">
@@ -217,19 +174,13 @@
               <td>{{ tomadaPreco.prazoResposta }}</td>
               <td>{{ tomadaPreco.valorTotal }}</td>
               <td>{{ tomadaPreco.observacao }}</td>
-              <td>{{ tomadaPreco.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ tomadaPreco.usuarioCadastro }}</td>
-              <td>{{ tomadaPreco.dataAtualizacao | formatMediumDatetime }}</td>
-              <td>{{ tomadaPreco.usuarioAtualizacao }}</td>
               <td>{{ tomadaPreco.aprovado }}</td>
-              <td>{{ tomadaPreco.dataAprovacao | formatMediumDatetime }}</td>
-              <td>{{ tomadaPreco.usuarioAprovacao }}</td>
               <td>{{ tomadaPreco.cancelado }}</td>
-              <td>{{ tomadaPreco.dataCancelamento | formatMediumDatetime }}</td>
-              <td>{{ tomadaPreco.usuarioCancelamento }}</td>
               <td>{{ tomadaPreco.removido }}</td>
-              <td>{{ tomadaPreco.dataRemocao | formatMediumDatetime }}</td>
-              <td>{{ tomadaPreco.usuarioRemocao }}</td>
+              <td>{{ tomadaPreco.createdBy }}</td>
+              <td>{{ tomadaPreco.createdDate | formatMediumDatetime }}</td>
+              <td>{{ tomadaPreco.lastModifiedBy }}</td>
+              <td>{{ tomadaPreco.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (tomadaPreco.contratacao) {
                   <div>

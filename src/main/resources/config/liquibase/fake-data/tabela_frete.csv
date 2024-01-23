@@ -1,11 +1,11 @@
-id;tipo;nome;descricao;lead_time;frete_minimo;valor_tonelada;valor_metro_cubico;valor_unidade;valor_km;valor_adicional;valor_coleta;valor_entrega;valor_total;valor_km_adicional;data_cadastro;data_atualizacao
-1;TRANSPORTADOR;before;rigidly ha;1;6.41;1.35;4.01;3.5;3.5;1.1;1.15;2.16;4.17;3.98;2024-01-20T05:15:55;2024-01-20T15:53:29
-2;TRANSPORTADOR;scout depute astride;ornery dearly a;3;7.53;2.93;5.38;1.64;6.01;5.11;3.62;3.31;4.34;4.97;2024-01-20T10:24:57;2024-01-20T00:59:39
-3;EMBARCADOR;inspector better french;teethe by;1;3.12;8.54;6.09;5.03;1.29;9.81;3.58;3.49;9.47;7.03;2024-01-20T02:12:29;2024-01-20T11:09:18
-4;TRANSPORTADOR;small tub;improbable scavenge;1;9.8;2.61;5.41;3.23;7.14;7.85;1.12;2.84;5.59;5.39;2024-01-20T13:08:30;2024-01-20T07:20:52
-5;TRANSPORTADOR;beyond across as;well-documented;1;3.23;7.05;8.61;1.03;4.25;3.26;7.14;3.8;8.1;8.76;2024-01-19T22:13:05;2024-01-20T03:32:08
-6;EMBARCADOR;bah;besides;1;8.02;1.38;6.46;7.05;9.23;9.9;6.57;6.61;9.9;8.03;2024-01-20T02:44:05;2024-01-20T03:19:57
-7;EMBARCADOR;er yippee;prize;2;6.48;7.94;1.09;8.11;7.56;8.26;5.97;2.55;8.62;8.61;2024-01-19T22:35:13;2024-01-20T00:56:04
-8;EMBARCADOR;geez;restfully briskly;1;4.23;9.81;9.71;2.44;1.82;5.67;8.16;9.38;8.69;8.89;2024-01-20T10:40:54;2024-01-19T21:31:00
-9;TRANSPORTADOR;determined windy likely;wetly;4;6.47;9.2;3.24;5.17;1.25;5.4;6.1;3.83;5.43;6.28;2024-01-20T03:48:24;2024-01-20T16:29:52
-10;EMBARCADOR;wisely;impartial phooey;2;6.64;3.1;9.75;9.29;5.86;1.3;9.92;9.58;5.75;6.05;2024-01-20T14:34:37;2024-01-20T14:05:09
+id;tipo;nome;descricao;lead_time;frete_minimo;valor_tonelada;valor_metro_cubico;valor_unidade;valor_km;valor_adicional;valor_coleta;valor_entrega;valor_total;valor_km_adicional;created_by;created_date;last_modified_by;last_modified_date
+1;TRANSPORTADOR;before;rigidly ha;1;6.41;1.35;4.01;3.5;3.5;1.1;1.15;2.16;4.17;3.98;lest deselect;2024-01-20T03:06:09;yippee plain;2024-01-19T21:55:15
+2;TRANSPORTADOR;properly;until pfft;2;4.97;3.42;6.96;5.25;8.24;7.66;5.56;2.08;5.89;8.76;sometimes redound annually;2024-01-20T07:51:15;by um er;2024-01-20T02:35:37
+3;EMBARCADOR;readily knowingly limber;worriedly coordinator number;1;2.17;9.42;2.52;4.93;3.98;6.62;6.95;2.67;6.77;2.54;minus zowie yuck;2024-01-20T08:13:47;dreary;2024-01-20T13:47:50
+4;TRANSPORTADOR;furthermore;successfully pike;4;8.03;6.31;6.08;2.83;4.32;9.62;3.66;4.24;6.48;1.47;whoever till sequence;2024-01-19T23:23:59;joyful flick however;2024-01-20T05:36:06
+5;TRANSPORTADOR;yuck shoe worthwhile;whereas jagged calmly;4;6.97;2.17;7.39;1.75;4.55;9.61;8.8;6.47;9.2;3.24;mollify shape;2024-01-20T11:52:02;which;2024-01-19T19:08:26
+6;EMBARCADOR;barring;ick at;3;9.79;6.8;2.57;8.15;6.93;5.4;1.63;5.14;3.68;9.93;complete;2024-01-20T15:50:16;that zowie discipline;2024-01-19T19:12:44
+7;EMBARCADOR;elm hourly around;limitation muzzle omission;3;3.44;6.16;3.91;4.22;1.97;7.85;5.86;2.6;5.25;2.37;agonizing pretzel;2024-01-20T04:00:27;seldom;2024-01-20T14:13:04
+8;EMBARCADOR;whether overstate hm;unless blah chrome;2;6.12;5.13;8.39;3.94;7.97;2.61;7.63;5.89;2.76;4.73;along;2024-01-20T10:34:35;interior;2024-01-20T10:00:19
+9;TRANSPORTADOR;on after mechanically;tuition although down;1;1.32;1.49;5.93;6.12;8.91;1.72;5.32;9.97;5.81;7.24;precious;2024-01-19T17:59:04;formal whereas;2024-01-20T09:22:29
+10;EMBARCADOR;knowledgeably nor;mould clever whoever;2;4.96;6.8;1.06;3.55;5.51;9.54;4.03;2.11;4.12;1.39;coaxingly paraphrase knobby;2024-01-20T00:53:12;shadowy;2024-01-19T18:31:20

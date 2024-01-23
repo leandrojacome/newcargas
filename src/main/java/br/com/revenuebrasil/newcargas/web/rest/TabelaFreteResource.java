@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TabelaFreteRepository;
+import br.com.revenuebrasil.newcargas.service.TabelaFreteQueryService;
 import br.com.revenuebrasil.newcargas.service.TabelaFreteService;
+import br.com.revenuebrasil.newcargas.service.criteria.TabelaFreteCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TabelaFreteDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TabelaFreteResource {
 
     private final TabelaFreteRepository tabelaFreteRepository;
 
-    public TabelaFreteResource(TabelaFreteService tabelaFreteService, TabelaFreteRepository tabelaFreteRepository) {
+    private final TabelaFreteQueryService tabelaFreteQueryService;
+
+    public TabelaFreteResource(
+        TabelaFreteService tabelaFreteService,
+        TabelaFreteRepository tabelaFreteRepository,
+        TabelaFreteQueryService tabelaFreteQueryService
+    ) {
         this.tabelaFreteService = tabelaFreteService;
         this.tabelaFreteRepository = tabelaFreteRepository;
+        this.tabelaFreteQueryService = tabelaFreteQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class TabelaFreteResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TabelaFreteDTO> updateTabelaFrete(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TabelaFreteDTO tabelaFreteDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TabelaFrete : {}, {}", id, tabelaFreteDTO);
@@ -115,7 +124,7 @@ public class TabelaFreteResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TabelaFreteDTO> partialUpdateTabelaFrete(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TabelaFreteDTO tabelaFreteDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TabelaFrete partially : {}, {}", id, tabelaFreteDTO);
@@ -142,14 +151,31 @@ public class TabelaFreteResource {
      * {@code GET  /tabela-fretes} : get all the tabelaFretes.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tabelaFretes in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TabelaFreteDTO>> getAllTabelaFretes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TabelaFretes");
-        Page<TabelaFreteDTO> page = tabelaFreteService.findAll(pageable);
+    public ResponseEntity<List<TabelaFreteDTO>> getAllTabelaFretes(
+        TabelaFreteCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TabelaFretes by criteria: {}", criteria);
+
+        Page<TabelaFreteDTO> page = tabelaFreteQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tabela-fretes/count} : count all the tabelaFretes.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTabelaFretes(TabelaFreteCriteria criteria) {
+        log.debug("REST request to count TabelaFretes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tabelaFreteQueryService.countByCriteria(criteria));
     }
 
     /**

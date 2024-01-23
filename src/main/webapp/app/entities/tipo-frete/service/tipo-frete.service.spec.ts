@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ITipoFrete } from '../tipo-frete.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../tipo-frete.test-samples';
 
-import { TipoFreteService } from './tipo-frete.service';
+import { TipoFreteService, RestTipoFrete } from './tipo-frete.service';
 
-const requireRestSample: ITipoFrete = {
+const requireRestSample: RestTipoFrete = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('TipoFrete Service', () => {

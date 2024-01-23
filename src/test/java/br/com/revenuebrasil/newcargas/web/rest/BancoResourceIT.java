@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
 import br.com.revenuebrasil.newcargas.domain.Banco;
+import br.com.revenuebrasil.newcargas.domain.ContaBancaria;
 import br.com.revenuebrasil.newcargas.repository.BancoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.BancoSearchRepository;
 import br.com.revenuebrasil.newcargas.service.dto.BancoDTO;
@@ -199,6 +200,215 @@ class BancoResourceIT {
             .andExpect(jsonPath("$.id").value(banco.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.codigo").value(DEFAULT_CODIGO));
+    }
+
+    @Test
+    @Transactional
+    void getBancosByIdFiltering() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        Long id = banco.getId();
+
+        defaultBancoShouldBeFound("id.equals=" + id);
+        defaultBancoShouldNotBeFound("id.notEquals=" + id);
+
+        defaultBancoShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultBancoShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultBancoShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultBancoShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where nome equals to DEFAULT_NOME
+        defaultBancoShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the bancoList where nome equals to UPDATED_NOME
+        defaultBancoShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultBancoShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the bancoList where nome equals to UPDATED_NOME
+        defaultBancoShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where nome is not null
+        defaultBancoShouldBeFound("nome.specified=true");
+
+        // Get all the bancoList where nome is null
+        defaultBancoShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where nome contains DEFAULT_NOME
+        defaultBancoShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the bancoList where nome contains UPDATED_NOME
+        defaultBancoShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where nome does not contain DEFAULT_NOME
+        defaultBancoShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the bancoList where nome does not contain UPDATED_NOME
+        defaultBancoShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByCodigoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where codigo equals to DEFAULT_CODIGO
+        defaultBancoShouldBeFound("codigo.equals=" + DEFAULT_CODIGO);
+
+        // Get all the bancoList where codigo equals to UPDATED_CODIGO
+        defaultBancoShouldNotBeFound("codigo.equals=" + UPDATED_CODIGO);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByCodigoIsInShouldWork() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where codigo in DEFAULT_CODIGO or UPDATED_CODIGO
+        defaultBancoShouldBeFound("codigo.in=" + DEFAULT_CODIGO + "," + UPDATED_CODIGO);
+
+        // Get all the bancoList where codigo equals to UPDATED_CODIGO
+        defaultBancoShouldNotBeFound("codigo.in=" + UPDATED_CODIGO);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByCodigoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where codigo is not null
+        defaultBancoShouldBeFound("codigo.specified=true");
+
+        // Get all the bancoList where codigo is null
+        defaultBancoShouldNotBeFound("codigo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByCodigoContainsSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where codigo contains DEFAULT_CODIGO
+        defaultBancoShouldBeFound("codigo.contains=" + DEFAULT_CODIGO);
+
+        // Get all the bancoList where codigo contains UPDATED_CODIGO
+        defaultBancoShouldNotBeFound("codigo.contains=" + UPDATED_CODIGO);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByCodigoNotContainsSomething() throws Exception {
+        // Initialize the database
+        bancoRepository.saveAndFlush(banco);
+
+        // Get all the bancoList where codigo does not contain DEFAULT_CODIGO
+        defaultBancoShouldNotBeFound("codigo.doesNotContain=" + DEFAULT_CODIGO);
+
+        // Get all the bancoList where codigo does not contain UPDATED_CODIGO
+        defaultBancoShouldBeFound("codigo.doesNotContain=" + UPDATED_CODIGO);
+    }
+
+    @Test
+    @Transactional
+    void getAllBancosByContaBancariaIsEqualToSomething() throws Exception {
+        ContaBancaria contaBancaria;
+        if (TestUtil.findAll(em, ContaBancaria.class).isEmpty()) {
+            bancoRepository.saveAndFlush(banco);
+            contaBancaria = ContaBancariaResourceIT.createEntity(em);
+        } else {
+            contaBancaria = TestUtil.findAll(em, ContaBancaria.class).get(0);
+        }
+        em.persist(contaBancaria);
+        em.flush();
+        banco.addContaBancaria(contaBancaria);
+        bancoRepository.saveAndFlush(banco);
+        Long contaBancariaId = contaBancaria.getId();
+        // Get all the bancoList where contaBancaria equals to contaBancariaId
+        defaultBancoShouldBeFound("contaBancariaId.equals=" + contaBancariaId);
+
+        // Get all the bancoList where contaBancaria equals to (contaBancariaId + 1)
+        defaultBancoShouldNotBeFound("contaBancariaId.equals=" + (contaBancariaId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultBancoShouldBeFound(String filter) throws Exception {
+        restBancoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(banco.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].codigo").value(hasItem(DEFAULT_CODIGO)));
+
+        // Check, that the count call also returns 1
+        restBancoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultBancoShouldNotBeFound(String filter) throws Exception {
+        restBancoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restBancoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

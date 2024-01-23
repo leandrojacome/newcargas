@@ -114,7 +114,7 @@ export class TomadaPrecoUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.contratacaoService
-      .query({ filter: 'solicitacaocoleta-is-null' })
+      .query({ 'solicitacaoColetaId.specified': 'false' })
       .pipe(map((res: HttpResponse<IContratacao[]>) => res.body ?? []))
       .pipe(
         map((contratacaos: IContratacao[]) =>

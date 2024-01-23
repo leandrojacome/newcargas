@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TomadaPrecoRepository;
+import br.com.revenuebrasil.newcargas.service.TomadaPrecoQueryService;
 import br.com.revenuebrasil.newcargas.service.TomadaPrecoService;
+import br.com.revenuebrasil.newcargas.service.criteria.TomadaPrecoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TomadaPrecoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TomadaPrecoResource {
 
     private final TomadaPrecoRepository tomadaPrecoRepository;
 
-    public TomadaPrecoResource(TomadaPrecoService tomadaPrecoService, TomadaPrecoRepository tomadaPrecoRepository) {
+    private final TomadaPrecoQueryService tomadaPrecoQueryService;
+
+    public TomadaPrecoResource(
+        TomadaPrecoService tomadaPrecoService,
+        TomadaPrecoRepository tomadaPrecoRepository,
+        TomadaPrecoQueryService tomadaPrecoQueryService
+    ) {
         this.tomadaPrecoService = tomadaPrecoService;
         this.tomadaPrecoRepository = tomadaPrecoRepository;
+        this.tomadaPrecoQueryService = tomadaPrecoQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class TomadaPrecoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TomadaPrecoDTO> updateTomadaPreco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TomadaPrecoDTO tomadaPrecoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TomadaPreco : {}, {}", id, tomadaPrecoDTO);
@@ -115,7 +124,7 @@ public class TomadaPrecoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TomadaPrecoDTO> partialUpdateTomadaPreco(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TomadaPrecoDTO tomadaPrecoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TomadaPreco partially : {}, {}", id, tomadaPrecoDTO);
@@ -142,14 +151,31 @@ public class TomadaPrecoResource {
      * {@code GET  /tomada-precos} : get all the tomadaPrecos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tomadaPrecos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TomadaPrecoDTO>> getAllTomadaPrecos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TomadaPrecos");
-        Page<TomadaPrecoDTO> page = tomadaPrecoService.findAll(pageable);
+    public ResponseEntity<List<TomadaPrecoDTO>> getAllTomadaPrecos(
+        TomadaPrecoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TomadaPrecos by criteria: {}", criteria);
+
+        Page<TomadaPrecoDTO> page = tomadaPrecoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tomada-precos/count} : count all the tomadaPrecos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTomadaPrecos(TomadaPrecoCriteria criteria) {
+        log.debug("REST request to count TomadaPrecos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tomadaPrecoQueryService.countByCriteria(criteria));
     }
 
     /**

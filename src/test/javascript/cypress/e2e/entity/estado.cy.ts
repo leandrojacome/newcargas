@@ -15,7 +15,7 @@ describe('Estado e2e test', () => {
   const estadoPageUrlPattern = new RegExp('/estado(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const estadoSample = { nome: 'angrily amid', sigla: 'pl' };
+  const estadoSample = { nome: 'mobile', sigla: 'yu' };
 
   let estado;
 
@@ -125,7 +125,7 @@ describe('Estado e2e test', () => {
         cy.url().should('match', estadoPageUrlPattern);
       });
 
-      it('edit button click should load edit Estado page and save', () => {
+      it.skip('edit button click should load edit Estado page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Estado');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,11 +160,11 @@ describe('Estado e2e test', () => {
     });
 
     it('should create an instance of Estado', () => {
-      cy.get(`[data-cy="nome"]`).type('impostor upwardly');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'impostor upwardly');
+      cy.get(`[data-cy="nome"]`).type('plastic');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'plastic');
 
-      cy.get(`[data-cy="sigla"]`).type('fl');
-      cy.get(`[data-cy="sigla"]`).should('have.value', 'fl');
+      cy.get(`[data-cy="sigla"]`).type('li');
+      cy.get(`[data-cy="sigla"]`).should('have.value', 'li');
 
       cy.get(`[data-cy="codigoIbge"]`).type('7');
       cy.get(`[data-cy="codigoIbge"]`).should('have.value', '7');

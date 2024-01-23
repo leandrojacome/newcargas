@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.revenuebrasil.newcargas.IntegrationTest;
+import br.com.revenuebrasil.newcargas.domain.Cidade;
 import br.com.revenuebrasil.newcargas.domain.Estado;
 import br.com.revenuebrasil.newcargas.repository.EstadoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.EstadoSearchRepository;
@@ -46,6 +47,7 @@ class EstadoResourceIT {
 
     private static final Integer DEFAULT_CODIGO_IBGE = 7;
     private static final Integer UPDATED_CODIGO_IBGE = 8;
+    private static final Integer SMALLER_CODIGO_IBGE = 7 - 1;
 
     private static final String ENTITY_API_URL = "/api/estados";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -226,6 +228,307 @@ class EstadoResourceIT {
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME))
             .andExpect(jsonPath("$.sigla").value(DEFAULT_SIGLA))
             .andExpect(jsonPath("$.codigoIbge").value(DEFAULT_CODIGO_IBGE));
+    }
+
+    @Test
+    @Transactional
+    void getEstadosByIdFiltering() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        Long id = estado.getId();
+
+        defaultEstadoShouldBeFound("id.equals=" + id);
+        defaultEstadoShouldNotBeFound("id.notEquals=" + id);
+
+        defaultEstadoShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultEstadoShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultEstadoShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultEstadoShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByNomeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where nome equals to DEFAULT_NOME
+        defaultEstadoShouldBeFound("nome.equals=" + DEFAULT_NOME);
+
+        // Get all the estadoList where nome equals to UPDATED_NOME
+        defaultEstadoShouldNotBeFound("nome.equals=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByNomeIsInShouldWork() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where nome in DEFAULT_NOME or UPDATED_NOME
+        defaultEstadoShouldBeFound("nome.in=" + DEFAULT_NOME + "," + UPDATED_NOME);
+
+        // Get all the estadoList where nome equals to UPDATED_NOME
+        defaultEstadoShouldNotBeFound("nome.in=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByNomeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where nome is not null
+        defaultEstadoShouldBeFound("nome.specified=true");
+
+        // Get all the estadoList where nome is null
+        defaultEstadoShouldNotBeFound("nome.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByNomeContainsSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where nome contains DEFAULT_NOME
+        defaultEstadoShouldBeFound("nome.contains=" + DEFAULT_NOME);
+
+        // Get all the estadoList where nome contains UPDATED_NOME
+        defaultEstadoShouldNotBeFound("nome.contains=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByNomeNotContainsSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where nome does not contain DEFAULT_NOME
+        defaultEstadoShouldNotBeFound("nome.doesNotContain=" + DEFAULT_NOME);
+
+        // Get all the estadoList where nome does not contain UPDATED_NOME
+        defaultEstadoShouldBeFound("nome.doesNotContain=" + UPDATED_NOME);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosBySiglaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where sigla equals to DEFAULT_SIGLA
+        defaultEstadoShouldBeFound("sigla.equals=" + DEFAULT_SIGLA);
+
+        // Get all the estadoList where sigla equals to UPDATED_SIGLA
+        defaultEstadoShouldNotBeFound("sigla.equals=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosBySiglaIsInShouldWork() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where sigla in DEFAULT_SIGLA or UPDATED_SIGLA
+        defaultEstadoShouldBeFound("sigla.in=" + DEFAULT_SIGLA + "," + UPDATED_SIGLA);
+
+        // Get all the estadoList where sigla equals to UPDATED_SIGLA
+        defaultEstadoShouldNotBeFound("sigla.in=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosBySiglaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where sigla is not null
+        defaultEstadoShouldBeFound("sigla.specified=true");
+
+        // Get all the estadoList where sigla is null
+        defaultEstadoShouldNotBeFound("sigla.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosBySiglaContainsSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where sigla contains DEFAULT_SIGLA
+        defaultEstadoShouldBeFound("sigla.contains=" + DEFAULT_SIGLA);
+
+        // Get all the estadoList where sigla contains UPDATED_SIGLA
+        defaultEstadoShouldNotBeFound("sigla.contains=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosBySiglaNotContainsSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where sigla does not contain DEFAULT_SIGLA
+        defaultEstadoShouldNotBeFound("sigla.doesNotContain=" + DEFAULT_SIGLA);
+
+        // Get all the estadoList where sigla does not contain UPDATED_SIGLA
+        defaultEstadoShouldBeFound("sigla.doesNotContain=" + UPDATED_SIGLA);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge equals to DEFAULT_CODIGO_IBGE
+        defaultEstadoShouldBeFound("codigoIbge.equals=" + DEFAULT_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge equals to UPDATED_CODIGO_IBGE
+        defaultEstadoShouldNotBeFound("codigoIbge.equals=" + UPDATED_CODIGO_IBGE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsInShouldWork() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge in DEFAULT_CODIGO_IBGE or UPDATED_CODIGO_IBGE
+        defaultEstadoShouldBeFound("codigoIbge.in=" + DEFAULT_CODIGO_IBGE + "," + UPDATED_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge equals to UPDATED_CODIGO_IBGE
+        defaultEstadoShouldNotBeFound("codigoIbge.in=" + UPDATED_CODIGO_IBGE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge is not null
+        defaultEstadoShouldBeFound("codigoIbge.specified=true");
+
+        // Get all the estadoList where codigoIbge is null
+        defaultEstadoShouldNotBeFound("codigoIbge.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge is greater than or equal to DEFAULT_CODIGO_IBGE
+        defaultEstadoShouldBeFound("codigoIbge.greaterThanOrEqual=" + DEFAULT_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge is greater than or equal to (DEFAULT_CODIGO_IBGE + 1)
+        defaultEstadoShouldNotBeFound("codigoIbge.greaterThanOrEqual=" + (DEFAULT_CODIGO_IBGE + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge is less than or equal to DEFAULT_CODIGO_IBGE
+        defaultEstadoShouldBeFound("codigoIbge.lessThanOrEqual=" + DEFAULT_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge is less than or equal to SMALLER_CODIGO_IBGE
+        defaultEstadoShouldNotBeFound("codigoIbge.lessThanOrEqual=" + SMALLER_CODIGO_IBGE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge is less than DEFAULT_CODIGO_IBGE
+        defaultEstadoShouldNotBeFound("codigoIbge.lessThan=" + DEFAULT_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge is less than (DEFAULT_CODIGO_IBGE + 1)
+        defaultEstadoShouldBeFound("codigoIbge.lessThan=" + (DEFAULT_CODIGO_IBGE + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCodigoIbgeIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        estadoRepository.saveAndFlush(estado);
+
+        // Get all the estadoList where codigoIbge is greater than DEFAULT_CODIGO_IBGE
+        defaultEstadoShouldNotBeFound("codigoIbge.greaterThan=" + DEFAULT_CODIGO_IBGE);
+
+        // Get all the estadoList where codigoIbge is greater than SMALLER_CODIGO_IBGE
+        defaultEstadoShouldBeFound("codigoIbge.greaterThan=" + SMALLER_CODIGO_IBGE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEstadosByCidadeIsEqualToSomething() throws Exception {
+        Cidade cidade;
+        if (TestUtil.findAll(em, Cidade.class).isEmpty()) {
+            estadoRepository.saveAndFlush(estado);
+            cidade = CidadeResourceIT.createEntity(em);
+        } else {
+            cidade = TestUtil.findAll(em, Cidade.class).get(0);
+        }
+        em.persist(cidade);
+        em.flush();
+        estado.addCidade(cidade);
+        estadoRepository.saveAndFlush(estado);
+        Long cidadeId = cidade.getId();
+        // Get all the estadoList where cidade equals to cidadeId
+        defaultEstadoShouldBeFound("cidadeId.equals=" + cidadeId);
+
+        // Get all the estadoList where cidade equals to (cidadeId + 1)
+        defaultEstadoShouldNotBeFound("cidadeId.equals=" + (cidadeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultEstadoShouldBeFound(String filter) throws Exception {
+        restEstadoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(estado.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME)))
+            .andExpect(jsonPath("$.[*].sigla").value(hasItem(DEFAULT_SIGLA)))
+            .andExpect(jsonPath("$.[*].codigoIbge").value(hasItem(DEFAULT_CODIGO_IBGE)));
+
+        // Check, that the count call also returns 1
+        restEstadoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultEstadoShouldNotBeFound(String filter) throws Exception {
+        restEstadoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restEstadoMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

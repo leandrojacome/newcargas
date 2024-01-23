@@ -4,6 +4,7 @@
   },
   "applications": ["newcargas"],
   "dto": "mapstruct",
+  "enableAudit": true,
   "entityTableName": "solicitacao_coleta",
   "fields": [
     {
@@ -40,45 +41,49 @@
       "fieldValidateRulesMinlength": "2"
     },
     {
-      "fieldName": "dataCadastro",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "dataAtualizacao",
-      "fieldType": "ZonedDateTime"
-    },
-    {
       "fieldName": "cancelado",
       "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "dataCancelamento",
-      "fieldType": "ZonedDateTime"
-    },
-    {
-      "fieldName": "usuarioCancelamento",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
     },
     {
       "fieldName": "removido",
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "dataRemocao",
-      "fieldType": "ZonedDateTime"
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "nullable": false,
+      "readonly": true
     },
     {
-      "fieldName": "usuarioRemocao",
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "columnType": "varchar(50)",
+      "fieldName": "lastModifiedBy",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength", "minlength"],
-      "fieldValidateRulesMaxlength": "150",
-      "fieldValidateRulesMinlength": "2"
+      "nullable": false,
+      "readonly": true
+    },
+    {
+      "auditField": true,
+      "autoGenerate": true,
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant",
+      "nullable": false,
+      "readonly": true
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "SolicitacaoColeta",
   "pagination": "pagination",
   "relationships": [

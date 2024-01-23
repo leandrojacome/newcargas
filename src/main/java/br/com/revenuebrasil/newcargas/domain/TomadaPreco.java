@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -14,8 +16,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "tomada_preco")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "tomadapreco")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class TomadaPreco implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class TomadaPreco extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,6 +36,7 @@ public class TomadaPreco implements Serializable {
     @Min(value = 1)
     @Max(value = 4)
     @Column(name = "prazo_resposta")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer prazoResposta;
 
     @DecimalMin(value = "1")
@@ -41,52 +46,25 @@ public class TomadaPreco implements Serializable {
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cadastro", length = 150)
-    private String usuarioCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_atualizacao", length = 150)
-    private String usuarioAtualizacao;
-
     @Column(name = "aprovado")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean aprovado;
 
-    @Column(name = "data_aprovacao")
-    private ZonedDateTime dataAprovacao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_aprovacao", length = 150)
-    private String usuarioAprovacao;
-
     @Column(name = "cancelado")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean cancelado;
 
-    @Column(name = "data_cancelamento")
-    private ZonedDateTime dataCancelamento;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cancelamento", length = 150)
-    private String usuarioCancelamento;
-
     @Column(name = "removido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean removido;
 
-    @Column(name = "data_remocao")
-    private ZonedDateTime dataRemocao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_remocao", length = 150)
-    private String usuarioRemocao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @JsonIgnoreProperties(value = { "faturas", "solicitacaoColeta", "transportadora" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
@@ -95,7 +73,7 @@ public class TomadaPreco implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Transportadora transportadora;
@@ -171,58 +149,6 @@ public class TomadaPreco implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public TomadaPreco dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
-        return this;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public String getUsuarioCadastro() {
-        return this.usuarioCadastro;
-    }
-
-    public TomadaPreco usuarioCadastro(String usuarioCadastro) {
-        this.setUsuarioCadastro(usuarioCadastro);
-        return this;
-    }
-
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public TomadaPreco dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
-        return this;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public String getUsuarioAtualizacao() {
-        return this.usuarioAtualizacao;
-    }
-
-    public TomadaPreco usuarioAtualizacao(String usuarioAtualizacao) {
-        this.setUsuarioAtualizacao(usuarioAtualizacao);
-        return this;
-    }
-
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
-    }
-
     public Boolean getAprovado() {
         return this.aprovado;
     }
@@ -234,32 +160,6 @@ public class TomadaPreco implements Serializable {
 
     public void setAprovado(Boolean aprovado) {
         this.aprovado = aprovado;
-    }
-
-    public ZonedDateTime getDataAprovacao() {
-        return this.dataAprovacao;
-    }
-
-    public TomadaPreco dataAprovacao(ZonedDateTime dataAprovacao) {
-        this.setDataAprovacao(dataAprovacao);
-        return this;
-    }
-
-    public void setDataAprovacao(ZonedDateTime dataAprovacao) {
-        this.dataAprovacao = dataAprovacao;
-    }
-
-    public String getUsuarioAprovacao() {
-        return this.usuarioAprovacao;
-    }
-
-    public TomadaPreco usuarioAprovacao(String usuarioAprovacao) {
-        this.setUsuarioAprovacao(usuarioAprovacao);
-        return this;
-    }
-
-    public void setUsuarioAprovacao(String usuarioAprovacao) {
-        this.usuarioAprovacao = usuarioAprovacao;
     }
 
     public Boolean getCancelado() {
@@ -275,32 +175,6 @@ public class TomadaPreco implements Serializable {
         this.cancelado = cancelado;
     }
 
-    public ZonedDateTime getDataCancelamento() {
-        return this.dataCancelamento;
-    }
-
-    public TomadaPreco dataCancelamento(ZonedDateTime dataCancelamento) {
-        this.setDataCancelamento(dataCancelamento);
-        return this;
-    }
-
-    public void setDataCancelamento(ZonedDateTime dataCancelamento) {
-        this.dataCancelamento = dataCancelamento;
-    }
-
-    public String getUsuarioCancelamento() {
-        return this.usuarioCancelamento;
-    }
-
-    public TomadaPreco usuarioCancelamento(String usuarioCancelamento) {
-        this.setUsuarioCancelamento(usuarioCancelamento);
-        return this;
-    }
-
-    public void setUsuarioCancelamento(String usuarioCancelamento) {
-        this.usuarioCancelamento = usuarioCancelamento;
-    }
-
     public Boolean getRemovido() {
         return this.removido;
     }
@@ -314,30 +188,28 @@ public class TomadaPreco implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return this.dataRemocao;
-    }
-
-    public TomadaPreco dataRemocao(ZonedDateTime dataRemocao) {
-        this.setDataRemocao(dataRemocao);
+    // Inherited createdBy methods
+    public TomadaPreco createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
-    }
-
-    public String getUsuarioRemocao() {
-        return this.usuarioRemocao;
-    }
-
-    public TomadaPreco usuarioRemocao(String usuarioRemocao) {
-        this.setUsuarioRemocao(usuarioRemocao);
+    // Inherited createdDate methods
+    public TomadaPreco createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    // Inherited lastModifiedBy methods
+    public TomadaPreco lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public TomadaPreco lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Contratacao getContratacao() {
@@ -407,19 +279,13 @@ public class TomadaPreco implements Serializable {
             ", prazoResposta=" + getPrazoResposta() +
             ", valorTotal=" + getValorTotal() +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
             ", aprovado='" + getAprovado() + "'" +
-            ", dataAprovacao='" + getDataAprovacao() + "'" +
-            ", usuarioAprovacao='" + getUsuarioAprovacao() + "'" +
             ", cancelado='" + getCancelado() + "'" +
-            ", dataCancelamento='" + getDataCancelamento() + "'" +
-            ", usuarioCancelamento='" + getUsuarioCancelamento() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

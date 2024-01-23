@@ -1,10 +1,12 @@
 package br.com.revenuebrasil.newcargas.domain;
 
 import br.com.revenuebrasil.newcargas.domain.enumeration.TipoNotificacao;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -15,8 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "notificacao")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "notificacao")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Notificacao implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class Notificacao extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,24 +33,29 @@ public class Notificacao implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Keyword)
     private TipoNotificacao tipo;
 
     @Size(min = 2, max = 150)
     @Column(name = "email", length = 150)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String email;
 
     @Size(min = 10, max = 11)
     @Column(name = "telefone", length = 11)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String telefone;
 
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "assunto", length = 150, nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String assunto;
 
     @NotNull
     @Size(min = 2, max = 500)
     @Column(name = "mensagem", length = 500, nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String mensagem;
 
     @NotNull
@@ -56,39 +65,32 @@ public class Notificacao implements Serializable {
     @Column(name = "data_hora_leitura")
     private ZonedDateTime dataHoraLeitura;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
     @Column(name = "lido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean lido;
 
     @Column(name = "data_leitura")
     private ZonedDateTime dataLeitura;
 
     @Column(name = "removido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean removido;
 
-    @Column(name = "data_remocao")
-    private ZonedDateTime dataRemocao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_remocao", length = 150)
-    private String usuarioRemocao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Embarcador embarcador;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Transportadora transportadora;
@@ -199,32 +201,6 @@ public class Notificacao implements Serializable {
         this.dataHoraLeitura = dataHoraLeitura;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public Notificacao dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
-        return this;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public Notificacao dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
-        return this;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
     public Boolean getLido() {
         return this.lido;
     }
@@ -264,30 +240,28 @@ public class Notificacao implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return this.dataRemocao;
-    }
-
-    public Notificacao dataRemocao(ZonedDateTime dataRemocao) {
-        this.setDataRemocao(dataRemocao);
+    // Inherited createdBy methods
+    public Notificacao createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
-    }
-
-    public String getUsuarioRemocao() {
-        return this.usuarioRemocao;
-    }
-
-    public Notificacao usuarioRemocao(String usuarioRemocao) {
-        this.setUsuarioRemocao(usuarioRemocao);
+    // Inherited createdDate methods
+    public Notificacao createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    // Inherited lastModifiedBy methods
+    public Notificacao lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public Notificacao lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Embarcador getEmbarcador() {
@@ -347,13 +321,13 @@ public class Notificacao implements Serializable {
             ", mensagem='" + getMensagem() + "'" +
             ", dataHoraEnvio='" + getDataHoraEnvio() + "'" +
             ", dataHoraLeitura='" + getDataHoraLeitura() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
             ", lido='" + getLido() + "'" +
             ", dataLeitura='" + getDataLeitura() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

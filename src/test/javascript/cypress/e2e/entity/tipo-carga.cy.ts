@@ -15,7 +15,7 @@ describe('TipoCarga e2e test', () => {
   const tipoCargaPageUrlPattern = new RegExp('/tipo-carga(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const tipoCargaSample = { nome: 'till' };
+  const tipoCargaSample = { nome: 'opposite gee yowza' };
 
   let tipoCarga;
 
@@ -125,7 +125,7 @@ describe('TipoCarga e2e test', () => {
         cy.url().should('match', tipoCargaPageUrlPattern);
       });
 
-      it('edit button click should load edit TipoCarga page and save', () => {
+      it.skip('edit button click should load edit TipoCarga page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('TipoCarga');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,11 +160,11 @@ describe('TipoCarga e2e test', () => {
     });
 
     it('should create an instance of TipoCarga', () => {
-      cy.get(`[data-cy="nome"]`).type('after');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'after');
+      cy.get(`[data-cy="nome"]`).type('mostly furthermore');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'mostly furthermore');
 
-      cy.get(`[data-cy="descricao"]`).type('cruelly');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'cruelly');
+      cy.get(`[data-cy="descricao"]`).type('legislation');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'legislation');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

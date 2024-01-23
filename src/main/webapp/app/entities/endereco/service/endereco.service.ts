@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -11,6 +13,17 @@ import { SearchWithPagination } from 'app/core/request/request.model';
 import { IEndereco, NewEndereco } from '../endereco.model';
 
 export type PartialUpdateEndereco = Partial<IEndereco> & Pick<IEndereco, 'id'>;
+
+type RestOf<T extends IEndereco | NewEndereco> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+export type RestEndereco = RestOf<IEndereco>;
+
+export type NewRestEndereco = RestOf<NewEndereco>;
+
+export type PartialUpdateRestEndereco = RestOf<PartialUpdateEndereco>;
 
 export type EntityResponseType = HttpResponse<IEndereco>;
 export type EntityArrayResponseType = HttpResponse<IEndereco[]>;
@@ -26,24 +39,37 @@ export class EnderecoService {
   ) {}
 
   create(endereco: NewEndereco): Observable<EntityResponseType> {
-    return this.http.post<IEndereco>(this.resourceUrl, endereco, { observe: 'response' });
+    const copy = this.convertDateFromClient(endereco);
+    return this.http
+      .post<RestEndereco>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(endereco: IEndereco): Observable<EntityResponseType> {
-    return this.http.put<IEndereco>(`${this.resourceUrl}/${this.getEnderecoIdentifier(endereco)}`, endereco, { observe: 'response' });
+    const copy = this.convertDateFromClient(endereco);
+    return this.http
+      .put<RestEndereco>(`${this.resourceUrl}/${this.getEnderecoIdentifier(endereco)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(endereco: PartialUpdateEndereco): Observable<EntityResponseType> {
-    return this.http.patch<IEndereco>(`${this.resourceUrl}/${this.getEnderecoIdentifier(endereco)}`, endereco, { observe: 'response' });
+    const copy = this.convertDateFromClient(endereco);
+    return this.http
+      .patch<RestEndereco>(`${this.resourceUrl}/${this.getEnderecoIdentifier(endereco)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IEndereco>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestEndereco>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IEndereco[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestEndereco[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -52,9 +78,10 @@ export class EnderecoService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<IEndereco[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(catchError(() => scheduled([new HttpResponse<IEndereco[]>()], asapScheduler)));
+    return this.http.get<RestEndereco[]>(this.resourceSearchUrl, { params: options, observe: 'response' }).pipe(
+      map(res => this.convertResponseArrayFromServer(res)),
+      catchError(() => scheduled([new HttpResponse<IEndereco[]>()], asapScheduler)),
+    );
   }
 
   getEnderecoIdentifier(endereco: Pick<IEndereco, 'id'>): number {
@@ -83,5 +110,33 @@ export class EnderecoService {
       return [...enderecosToAdd, ...enderecoCollection];
     }
     return enderecoCollection;
+  }
+
+  protected convertDateFromClient<T extends IEndereco | NewEndereco | PartialUpdateEndereco>(endereco: T): RestOf<T> {
+    return {
+      ...endereco,
+      createdDate: endereco.createdDate?.toJSON() ?? null,
+      lastModifiedDate: endereco.lastModifiedDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restEndereco: RestEndereco): IEndereco {
+    return {
+      ...restEndereco,
+      createdDate: restEndereco.createdDate ? dayjs(restEndereco.createdDate) : undefined,
+      lastModifiedDate: restEndereco.lastModifiedDate ? dayjs(restEndereco.lastModifiedDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestEndereco>): HttpResponse<IEndereco> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestEndereco[]>): HttpResponse<IEndereco[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

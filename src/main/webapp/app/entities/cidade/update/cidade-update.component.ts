@@ -9,12 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IEstado } from 'app/entities/estado/estado.model';
 import { EstadoService } from 'app/entities/estado/service/estado.service';
-import { IEmbarcador } from 'app/entities/embarcador/embarcador.model';
-import { EmbarcadorService } from 'app/entities/embarcador/service/embarcador.service';
-import { ITransportadora } from 'app/entities/transportadora/transportadora.model';
-import { TransportadoraService } from 'app/entities/transportadora/service/transportadora.service';
-import { CidadeService } from '../service/cidade.service';
 import { ICidade } from '../cidade.model';
+import { CidadeService } from '../service/cidade.service';
 import { CidadeFormService, CidadeFormGroup } from './cidade-form.service';
 
 @Component({
@@ -28,8 +24,6 @@ export class CidadeUpdateComponent implements OnInit {
   cidade: ICidade | null = null;
 
   estadosSharedCollection: IEstado[] = [];
-  embarcadorsSharedCollection: IEmbarcador[] = [];
-  transportadorasSharedCollection: ITransportadora[] = [];
 
   editForm: CidadeFormGroup = this.cidadeFormService.createCidadeFormGroup();
 
@@ -37,17 +31,10 @@ export class CidadeUpdateComponent implements OnInit {
     protected cidadeService: CidadeService,
     protected cidadeFormService: CidadeFormService,
     protected estadoService: EstadoService,
-    protected embarcadorService: EmbarcadorService,
-    protected transportadoraService: TransportadoraService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
   compareEstado = (o1: IEstado | null, o2: IEstado | null): boolean => this.estadoService.compareEstado(o1, o2);
-
-  compareEmbarcador = (o1: IEmbarcador | null, o2: IEmbarcador | null): boolean => this.embarcadorService.compareEmbarcador(o1, o2);
-
-  compareTransportadora = (o1: ITransportadora | null, o2: ITransportadora | null): boolean =>
-    this.transportadoraService.compareTransportadora(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ cidade }) => {
@@ -98,14 +85,6 @@ export class CidadeUpdateComponent implements OnInit {
     this.cidadeFormService.resetForm(this.editForm, cidade);
 
     this.estadosSharedCollection = this.estadoService.addEstadoToCollectionIfMissing<IEstado>(this.estadosSharedCollection, cidade.estado);
-    this.embarcadorsSharedCollection = this.embarcadorService.addEmbarcadorToCollectionIfMissing<IEmbarcador>(
-      this.embarcadorsSharedCollection,
-      cidade.embarcador,
-    );
-    this.transportadorasSharedCollection = this.transportadoraService.addTransportadoraToCollectionIfMissing<ITransportadora>(
-      this.transportadorasSharedCollection,
-      cidade.transportadora,
-    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -114,25 +93,5 @@ export class CidadeUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IEstado[]>) => res.body ?? []))
       .pipe(map((estados: IEstado[]) => this.estadoService.addEstadoToCollectionIfMissing<IEstado>(estados, this.cidade?.estado)))
       .subscribe((estados: IEstado[]) => (this.estadosSharedCollection = estados));
-
-    this.embarcadorService
-      .query()
-      .pipe(map((res: HttpResponse<IEmbarcador[]>) => res.body ?? []))
-      .pipe(
-        map((embarcadors: IEmbarcador[]) =>
-          this.embarcadorService.addEmbarcadorToCollectionIfMissing<IEmbarcador>(embarcadors, this.cidade?.embarcador),
-        ),
-      )
-      .subscribe((embarcadors: IEmbarcador[]) => (this.embarcadorsSharedCollection = embarcadors));
-
-    this.transportadoraService
-      .query()
-      .pipe(map((res: HttpResponse<ITransportadora[]>) => res.body ?? []))
-      .pipe(
-        map((transportadoras: ITransportadora[]) =>
-          this.transportadoraService.addTransportadoraToCollectionIfMissing<ITransportadora>(transportadoras, this.cidade?.transportadora),
-        ),
-      )
-      .subscribe((transportadoras: ITransportadora[]) => (this.transportadorasSharedCollection = transportadoras));
   }
 }

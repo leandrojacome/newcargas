@@ -23,8 +23,10 @@ export interface ITabelaFrete {
   valorEntrega?: number | null;
   valorTotal?: number | null;
   valorKmAdicional?: number | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   embarcador?: Pick<IEmbarcador, 'id'> | null;
   transportadora?: Pick<ITransportadora, 'id'> | null;
   tipoCarga?: Pick<ITipoCarga, 'id'> | null;

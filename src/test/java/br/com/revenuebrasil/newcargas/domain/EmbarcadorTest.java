@@ -54,28 +54,6 @@ class EmbarcadorTest {
     }
 
     @Test
-    void cidadeTest() throws Exception {
-        Embarcador embarcador = getEmbarcadorRandomSampleGenerator();
-        Cidade cidadeBack = getCidadeRandomSampleGenerator();
-
-        embarcador.addCidade(cidadeBack);
-        assertThat(embarcador.getCidades()).containsOnly(cidadeBack);
-        assertThat(cidadeBack.getEmbarcador()).isEqualTo(embarcador);
-
-        embarcador.removeCidade(cidadeBack);
-        assertThat(embarcador.getCidades()).doesNotContain(cidadeBack);
-        assertThat(cidadeBack.getEmbarcador()).isNull();
-
-        embarcador.cidades(new HashSet<>(Set.of(cidadeBack)));
-        assertThat(embarcador.getCidades()).containsOnly(cidadeBack);
-        assertThat(cidadeBack.getEmbarcador()).isEqualTo(embarcador);
-
-        embarcador.setCidades(new HashSet<>());
-        assertThat(embarcador.getCidades()).doesNotContain(cidadeBack);
-        assertThat(cidadeBack.getEmbarcador()).isNull();
-    }
-
-    @Test
     void contaBancariaTest() throws Exception {
         Embarcador embarcador = getEmbarcadorRandomSampleGenerator();
         ContaBancaria contaBancariaBack = getContaBancariaRandomSampleGenerator();
@@ -183,5 +161,17 @@ class EmbarcadorTest {
         embarcador.setFaturas(new HashSet<>());
         assertThat(embarcador.getFaturas()).doesNotContain(faturaBack);
         assertThat(faturaBack.getEmbarcador()).isNull();
+    }
+
+    @Test
+    void cidadeTest() throws Exception {
+        Embarcador embarcador = getEmbarcadorRandomSampleGenerator();
+        Cidade cidadeBack = getCidadeRandomSampleGenerator();
+
+        embarcador.setCidade(cidadeBack);
+        assertThat(embarcador.getCidade()).isEqualTo(cidadeBack);
+
+        embarcador.cidade(null);
+        assertThat(embarcador.getCidade()).isNull();
     }
 }

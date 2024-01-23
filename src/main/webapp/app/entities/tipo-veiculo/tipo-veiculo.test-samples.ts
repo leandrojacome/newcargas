@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { ITipoVeiculo, NewTipoVeiculo } from './tipo-veiculo.model';
 
 export const sampleWithRequiredData: ITipoVeiculo = {
@@ -6,18 +8,24 @@ export const sampleWithRequiredData: ITipoVeiculo = {
 };
 
 export const sampleWithPartialData: ITipoVeiculo = {
-  id: 25133,
-  nome: 'mature',
+  id: 14879,
+  nome: 'ew hmph',
+  createdDate: dayjs('2024-01-20T13:23'),
+  lastModifiedBy: 'ouch harbour',
 };
 
 export const sampleWithFullData: ITipoVeiculo = {
-  id: 4905,
-  nome: 'yahoo usually',
-  descricao: 'lounge',
+  id: 25707,
+  nome: 'mud until',
+  descricao: 'bitterly klutzy gosh',
+  createdBy: 'rewarding',
+  createdDate: dayjs('2024-01-20T11:51'),
+  lastModifiedBy: 'annually inasmuch given',
+  lastModifiedDate: dayjs('2024-01-19T20:08'),
 };
 
 export const sampleWithNewData: NewTipoVeiculo = {
-  nome: 'bravely',
+  nome: 'piggyback outback',
   id: null,
 };
 

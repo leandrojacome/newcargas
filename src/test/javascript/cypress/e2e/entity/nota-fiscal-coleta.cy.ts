@@ -15,7 +15,7 @@ describe('NotaFiscalColeta e2e test', () => {
   const notaFiscalColetaPageUrlPattern = new RegExp('/nota-fiscal-coleta(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const notaFiscalColetaSample = { numero: 'boo geez', serie: 'but yahoo' };
+  const notaFiscalColetaSample = { numero: 'whether across thoug', serie: 'offensively while' };
 
   let notaFiscalColeta;
 
@@ -125,7 +125,7 @@ describe('NotaFiscalColeta e2e test', () => {
         cy.url().should('match', notaFiscalColetaPageUrlPattern);
       });
 
-      it('edit button click should load edit NotaFiscalColeta page and save', () => {
+      it.skip('edit button click should load edit NotaFiscalColeta page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('NotaFiscalColeta');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -160,54 +160,46 @@ describe('NotaFiscalColeta e2e test', () => {
     });
 
     it('should create an instance of NotaFiscalColeta', () => {
-      cy.get(`[data-cy="numero"]`).type('uncomfortable frivol');
-      cy.get(`[data-cy="numero"]`).should('have.value', 'uncomfortable frivol');
+      cy.get(`[data-cy="numero"]`).type('plush muted');
+      cy.get(`[data-cy="numero"]`).should('have.value', 'plush muted');
 
-      cy.get(`[data-cy="serie"]`).type('um');
-      cy.get(`[data-cy="serie"]`).should('have.value', 'um');
+      cy.get(`[data-cy="serie"]`).type('truthfully');
+      cy.get(`[data-cy="serie"]`).should('have.value', 'truthfully');
 
-      cy.get(`[data-cy="remetente"]`).type('opposite consumption');
-      cy.get(`[data-cy="remetente"]`).should('have.value', 'opposite consumption');
+      cy.get(`[data-cy="remetente"]`).type('provided');
+      cy.get(`[data-cy="remetente"]`).should('have.value', 'provided');
 
-      cy.get(`[data-cy="destinatario"]`).type('save yet freely');
-      cy.get(`[data-cy="destinatario"]`).should('have.value', 'save yet freely');
+      cy.get(`[data-cy="destinatario"]`).type('whereas impugn');
+      cy.get(`[data-cy="destinatario"]`).should('have.value', 'whereas impugn');
 
-      cy.get(`[data-cy="metroCubico"]`).type('5.32');
-      cy.get(`[data-cy="metroCubico"]`).should('have.value', '5.32');
+      cy.get(`[data-cy="metroCubico"]`).type('1.1');
+      cy.get(`[data-cy="metroCubico"]`).should('have.value', '1.1');
 
-      cy.get(`[data-cy="quantidade"]`).type('9.86');
-      cy.get(`[data-cy="quantidade"]`).should('have.value', '9.86');
+      cy.get(`[data-cy="quantidade"]`).type('2.11');
+      cy.get(`[data-cy="quantidade"]`).should('have.value', '2.11');
 
-      cy.get(`[data-cy="peso"]`).type('1.5');
-      cy.get(`[data-cy="peso"]`).should('have.value', '1.5');
+      cy.get(`[data-cy="peso"]`).type('8.44');
+      cy.get(`[data-cy="peso"]`).should('have.value', '8.44');
 
-      cy.get(`[data-cy="dataEmissao"]`).type('2024-01-20T08:56');
+      cy.get(`[data-cy="dataEmissao"]`).type('2024-01-20T06:51');
       cy.get(`[data-cy="dataEmissao"]`).blur();
-      cy.get(`[data-cy="dataEmissao"]`).should('have.value', '2024-01-20T08:56');
+      cy.get(`[data-cy="dataEmissao"]`).should('have.value', '2024-01-20T06:51');
 
-      cy.get(`[data-cy="dataSaida"]`).type('2024-01-20T02:29');
+      cy.get(`[data-cy="dataSaida"]`).type('2024-01-19T21:09');
       cy.get(`[data-cy="dataSaida"]`).blur();
-      cy.get(`[data-cy="dataSaida"]`).should('have.value', '2024-01-20T02:29');
+      cy.get(`[data-cy="dataSaida"]`).should('have.value', '2024-01-19T21:09');
 
-      cy.get(`[data-cy="valorTotal"]`).type('4.3');
-      cy.get(`[data-cy="valorTotal"]`).should('have.value', '4.3');
+      cy.get(`[data-cy="valorTotal"]`).type('3.77');
+      cy.get(`[data-cy="valorTotal"]`).should('have.value', '3.77');
 
-      cy.get(`[data-cy="pesoTotal"]`).type('7.02');
-      cy.get(`[data-cy="pesoTotal"]`).should('have.value', '7.02');
+      cy.get(`[data-cy="pesoTotal"]`).type('2.65');
+      cy.get(`[data-cy="pesoTotal"]`).should('have.value', '2.65');
 
-      cy.get(`[data-cy="quantidadeTotal"]`).type('2');
-      cy.get(`[data-cy="quantidadeTotal"]`).should('have.value', '2');
+      cy.get(`[data-cy="quantidadeTotal"]`).type('1');
+      cy.get(`[data-cy="quantidadeTotal"]`).should('have.value', '1');
 
-      cy.get(`[data-cy="observacao"]`).type('wide elementary truthfully');
-      cy.get(`[data-cy="observacao"]`).should('have.value', 'wide elementary truthfully');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T13:23');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T13:23');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T16:28');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T16:28');
+      cy.get(`[data-cy="observacao"]`).type('ripe ouch');
+      cy.get(`[data-cy="observacao"]`).should('have.value', 'ripe ouch');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

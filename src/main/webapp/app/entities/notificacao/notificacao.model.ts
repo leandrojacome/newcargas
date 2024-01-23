@@ -12,13 +12,13 @@ export interface INotificacao {
   mensagem?: string | null;
   dataHoraEnvio?: dayjs.Dayjs | null;
   dataHoraLeitura?: dayjs.Dayjs | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
   lido?: boolean | null;
   dataLeitura?: dayjs.Dayjs | null;
   removido?: boolean | null;
-  dataRemocao?: dayjs.Dayjs | null;
-  usuarioRemocao?: string | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   embarcador?: Pick<IEmbarcador, 'id'> | null;
   transportadora?: Pick<ITransportadora, 'id'> | null;
 }

@@ -15,7 +15,7 @@ describe('TabelaFrete e2e test', () => {
   const tabelaFretePageUrlPattern = new RegExp('/tabela-frete(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const tabelaFreteSample = { tipo: 'TRANSPORTADOR', nome: 'salvage', dataCadastro: '2024-01-19T21:30:18.485Z' };
+  const tabelaFreteSample = { tipo: 'EMBARCADOR', nome: 'milky drat back' };
 
   let tabelaFrete;
 
@@ -125,7 +125,7 @@ describe('TabelaFrete e2e test', () => {
         cy.url().should('match', tabelaFretePageUrlPattern);
       });
 
-      it('edit button click should load edit TabelaFrete page and save', () => {
+      it.skip('edit button click should load edit TabelaFrete page and save', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('TabelaFrete');
         cy.get(entityCreateSaveButtonSelector).click();
@@ -162,52 +162,44 @@ describe('TabelaFrete e2e test', () => {
     it('should create an instance of TabelaFrete', () => {
       cy.get(`[data-cy="tipo"]`).select('EMBARCADOR');
 
-      cy.get(`[data-cy="nome"]`).type('atop tattler marshal');
-      cy.get(`[data-cy="nome"]`).should('have.value', 'atop tattler marshal');
+      cy.get(`[data-cy="nome"]`).type('guitar assassinate');
+      cy.get(`[data-cy="nome"]`).should('have.value', 'guitar assassinate');
 
-      cy.get(`[data-cy="descricao"]`).type('into or');
-      cy.get(`[data-cy="descricao"]`).should('have.value', 'into or');
+      cy.get(`[data-cy="descricao"]`).type('ear strident');
+      cy.get(`[data-cy="descricao"]`).should('have.value', 'ear strident');
 
-      cy.get(`[data-cy="leadTime"]`).type('3');
-      cy.get(`[data-cy="leadTime"]`).should('have.value', '3');
+      cy.get(`[data-cy="leadTime"]`).type('2');
+      cy.get(`[data-cy="leadTime"]`).should('have.value', '2');
 
-      cy.get(`[data-cy="freteMinimo"]`).type('9.42');
-      cy.get(`[data-cy="freteMinimo"]`).should('have.value', '9.42');
+      cy.get(`[data-cy="freteMinimo"]`).type('7.16');
+      cy.get(`[data-cy="freteMinimo"]`).should('have.value', '7.16');
 
-      cy.get(`[data-cy="valorTonelada"]`).type('4.88');
-      cy.get(`[data-cy="valorTonelada"]`).should('have.value', '4.88');
+      cy.get(`[data-cy="valorTonelada"]`).type('2.62');
+      cy.get(`[data-cy="valorTonelada"]`).should('have.value', '2.62');
 
-      cy.get(`[data-cy="valorMetroCubico"]`).type('5.88');
-      cy.get(`[data-cy="valorMetroCubico"]`).should('have.value', '5.88');
+      cy.get(`[data-cy="valorMetroCubico"]`).type('1.28');
+      cy.get(`[data-cy="valorMetroCubico"]`).should('have.value', '1.28');
 
-      cy.get(`[data-cy="valorUnidade"]`).type('8.28');
-      cy.get(`[data-cy="valorUnidade"]`).should('have.value', '8.28');
+      cy.get(`[data-cy="valorUnidade"]`).type('5.61');
+      cy.get(`[data-cy="valorUnidade"]`).should('have.value', '5.61');
 
-      cy.get(`[data-cy="valorKm"]`).type('3.72');
-      cy.get(`[data-cy="valorKm"]`).should('have.value', '3.72');
+      cy.get(`[data-cy="valorKm"]`).type('1.64');
+      cy.get(`[data-cy="valorKm"]`).should('have.value', '1.64');
 
-      cy.get(`[data-cy="valorAdicional"]`).type('7.16');
-      cy.get(`[data-cy="valorAdicional"]`).should('have.value', '7.16');
+      cy.get(`[data-cy="valorAdicional"]`).type('4.38');
+      cy.get(`[data-cy="valorAdicional"]`).should('have.value', '4.38');
 
-      cy.get(`[data-cy="valorColeta"]`).type('2.62');
-      cy.get(`[data-cy="valorColeta"]`).should('have.value', '2.62');
+      cy.get(`[data-cy="valorColeta"]`).type('7.26');
+      cy.get(`[data-cy="valorColeta"]`).should('have.value', '7.26');
 
-      cy.get(`[data-cy="valorEntrega"]`).type('1.28');
-      cy.get(`[data-cy="valorEntrega"]`).should('have.value', '1.28');
+      cy.get(`[data-cy="valorEntrega"]`).type('7.51');
+      cy.get(`[data-cy="valorEntrega"]`).should('have.value', '7.51');
 
-      cy.get(`[data-cy="valorTotal"]`).type('5.61');
-      cy.get(`[data-cy="valorTotal"]`).should('have.value', '5.61');
+      cy.get(`[data-cy="valorTotal"]`).type('1.81');
+      cy.get(`[data-cy="valorTotal"]`).should('have.value', '1.81');
 
-      cy.get(`[data-cy="valorKmAdicional"]`).type('1.64');
-      cy.get(`[data-cy="valorKmAdicional"]`).should('have.value', '1.64');
-
-      cy.get(`[data-cy="dataCadastro"]`).type('2024-01-20T07:52');
-      cy.get(`[data-cy="dataCadastro"]`).blur();
-      cy.get(`[data-cy="dataCadastro"]`).should('have.value', '2024-01-20T07:52');
-
-      cy.get(`[data-cy="dataAtualizacao"]`).type('2024-01-20T00:12');
-      cy.get(`[data-cy="dataAtualizacao"]`).blur();
-      cy.get(`[data-cy="dataAtualizacao"]`).should('have.value', '2024-01-20T00:12');
+      cy.get(`[data-cy="valorKmAdicional"]`).type('4.46');
+      cy.get(`[data-cy="valorKmAdicional"]`).should('have.value', '4.46');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

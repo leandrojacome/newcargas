@@ -16,11 +16,8 @@ public class TomadaPrecoTestSamples {
             .id(1L)
             .prazoResposta(1)
             .observacao("observacao1")
-            .usuarioCadastro("usuarioCadastro1")
-            .usuarioAtualizacao("usuarioAtualizacao1")
-            .usuarioAprovacao("usuarioAprovacao1")
-            .usuarioCancelamento("usuarioCancelamento1")
-            .usuarioRemocao("usuarioRemocao1");
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static TomadaPreco getTomadaPrecoSample2() {
@@ -28,11 +25,8 @@ public class TomadaPrecoTestSamples {
             .id(2L)
             .prazoResposta(2)
             .observacao("observacao2")
-            .usuarioCadastro("usuarioCadastro2")
-            .usuarioAtualizacao("usuarioAtualizacao2")
-            .usuarioAprovacao("usuarioAprovacao2")
-            .usuarioCancelamento("usuarioCancelamento2")
-            .usuarioRemocao("usuarioRemocao2");
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static TomadaPreco getTomadaPrecoRandomSampleGenerator() {
@@ -40,10 +34,7 @@ public class TomadaPrecoTestSamples {
             .id(longCount.incrementAndGet())
             .prazoResposta(intCount.incrementAndGet())
             .observacao(UUID.randomUUID().toString())
-            .usuarioCadastro(UUID.randomUUID().toString())
-            .usuarioAtualizacao(UUID.randomUUID().toString())
-            .usuarioAprovacao(UUID.randomUUID().toString())
-            .usuarioCancelamento(UUID.randomUUID().toString())
-            .usuarioRemocao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.NotaFiscalColetaRepository;
+import br.com.revenuebrasil.newcargas.service.NotaFiscalColetaQueryService;
 import br.com.revenuebrasil.newcargas.service.NotaFiscalColetaService;
+import br.com.revenuebrasil.newcargas.service.criteria.NotaFiscalColetaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.NotaFiscalColetaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,12 +45,16 @@ public class NotaFiscalColetaResource {
 
     private final NotaFiscalColetaRepository notaFiscalColetaRepository;
 
+    private final NotaFiscalColetaQueryService notaFiscalColetaQueryService;
+
     public NotaFiscalColetaResource(
         NotaFiscalColetaService notaFiscalColetaService,
-        NotaFiscalColetaRepository notaFiscalColetaRepository
+        NotaFiscalColetaRepository notaFiscalColetaRepository,
+        NotaFiscalColetaQueryService notaFiscalColetaQueryService
     ) {
         this.notaFiscalColetaService = notaFiscalColetaService;
         this.notaFiscalColetaRepository = notaFiscalColetaRepository;
+        this.notaFiscalColetaQueryService = notaFiscalColetaQueryService;
     }
 
     /**
@@ -84,7 +90,7 @@ public class NotaFiscalColetaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<NotaFiscalColetaDTO> updateNotaFiscalColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody NotaFiscalColetaDTO notaFiscalColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update NotaFiscalColeta : {}, {}", id, notaFiscalColetaDTO);
@@ -119,7 +125,7 @@ public class NotaFiscalColetaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<NotaFiscalColetaDTO> partialUpdateNotaFiscalColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody NotaFiscalColetaDTO notaFiscalColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update NotaFiscalColeta partially : {}, {}", id, notaFiscalColetaDTO);
@@ -146,16 +152,31 @@ public class NotaFiscalColetaResource {
      * {@code GET  /nota-fiscal-coletas} : get all the notaFiscalColetas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of notaFiscalColetas in body.
      */
     @GetMapping("")
     public ResponseEntity<List<NotaFiscalColetaDTO>> getAllNotaFiscalColetas(
+        NotaFiscalColetaCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of NotaFiscalColetas");
-        Page<NotaFiscalColetaDTO> page = notaFiscalColetaService.findAll(pageable);
+        log.debug("REST request to get NotaFiscalColetas by criteria: {}", criteria);
+
+        Page<NotaFiscalColetaDTO> page = notaFiscalColetaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /nota-fiscal-coletas/count} : count all the notaFiscalColetas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countNotaFiscalColetas(NotaFiscalColetaCriteria criteria) {
+        log.debug("REST request to count NotaFiscalColetas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(notaFiscalColetaQueryService.countByCriteria(criteria));
     }
 
     /**

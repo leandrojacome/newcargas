@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -15,8 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "cidade")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "cidade")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Cidade implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class Cidade extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,15 +33,23 @@ public class Cidade implements Serializable {
     @NotNull
     @Size(min = 2, max = 150)
     @Column(name = "nome", length = 150, nullable = false, unique = true)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String nome;
 
     @Min(value = 7)
     @Max(value = 7)
     @Column(name = "codigo_ibge")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer codigoIbge;
+
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cidade")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(
         value = {
             "cidade",
@@ -52,23 +64,27 @@ public class Cidade implements Serializable {
     )
     private Set<Endereco> enderecos = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cidade")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas", "cidade" },
+        allowSetters = true
+    )
+    private Set<Embarcador> embarcadors = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cidade")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
+        allowSetters = true
+    )
+    private Set<Transportadora> transportadoras = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "cidades" }, allowSetters = true)
     private Estado estado;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "solitacaoColetas", "notificacaos", "faturas" },
-        allowSetters = true
-    )
-    private Embarcador embarcador;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
-        allowSetters = true
-    )
-    private Transportadora transportadora;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -111,6 +127,30 @@ public class Cidade implements Serializable {
         this.codigoIbge = codigoIbge;
     }
 
+    // Inherited createdBy methods
+    public Cidade createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
+        return this;
+    }
+
+    // Inherited createdDate methods
+    public Cidade createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
+        return this;
+    }
+
+    // Inherited lastModifiedBy methods
+    public Cidade lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public Cidade lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
+    }
+
     public Set<Endereco> getEnderecos() {
         return this.enderecos;
     }
@@ -142,6 +182,68 @@ public class Cidade implements Serializable {
         return this;
     }
 
+    public Set<Embarcador> getEmbarcadors() {
+        return this.embarcadors;
+    }
+
+    public void setEmbarcadors(Set<Embarcador> embarcadors) {
+        if (this.embarcadors != null) {
+            this.embarcadors.forEach(i -> i.setCidade(null));
+        }
+        if (embarcadors != null) {
+            embarcadors.forEach(i -> i.setCidade(this));
+        }
+        this.embarcadors = embarcadors;
+    }
+
+    public Cidade embarcadors(Set<Embarcador> embarcadors) {
+        this.setEmbarcadors(embarcadors);
+        return this;
+    }
+
+    public Cidade addEmbarcador(Embarcador embarcador) {
+        this.embarcadors.add(embarcador);
+        embarcador.setCidade(this);
+        return this;
+    }
+
+    public Cidade removeEmbarcador(Embarcador embarcador) {
+        this.embarcadors.remove(embarcador);
+        embarcador.setCidade(null);
+        return this;
+    }
+
+    public Set<Transportadora> getTransportadoras() {
+        return this.transportadoras;
+    }
+
+    public void setTransportadoras(Set<Transportadora> transportadoras) {
+        if (this.transportadoras != null) {
+            this.transportadoras.forEach(i -> i.setCidade(null));
+        }
+        if (transportadoras != null) {
+            transportadoras.forEach(i -> i.setCidade(this));
+        }
+        this.transportadoras = transportadoras;
+    }
+
+    public Cidade transportadoras(Set<Transportadora> transportadoras) {
+        this.setTransportadoras(transportadoras);
+        return this;
+    }
+
+    public Cidade addTransportadora(Transportadora transportadora) {
+        this.transportadoras.add(transportadora);
+        transportadora.setCidade(this);
+        return this;
+    }
+
+    public Cidade removeTransportadora(Transportadora transportadora) {
+        this.transportadoras.remove(transportadora);
+        transportadora.setCidade(null);
+        return this;
+    }
+
     public Estado getEstado() {
         return this.estado;
     }
@@ -152,32 +254,6 @@ public class Cidade implements Serializable {
 
     public Cidade estado(Estado estado) {
         this.setEstado(estado);
-        return this;
-    }
-
-    public Embarcador getEmbarcador() {
-        return this.embarcador;
-    }
-
-    public void setEmbarcador(Embarcador embarcador) {
-        this.embarcador = embarcador;
-    }
-
-    public Cidade embarcador(Embarcador embarcador) {
-        this.setEmbarcador(embarcador);
-        return this;
-    }
-
-    public Transportadora getTransportadora() {
-        return this.transportadora;
-    }
-
-    public void setTransportadora(Transportadora transportadora) {
-        this.transportadora = transportadora;
-    }
-
-    public Cidade transportadora(Transportadora transportadora) {
-        this.setTransportadora(transportadora);
         return this;
     }
 
@@ -207,6 +283,10 @@ public class Cidade implements Serializable {
             "id=" + getId() +
             ", nome='" + getNome() + "'" +
             ", codigoIbge=" + getCodigoIbge() +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

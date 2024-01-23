@@ -25,19 +25,15 @@ type FormValueOf<T extends IRoteirizacao | NewRoteirizacao> = Omit<
   | 'dataHoraUltimaColeta'
   | 'dataHoraPrimeiraEntrega'
   | 'dataHoraUltimaEntrega'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
-  | 'dataCancelamento'
-  | 'dataRemocao'
+  | 'createdDate'
+  | 'lastModifiedDate'
 > & {
   dataHoraPrimeiraColeta?: string | null;
   dataHoraUltimaColeta?: string | null;
   dataHoraPrimeiraEntrega?: string | null;
   dataHoraUltimaEntrega?: string | null;
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
-  dataCancelamento?: string | null;
-  dataRemocao?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type RoteirizacaoFormRawValue = FormValueOf<IRoteirizacao>;
@@ -51,12 +47,10 @@ type RoteirizacaoFormDefaults = Pick<
   | 'dataHoraUltimaColeta'
   | 'dataHoraPrimeiraEntrega'
   | 'dataHoraUltimaEntrega'
-  | 'dataCadastro'
-  | 'dataAtualizacao'
   | 'cancelado'
-  | 'dataCancelamento'
   | 'removido'
-  | 'dataRemocao'
+  | 'createdDate'
+  | 'lastModifiedDate'
 >;
 
 type RoteirizacaoFormGroupContent = {
@@ -67,16 +61,12 @@ type RoteirizacaoFormGroupContent = {
   dataHoraUltimaEntrega: FormControl<RoteirizacaoFormRawValue['dataHoraUltimaEntrega']>;
   valorTotal: FormControl<RoteirizacaoFormRawValue['valorTotal']>;
   observacao: FormControl<RoteirizacaoFormRawValue['observacao']>;
-  dataCadastro: FormControl<RoteirizacaoFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<RoteirizacaoFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<RoteirizacaoFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<RoteirizacaoFormRawValue['usuarioAtualizacao']>;
   cancelado: FormControl<RoteirizacaoFormRawValue['cancelado']>;
-  dataCancelamento: FormControl<RoteirizacaoFormRawValue['dataCancelamento']>;
-  usuarioCancelamento: FormControl<RoteirizacaoFormRawValue['usuarioCancelamento']>;
   removido: FormControl<RoteirizacaoFormRawValue['removido']>;
-  dataRemocao: FormControl<RoteirizacaoFormRawValue['dataRemocao']>;
-  usuarioRemocao: FormControl<RoteirizacaoFormRawValue['usuarioRemocao']>;
+  createdBy: FormControl<RoteirizacaoFormRawValue['createdBy']>;
+  createdDate: FormControl<RoteirizacaoFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<RoteirizacaoFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<RoteirizacaoFormRawValue['lastModifiedDate']>;
   statusColeta: FormControl<RoteirizacaoFormRawValue['statusColeta']>;
 };
 
@@ -109,26 +99,12 @@ export class RoteirizacaoFormService {
       observacao: new FormControl(roteirizacaoRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(roteirizacaoRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(roteirizacaoRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(roteirizacaoRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(roteirizacaoRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       cancelado: new FormControl(roteirizacaoRawValue.cancelado),
-      dataCancelamento: new FormControl(roteirizacaoRawValue.dataCancelamento),
-      usuarioCancelamento: new FormControl(roteirizacaoRawValue.usuarioCancelamento, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
       removido: new FormControl(roteirizacaoRawValue.removido),
-      dataRemocao: new FormControl(roteirizacaoRawValue.dataRemocao),
-      usuarioRemocao: new FormControl(roteirizacaoRawValue.usuarioRemocao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(roteirizacaoRawValue.createdBy),
+      createdDate: new FormControl(roteirizacaoRawValue.createdDate),
+      lastModifiedBy: new FormControl(roteirizacaoRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(roteirizacaoRawValue.lastModifiedDate),
       statusColeta: new FormControl(roteirizacaoRawValue.statusColeta),
     });
   }
@@ -156,12 +132,10 @@ export class RoteirizacaoFormService {
       dataHoraUltimaColeta: currentTime,
       dataHoraPrimeiraEntrega: currentTime,
       dataHoraUltimaEntrega: currentTime,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
       cancelado: false,
-      dataCancelamento: currentTime,
       removido: false,
-      dataRemocao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -174,10 +148,8 @@ export class RoteirizacaoFormService {
       dataHoraUltimaColeta: dayjs(rawRoteirizacao.dataHoraUltimaColeta, DATE_TIME_FORMAT),
       dataHoraPrimeiraEntrega: dayjs(rawRoteirizacao.dataHoraPrimeiraEntrega, DATE_TIME_FORMAT),
       dataHoraUltimaEntrega: dayjs(rawRoteirizacao.dataHoraUltimaEntrega, DATE_TIME_FORMAT),
-      dataCadastro: dayjs(rawRoteirizacao.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawRoteirizacao.dataAtualizacao, DATE_TIME_FORMAT),
-      dataCancelamento: dayjs(rawRoteirizacao.dataCancelamento, DATE_TIME_FORMAT),
-      dataRemocao: dayjs(rawRoteirizacao.dataRemocao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawRoteirizacao.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawRoteirizacao.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -194,10 +166,8 @@ export class RoteirizacaoFormService {
         ? roteirizacao.dataHoraPrimeiraEntrega.format(DATE_TIME_FORMAT)
         : undefined,
       dataHoraUltimaEntrega: roteirizacao.dataHoraUltimaEntrega ? roteirizacao.dataHoraUltimaEntrega.format(DATE_TIME_FORMAT) : undefined,
-      dataCadastro: roteirizacao.dataCadastro ? roteirizacao.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: roteirizacao.dataAtualizacao ? roteirizacao.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
-      dataCancelamento: roteirizacao.dataCancelamento ? roteirizacao.dataCancelamento.format(DATE_TIME_FORMAT) : undefined,
-      dataRemocao: roteirizacao.dataRemocao ? roteirizacao.dataRemocao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: roteirizacao.createdDate ? roteirizacao.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: roteirizacao.lastModifiedDate ? roteirizacao.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

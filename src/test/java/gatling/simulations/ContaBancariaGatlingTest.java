@@ -83,8 +83,10 @@ public class ContaBancariaGatlingTest extends Simulation {
                                 ", \"tipo\": \"SAMPLE_TEXT\"" +
                                 ", \"pix\": \"SAMPLE_TEXT\"" +
                                 ", \"titular\": \"SAMPLE_TEXT\"" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

@@ -3,19 +3,18 @@ import dayjs from 'dayjs/esm';
 import { IContaBancaria, NewContaBancaria } from './conta-bancaria.model';
 
 export const sampleWithRequiredData: IContaBancaria = {
-  id: 31391,
-  agencia: 'actually s',
-  conta: 'usefully g',
-  dataCadastro: dayjs('2024-01-20T11:47'),
+  id: 8745,
+  agencia: 'tulip sinc',
+  conta: 'successful',
 };
 
 export const sampleWithPartialData: IContaBancaria = {
   id: 19369,
   agencia: 'previous b',
   conta: 'for midst',
-  tipo: 'although',
-  pix: 'into pish near',
-  dataCadastro: dayjs('2024-01-20T13:20'),
+  pix: 'although',
+  createdBy: 'into pish near',
+  createdDate: dayjs('2024-01-20T13:20'),
 };
 
 export const sampleWithFullData: IContaBancaria = {
@@ -26,14 +25,15 @@ export const sampleWithFullData: IContaBancaria = {
   tipo: 'obsess when',
   pix: 'downforce word bowling',
   titular: 'recline',
-  dataCadastro: dayjs('2024-01-19T17:05'),
-  dataAtualizacao: dayjs('2024-01-19T20:36'),
+  createdBy: 'whether through dirty',
+  createdDate: dayjs('2024-01-20T14:25'),
+  lastModifiedBy: 'failing notwithstanding in',
+  lastModifiedDate: dayjs('2024-01-20T09:41'),
 };
 
 export const sampleWithNewData: NewContaBancaria = {
-  agencia: 'giddy',
-  conta: 'meager til',
-  dataCadastro: dayjs('2024-01-20T00:47'),
+  agencia: 'yippee',
+  conta: 'reject mea',
   id: null,
 };
 

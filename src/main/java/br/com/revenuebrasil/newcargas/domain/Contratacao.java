@@ -1,11 +1,12 @@
 package br.com.revenuebrasil.newcargas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -17,8 +18,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "contratacao")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "contratacao")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Contratacao implements Serializable {
+@JsonFilter("lazyPropertyFilter")
+public class Contratacao extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +41,7 @@ public class Contratacao implements Serializable {
     @Min(value = 1)
     @Max(value = 4)
     @Column(name = "validade_em_dias", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer validadeEmDias;
 
     @NotNull
@@ -46,55 +50,36 @@ public class Contratacao implements Serializable {
 
     @Size(min = 2, max = 500)
     @Column(name = "observacao", length = 500)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String observacao;
 
-    @NotNull
-    @Column(name = "data_cadastro", nullable = false)
-    private ZonedDateTime dataCadastro;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cadastro", length = 150)
-    private String usuarioCadastro;
-
-    @Column(name = "data_atualizacao")
-    private ZonedDateTime dataAtualizacao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_atualizacao", length = 150)
-    private String usuarioAtualizacao;
-
     @Column(name = "cancelado")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean cancelado;
 
-    @Column(name = "data_cancelamento")
-    private ZonedDateTime dataCancelamento;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_cancelamento", length = 150)
-    private String usuarioCancelamento;
-
     @Column(name = "removido")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean removido;
 
-    @Column(name = "data_remocao")
-    private ZonedDateTime dataRemocao;
-
-    @Size(min = 2, max = 150)
-    @Column(name = "usuario_remocao", length = 150)
-    private String usuarioRemocao;
+    // Inherited createdBy definition
+    // Inherited createdDate definition
+    // Inherited lastModifiedBy definition
+    // Inherited lastModifiedDate definition
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contratacao")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
     @JsonIgnoreProperties(value = { "embarcador", "transportadora", "contratacao", "formaCobranca" }, allowSetters = true)
     private Set<Fatura> faturas = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "contratacao", "transportadora", "roteirizacao" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "contratacao")
+    @org.springframework.data.annotation.Transient
     private TomadaPreco solicitacaoColeta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "enderecos", "cidades", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas" },
+        value = { "enderecos", "contaBancarias", "tabelaFretes", "tomadaPrecos", "contratacaos", "notificacaos", "faturas", "cidade" },
         allowSetters = true
     )
     private Transportadora transportadora;
@@ -166,58 +151,6 @@ public class Contratacao implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return this.dataCadastro;
-    }
-
-    public Contratacao dataCadastro(ZonedDateTime dataCadastro) {
-        this.setDataCadastro(dataCadastro);
-        return this;
-    }
-
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public String getUsuarioCadastro() {
-        return this.usuarioCadastro;
-    }
-
-    public Contratacao usuarioCadastro(String usuarioCadastro) {
-        this.setUsuarioCadastro(usuarioCadastro);
-        return this;
-    }
-
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
-    }
-
-    public ZonedDateTime getDataAtualizacao() {
-        return this.dataAtualizacao;
-    }
-
-    public Contratacao dataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.setDataAtualizacao(dataAtualizacao);
-        return this;
-    }
-
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public String getUsuarioAtualizacao() {
-        return this.usuarioAtualizacao;
-    }
-
-    public Contratacao usuarioAtualizacao(String usuarioAtualizacao) {
-        this.setUsuarioAtualizacao(usuarioAtualizacao);
-        return this;
-    }
-
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
-    }
-
     public Boolean getCancelado() {
         return this.cancelado;
     }
@@ -229,32 +162,6 @@ public class Contratacao implements Serializable {
 
     public void setCancelado(Boolean cancelado) {
         this.cancelado = cancelado;
-    }
-
-    public ZonedDateTime getDataCancelamento() {
-        return this.dataCancelamento;
-    }
-
-    public Contratacao dataCancelamento(ZonedDateTime dataCancelamento) {
-        this.setDataCancelamento(dataCancelamento);
-        return this;
-    }
-
-    public void setDataCancelamento(ZonedDateTime dataCancelamento) {
-        this.dataCancelamento = dataCancelamento;
-    }
-
-    public String getUsuarioCancelamento() {
-        return this.usuarioCancelamento;
-    }
-
-    public Contratacao usuarioCancelamento(String usuarioCancelamento) {
-        this.setUsuarioCancelamento(usuarioCancelamento);
-        return this;
-    }
-
-    public void setUsuarioCancelamento(String usuarioCancelamento) {
-        this.usuarioCancelamento = usuarioCancelamento;
     }
 
     public Boolean getRemovido() {
@@ -270,30 +177,28 @@ public class Contratacao implements Serializable {
         this.removido = removido;
     }
 
-    public ZonedDateTime getDataRemocao() {
-        return this.dataRemocao;
-    }
-
-    public Contratacao dataRemocao(ZonedDateTime dataRemocao) {
-        this.setDataRemocao(dataRemocao);
+    // Inherited createdBy methods
+    public Contratacao createdBy(String createdBy) {
+        this.setCreatedBy(createdBy);
         return this;
     }
 
-    public void setDataRemocao(ZonedDateTime dataRemocao) {
-        this.dataRemocao = dataRemocao;
-    }
-
-    public String getUsuarioRemocao() {
-        return this.usuarioRemocao;
-    }
-
-    public Contratacao usuarioRemocao(String usuarioRemocao) {
-        this.setUsuarioRemocao(usuarioRemocao);
+    // Inherited createdDate methods
+    public Contratacao createdDate(Instant createdDate) {
+        this.setCreatedDate(createdDate);
         return this;
     }
 
-    public void setUsuarioRemocao(String usuarioRemocao) {
-        this.usuarioRemocao = usuarioRemocao;
+    // Inherited lastModifiedBy methods
+    public Contratacao lastModifiedBy(String lastModifiedBy) {
+        this.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    // Inherited lastModifiedDate methods
+    public Contratacao lastModifiedDate(Instant lastModifiedDate) {
+        this.setLastModifiedDate(lastModifiedDate);
+        return this;
     }
 
     public Set<Fatura> getFaturas() {
@@ -387,16 +292,12 @@ public class Contratacao implements Serializable {
             ", validadeEmDias=" + getValidadeEmDias() +
             ", dataValidade='" + getDataValidade() + "'" +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
             ", cancelado='" + getCancelado() + "'" +
-            ", dataCancelamento='" + getDataCancelamento() + "'" +
-            ", usuarioCancelamento='" + getUsuarioCancelamento() + "'" +
             ", removido='" + getRemovido() + "'" +
-            ", dataRemocao='" + getDataRemocao() + "'" +
-            ", usuarioRemocao='" + getUsuarioRemocao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

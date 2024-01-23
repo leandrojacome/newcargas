@@ -1,261 +1,214 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-endereco-heading" data-cy="EnderecoCreateUpdateHeading">Criar ou editar Endereco</h2>
+  <div class="col-12">
+    <div [formGroup]="editEnderecoForm">
+      <jhi-alert-error></jhi-alert-error>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+      @if (editEnderecoForm.controls.id.value !== null) {
+        <div class="mb-3">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+      }
 
-        @if (editForm.controls.id.value !== null) {
+      <div class="row mt-5">
+        <div class="col">
           <div class="mb-3">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            <label class="form-label" for="field_cep">CEP</label>
+            <input type="text" class="form-control" name="cep" id="field_cep" data-cy="cep" formControlName="cep" />
+            @if (editEnderecoForm.get('cep')!.invalid && (editEnderecoForm.get('cep')!.dirty || editEnderecoForm.get('cep')!.touched)) {
+              <div>
+                @if (editEnderecoForm.get('cep')?.errors?.minlength) {
+                  <small class="form-text text-danger">Este campo deve ter pelo menos 8 caracteres.</small>
+                }
+                @if (editEnderecoForm.get('cep')?.errors?.maxlength) {
+                  <small class="form-text text-danger">Este campo não pode ter mais de 8 caracteres.</small>
+                }
+              </div>
+            }
           </div>
+        </div>
+        <div class="col">
+          <button id="search-cep" type="button" class="btn btn-primary" (click)="buscarCep()">
+            <fa-icon icon="search"></fa-icon>&nbsp;<span>Buscar CEP</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label" for="field_endereco">Endereço</label>
+            <input type="text" class="form-control" name="endereco" id="field_endereco" data-cy="endereco" formControlName="endereco" />
+            @if (
+              editEnderecoForm.get('endereco')!.invalid &&
+              (editEnderecoForm.get('endereco')!.dirty || editEnderecoForm.get('endereco')!.touched)
+            ) {
+              <div>
+                @if (editEnderecoForm.get('endereco')?.errors?.minlength) {
+                  <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                }
+                @if (editEnderecoForm.get('endereco')?.errors?.maxlength) {
+                  <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label" for="field_numero">Número</label>
+            <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
+            @if (
+              editEnderecoForm.get('numero')!.invalid && (editEnderecoForm.get('numero')!.dirty || editEnderecoForm.get('numero')!.touched)
+            ) {
+              <div>
+                @if (editEnderecoForm.get('numero')?.errors?.minlength) {
+                  <small class="form-text text-danger">Este campo deve ter pelo menos 1 caracteres.</small>
+                }
+                @if (editEnderecoForm.get('numero')?.errors?.maxlength) {
+                  <small class="form-text text-danger">Este campo não pode ter mais de 10 caracteres.</small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label" for="field_complemento">Complemento</label>
+            <input
+              type="text"
+              class="form-control"
+              name="complemento"
+              id="field_complemento"
+              data-cy="complemento"
+              formControlName="complemento"
+            />
+            @if (
+              editEnderecoForm.get('complemento')!.invalid &&
+              (editEnderecoForm.get('complemento')!.dirty || editEnderecoForm.get('complemento')!.touched)
+            ) {
+              <div>
+                @if (editEnderecoForm.get('complemento')?.errors?.minlength) {
+                  <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                }
+                @if (editEnderecoForm.get('complemento')?.errors?.maxlength) {
+                  <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label" for="field_bairro">Bairro</label>
+            <input type="text" class="form-control" name="bairro" id="field_bairro" data-cy="bairro" formControlName="bairro" />
+            @if (
+              editEnderecoForm.get('bairro')!.invalid && (editEnderecoForm.get('bairro')!.dirty || editEnderecoForm.get('bairro')!.touched)
+            ) {
+              <div>
+                @if (editEnderecoForm.get('bairro')?.errors?.minlength) {
+                  <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                }
+                @if (editEnderecoForm.get('bairro')?.errors?.maxlength) {
+                  <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label" for="field_bairro">Estado</label>
+            <select
+              class="form-select"
+              name="estado"
+              id="field_estado"
+              data-cy="estado"
+              formControlName="estado"
+              [compareWith]="compareEstado"
+              (change)="loadCidades()"
+            >
+              <option [ngValue]="null">Selecione um estado</option>
+              @for (estadoOption of estadosSharedCollection; track $index) {
+                <option [ngValue]="estadoOption.id">{{ estadoOption.nome }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label" for="field_bairro">Cidade</label>
+              <select
+                class="form-select"
+                name="cidade"
+                id="field_cidade"
+                data-cy="cidade"
+                formControlName="cidade"
+                [compareWith]="compareCidade"
+              >
+                <option [ngValue]="null">Selecione uma cidade</option>
+                @if (cidadesSharedCollection.length > 0) {
+                  @for (cidadeOption of cidadesSharedCollection; track $index) {
+                    <option [ngValue]="cidadeOption.id">{{ cidadeOption.nome }}</option>
+                  }
+                } @else {
+                  <option [ngValue]="null">Primeiro selecione um estado</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-4">
+      <button id="add-endereco" type="button" class="btn btn-outline-success" (click)="addEndereco()">
+        <fa-icon icon="plus"></fa-icon>&nbsp;<span>Adiconar</span>
+      </button>
+    </div>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">CEP</th>
+          <th scope="col">Endereço</th>
+          <th scope="col">Bairro</th>
+          <th scope="col">Cidade</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (enderecos.length > 0) {
+          @for (endereco of enderecos; track $index) {
+            <tr>
+              <td>{{ endereco.cep }}</td>
+              <td>{{ endereco.endereco }}</td>
+              <td>{{ endereco.bairro }}</td>
+              <td>{{ endereco.cidade }}</td>
+              <td>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-info btn-sm" (click)="edit(endereco)">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="delete(endereco)">
+                    <fa-icon icon="trash-alt"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="8" class="text-center">Nenhum endereço encontrado</td>
+          </tr>
         }
-
-        <div class="mb-3">
-          <label class="form-label" for="field_tipo">Tipo</label>
-          <select class="form-control" name="tipo" formControlName="tipo" id="field_tipo" data-cy="tipo">
-            <option [ngValue]="null"></option>
-            @for (tipoEndereco of tipoEnderecoValues; track $index) {
-              <option [value]="tipoEndereco">{{ tipoEndereco }}</option>
-            }
-          </select>
-          @if (editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)) {
-            <div>
-              @if (editForm.get('tipo')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_cep">Cep</label>
-          <input type="text" class="form-control" name="cep" id="field_cep" data-cy="cep" formControlName="cep" />
-          @if (editForm.get('cep')!.invalid && (editForm.get('cep')!.dirty || editForm.get('cep')!.touched)) {
-            <div>
-              @if (editForm.get('cep')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-              @if (editForm.get('cep')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 8 caracteres.</small>
-              }
-              @if (editForm.get('cep')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 8 caracteres.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_endereco">Endereco</label>
-          <input type="text" class="form-control" name="endereco" id="field_endereco" data-cy="endereco" formControlName="endereco" />
-          @if (editForm.get('endereco')!.invalid && (editForm.get('endereco')!.dirty || editForm.get('endereco')!.touched)) {
-            <div>
-              @if (editForm.get('endereco')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-              @if (editForm.get('endereco')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
-              }
-              @if (editForm.get('endereco')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_numero">Numero</label>
-          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
-          @if (editForm.get('numero')!.invalid && (editForm.get('numero')!.dirty || editForm.get('numero')!.touched)) {
-            <div>
-              @if (editForm.get('numero')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 1 caracteres.</small>
-              }
-              @if (editForm.get('numero')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 10 caracteres.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_complemento">Complemento</label>
-          <input
-            type="text"
-            class="form-control"
-            name="complemento"
-            id="field_complemento"
-            data-cy="complemento"
-            formControlName="complemento"
-          />
-          @if (editForm.get('complemento')!.invalid && (editForm.get('complemento')!.dirty || editForm.get('complemento')!.touched)) {
-            <div>
-              @if (editForm.get('complemento')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
-              }
-              @if (editForm.get('complemento')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_bairro">Bairro</label>
-          <input type="text" class="form-control" name="bairro" id="field_bairro" data-cy="bairro" formControlName="bairro" />
-          @if (editForm.get('bairro')!.invalid && (editForm.get('bairro')!.dirty || editForm.get('bairro')!.touched)) {
-            <div>
-              @if (editForm.get('bairro')?.errors?.required) {
-                <small class="form-text text-danger">O campo é obrigatório.</small>
-              }
-              @if (editForm.get('bairro')?.errors?.minlength) {
-                <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
-              }
-              @if (editForm.get('bairro')?.errors?.maxlength) {
-                <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_cidade">Cidade</label>
-          <select
-            class="form-control"
-            id="field_cidade"
-            data-cy="cidade"
-            name="cidade"
-            formControlName="cidade"
-            [compareWith]="compareCidade"
-          >
-            <option [ngValue]="null"></option>
-            @for (cidadeOption of cidadesSharedCollection; track $index) {
-              <option [ngValue]="cidadeOption">{{ cidadeOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_embarcador">Embarcador</label>
-          <select
-            class="form-control"
-            id="field_embarcador"
-            data-cy="embarcador"
-            name="embarcador"
-            formControlName="embarcador"
-            [compareWith]="compareEmbarcador"
-          >
-            <option [ngValue]="null"></option>
-            @for (embarcadorOption of embarcadorsSharedCollection; track $index) {
-              <option [ngValue]="embarcadorOption">{{ embarcadorOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_transportadora">Transportadora</label>
-          <select
-            class="form-control"
-            id="field_transportadora"
-            data-cy="transportadora"
-            name="transportadora"
-            formControlName="transportadora"
-            [compareWith]="compareTransportadora"
-          >
-            <option [ngValue]="null"></option>
-            @for (transportadoraOption of transportadorasSharedCollection; track $index) {
-              <option [ngValue]="transportadoraOption">{{ transportadoraOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_notaFiscalColetaOrigem">Nota Fiscal Coleta Origem</label>
-          <select
-            class="form-control"
-            id="field_notaFiscalColetaOrigem"
-            data-cy="notaFiscalColetaOrigem"
-            name="notaFiscalColetaOrigem"
-            formControlName="notaFiscalColetaOrigem"
-            [compareWith]="compareNotaFiscalColeta"
-          >
-            <option [ngValue]="null"></option>
-            @for (notaFiscalColetaOption of notaFiscalColetasSharedCollection; track $index) {
-              <option [ngValue]="notaFiscalColetaOption">{{ notaFiscalColetaOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_notaFiscalColetaDestino">Nota Fiscal Coleta Destino</label>
-          <select
-            class="form-control"
-            id="field_notaFiscalColetaDestino"
-            data-cy="notaFiscalColetaDestino"
-            name="notaFiscalColetaDestino"
-            formControlName="notaFiscalColetaDestino"
-            [compareWith]="compareNotaFiscalColeta"
-          >
-            <option [ngValue]="null"></option>
-            @for (notaFiscalColetaOption of notaFiscalColetasSharedCollection; track $index) {
-              <option [ngValue]="notaFiscalColetaOption">{{ notaFiscalColetaOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_solicitacaoColetaOrigem">Solicitacao Coleta Origem</label>
-          <select
-            class="form-control"
-            id="field_solicitacaoColetaOrigem"
-            data-cy="solicitacaoColetaOrigem"
-            name="solicitacaoColetaOrigem"
-            formControlName="solicitacaoColetaOrigem"
-            [compareWith]="compareSolicitacaoColeta"
-          >
-            <option [ngValue]="null"></option>
-            @for (solicitacaoColetaOption of solicitacaoColetasSharedCollection; track $index) {
-              <option [ngValue]="solicitacaoColetaOption">{{ solicitacaoColetaOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_solicitacaoColetaDestino">Solicitacao Coleta Destino</label>
-          <select
-            class="form-control"
-            id="field_solicitacaoColetaDestino"
-            data-cy="solicitacaoColetaDestino"
-            name="solicitacaoColetaDestino"
-            formControlName="solicitacaoColetaDestino"
-            [compareWith]="compareSolicitacaoColeta"
-          >
-            <option [ngValue]="null"></option>
-            @for (solicitacaoColetaOption of solicitacaoColetasSharedCollection; track $index) {
-              <option [ngValue]="solicitacaoColetaOption">{{ solicitacaoColetaOption.id }}</option>
-            }
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
-        </button>
-      </div>
-    </form>
+      </tbody>
+    </table>
   </div>
 </div>

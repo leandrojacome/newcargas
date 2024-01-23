@@ -2,32 +2,49 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ICidade } from 'app/entities/cidade/cidade.model';
+import { CidadeService } from 'app/entities/cidade/service/cidade.service';
 import { ITransportadora } from '../transportadora.model';
 import { TransportadoraService } from '../service/transportadora.service';
 import { TransportadoraFormService, TransportadoraFormGroup } from './transportadora-form.service';
+import { EstadoService } from '../../estado/service/estado.service';
+import { IEstado } from '../../estado/estado.model';
+import { EnderecoUpdateComponent } from '../../endereco/update/endereco-update.component';
+import { EnderecoComponent } from '../../endereco/list/endereco.component';
+import { TipoEndereco } from '../../enumerations/tipo-endereco.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-transportadora-update',
   templateUrl: './transportadora-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  styleUrl: './transportadora-update.component.scss',
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, EnderecoUpdateComponent, EnderecoComponent],
 })
 export class TransportadoraUpdateComponent implements OnInit {
   isSaving = false;
   transportadora: ITransportadora | null = null;
+
+  cidadesSharedCollection: ICidade[] = [];
+  estadosSharedCollection: IEstado[] = [];
 
   editForm: TransportadoraFormGroup = this.transportadoraFormService.createTransportadoraFormGroup();
 
   constructor(
     protected transportadoraService: TransportadoraService,
     protected transportadoraFormService: TransportadoraFormService,
+    protected estadoService: EstadoService,
+    protected cidadeService: CidadeService,
     protected activatedRoute: ActivatedRoute,
   ) {}
+
+  compareCidade = (o1: ICidade | null, o2: ICidade | null): boolean => this.cidadeService.compareCidade(o1, o2);
+
+  compareEstado = (o1: IEstado | null, o2: IEstado | null): boolean => this.estadoService.compareEstado(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transportadora }) => {
@@ -35,6 +52,8 @@ export class TransportadoraUpdateComponent implements OnInit {
       if (transportadora) {
         this.updateForm(transportadora);
       }
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -74,5 +93,30 @@ export class TransportadoraUpdateComponent implements OnInit {
   protected updateForm(transportadora: ITransportadora): void {
     this.transportadora = transportadora;
     this.transportadoraFormService.resetForm(this.editForm, transportadora);
+
+    this.cidadesSharedCollection = this.cidadeService.addCidadeToCollectionIfMissing<ICidade>(
+      this.cidadesSharedCollection,
+      transportadora.cidade,
+    );
   }
+
+  protected loadRelationshipsOptions(): void {
+    this.estadoService
+      .query()
+      .pipe(map((res: HttpResponse<IEstado[]>) => res.body ?? []))
+      .pipe(map((estados: IEstado[]) => this.estadoService.addEstadoToCollectionIfMissing<IEstado>(estados, this.transportadora?.estado)))
+      .subscribe((estados: IEstado[]) => (this.estadosSharedCollection = estados));
+  }
+
+  buscarCep() {}
+
+  loadCidades() {
+    this.cidadeService
+      .query({ 'estadoId.equals': this.editForm.get('estado')?.value ?? 0 })
+      .pipe(map((res: HttpResponse<ICidade[]>) => res.body ?? []))
+      .pipe(map((cidades: ICidade[]) => this.cidadeService.addCidadeToCollectionIfMissing<ICidade>(cidades, this.transportadora?.cidade)))
+      .subscribe((cidades: ICidade[]) => (this.cidadesSharedCollection = cidades));
+  }
+
+  protected readonly TipoEndereco = TipoEndereco;
 }

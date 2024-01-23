@@ -1,9 +1,11 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
+import br.com.revenuebrasil.newcargas.repository.search.UserSearchRepository;
 import br.com.revenuebrasil.newcargas.service.UserService;
 import br.com.revenuebrasil.newcargas.service.dto.UserDTO;
 import java.util.*;
 import java.util.Collections;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,9 +29,11 @@ public class PublicUserResource {
     private final Logger log = LoggerFactory.getLogger(PublicUserResource.class);
 
     private final UserService userService;
+    private final UserSearchRepository userSearchRepository;
 
-    public PublicUserResource(UserService userService) {
+    public PublicUserResource(UserSearchRepository userSearchRepository, UserService userService) {
         this.userService = userService;
+        this.userSearchRepository = userSearchRepository;
     }
 
     /**
@@ -61,5 +65,16 @@ public class PublicUserResource {
     @GetMapping("/authorities")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
+    }
+
+    /**
+     * {@code SEARCH /users/_search/:query} : search for the User corresponding to the query.
+     *
+     * @param query the query to search.
+     * @return the result of the search.
+     */
+    @GetMapping("/users/_search/{query}")
+    public List<UserDTO> search(@PathVariable("query") String query) {
+        return StreamSupport.stream(userSearchRepository.search(query).spliterator(), false).map(UserDTO::new).toList();
     }
 }

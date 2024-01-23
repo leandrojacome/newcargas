@@ -12,25 +12,11 @@ public class FaturaTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Fatura getFaturaSample1() {
-        return new Fatura()
-            .id(1L)
-            .numeroParcela(1)
-            .observacao("observacao1")
-            .usuarioCadastro("usuarioCadastro1")
-            .usuarioAtualizacao("usuarioAtualizacao1")
-            .usuarioCancelamento("usuarioCancelamento1")
-            .usuarioRemocao("usuarioRemocao1");
+        return new Fatura().id(1L).numeroParcela(1).observacao("observacao1").createdBy("createdBy1").lastModifiedBy("lastModifiedBy1");
     }
 
     public static Fatura getFaturaSample2() {
-        return new Fatura()
-            .id(2L)
-            .numeroParcela(2)
-            .observacao("observacao2")
-            .usuarioCadastro("usuarioCadastro2")
-            .usuarioAtualizacao("usuarioAtualizacao2")
-            .usuarioCancelamento("usuarioCancelamento2")
-            .usuarioRemocao("usuarioRemocao2");
+        return new Fatura().id(2L).numeroParcela(2).observacao("observacao2").createdBy("createdBy2").lastModifiedBy("lastModifiedBy2");
     }
 
     public static Fatura getFaturaRandomSampleGenerator() {
@@ -38,9 +24,7 @@ public class FaturaTestSamples {
             .id(longCount.incrementAndGet())
             .numeroParcela(intCount.incrementAndGet())
             .observacao(UUID.randomUUID().toString())
-            .usuarioCadastro(UUID.randomUUID().toString())
-            .usuarioAtualizacao(UUID.randomUUID().toString())
-            .usuarioCancelamento(UUID.randomUUID().toString())
-            .usuarioRemocao(UUID.randomUUID().toString());
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

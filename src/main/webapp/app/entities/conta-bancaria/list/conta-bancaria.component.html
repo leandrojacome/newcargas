@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (contaBancarias?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Conta Bancaria encontrado</span>
@@ -109,16 +111,32 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Cadastro</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Data Atualizacao</span>
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -156,8 +174,10 @@
               <td>{{ contaBancaria.tipo }}</td>
               <td>{{ contaBancaria.pix }}</td>
               <td>{{ contaBancaria.titular }}</td>
-              <td>{{ contaBancaria.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ contaBancaria.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ contaBancaria.createdBy }}</td>
+              <td>{{ contaBancaria.createdDate | formatMediumDatetime }}</td>
+              <td>{{ contaBancaria.lastModifiedBy }}</td>
+              <td>{{ contaBancaria.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (contaBancaria.banco) {
                   <div>

@@ -11,10 +11,8 @@ const requireRestSample: RestFatura = {
   dataFatura: sampleWithRequiredData.dataFatura?.toJSON(),
   dataVencimento: sampleWithRequiredData.dataVencimento?.toJSON(),
   dataPagamento: sampleWithRequiredData.dataPagamento?.toJSON(),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
-  dataCancelamento: sampleWithRequiredData.dataCancelamento?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Fatura Service', () => {

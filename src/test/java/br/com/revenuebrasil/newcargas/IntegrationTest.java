@@ -1,6 +1,7 @@
 package br.com.revenuebrasil.newcargas;
 
 import br.com.revenuebrasil.newcargas.config.AsyncSyncConfiguration;
+import br.com.revenuebrasil.newcargas.config.EmbeddedElasticsearch;
 import br.com.revenuebrasil.newcargas.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(classes = { NewcargasApp.class, AsyncSyncConfiguration.class })
+@EmbeddedElasticsearch
 @EmbeddedSQL
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public @interface IntegrationTest {

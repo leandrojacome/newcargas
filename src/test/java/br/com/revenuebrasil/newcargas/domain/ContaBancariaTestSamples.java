@@ -17,7 +17,9 @@ public class ContaBancariaTestSamples {
             .observacao("observacao1")
             .tipo("tipo1")
             .pix("pix1")
-            .titular("titular1");
+            .titular("titular1")
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static ContaBancaria getContaBancariaSample2() {
@@ -28,7 +30,9 @@ public class ContaBancariaTestSamples {
             .observacao("observacao2")
             .tipo("tipo2")
             .pix("pix2")
-            .titular("titular2");
+            .titular("titular2")
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static ContaBancaria getContaBancariaRandomSampleGenerator() {
@@ -39,6 +43,8 @@ public class ContaBancariaTestSamples {
             .observacao(UUID.randomUUID().toString())
             .tipo(UUID.randomUUID().toString())
             .pix(UUID.randomUUID().toString())
-            .titular(UUID.randomUUID().toString());
+            .titular(UUID.randomUUID().toString())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

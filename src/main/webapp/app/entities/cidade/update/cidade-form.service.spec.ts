@@ -22,9 +22,11 @@ describe('Cidade Form Service', () => {
             id: expect.any(Object),
             nome: expect.any(Object),
             codigoIbge: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             estado: expect.any(Object),
-            embarcador: expect.any(Object),
-            transportadora: expect.any(Object),
           }),
         );
       });
@@ -37,9 +39,11 @@ describe('Cidade Form Service', () => {
             id: expect.any(Object),
             nome: expect.any(Object),
             codigoIbge: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             estado: expect.any(Object),
-            embarcador: expect.any(Object),
-            transportadora: expect.any(Object),
           }),
         );
       });

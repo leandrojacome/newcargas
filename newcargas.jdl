@@ -3,8 +3,6 @@ application {
         baseName newcargas
         packageName br.com.revenuebrasil.newcargas
         applicationType monolith
-        searchEngine no
-        messageBroker no
         nativeLanguage pt-br
         testFrameworks [cypress, gatling, cucumber]
         cacheProvider ehcache
@@ -49,10 +47,6 @@ entity Embarcador {
     telefone String maxlength(11) minlength(10)
     email String maxlength(150) minlength(2)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
 }
 
 entity Transportadora {
@@ -70,10 +64,6 @@ entity Transportadora {
     telefone String maxlength(11) minlength(10)
     email String maxlength(150) minlength(2)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
 }
 
 entity Banco {
@@ -88,8 +78,6 @@ entity ContaBancaria {
     tipo String maxlength(150) minlength(2)
     pix String maxlength(150) minlength(2)
     titular String maxlength(150) minlength(2)
-    dataCadastro ZonedDateTime required
-    dataAtualizacao ZonedDateTime
 }
 
 enum TipoTabelaFrete {
@@ -112,8 +100,6 @@ entity TabelaFrete {
     valorEntrega Double max(10) min(1)
     valorTotal Double max(10) min(1)
     valorKmAdicional Double max(10) min(1)
-    dataCadastro ZonedDateTime required
-    dataAtualizacao ZonedDateTime
 }
 
 enum TipoEndereco {
@@ -159,14 +145,8 @@ entity SolicitacaoColeta {
     dataHoraEntrega ZonedDateTime
     valorTotal Double max(10) min(1)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    dataAtualizacao ZonedDateTime
     cancelado Boolean
-    dataCancelamento ZonedDateTime
-    usuarioCancelamento String maxlength(150) minlength(2)
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 entity NotaFiscalColeta {
@@ -183,8 +163,6 @@ entity NotaFiscalColeta {
     pesoTotal Double max(10) min(1)
     quantidadeTotal Integer max(4) min(1)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime
-    dataAtualizacao ZonedDateTime
 }
 
 entity StatusColeta {
@@ -197,14 +175,8 @@ entity StatusColeta {
     permiteEditar Boolean
     permiteExcluir Boolean
     descricao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
     ativo Boolean
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 entity HistoricoStatusColeta {
@@ -219,16 +191,8 @@ entity Roteirizacao {
     dataHoraUltimaEntrega ZonedDateTime
     valorTotal Double max(10) min(1)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
     cancelado Boolean
-    dataCancelamento ZonedDateTime
-    usuarioCancelamento String maxlength(150) minlength(2)
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 entity TomadaPreco {
@@ -236,19 +200,9 @@ entity TomadaPreco {
     prazoResposta Integer max(4) min(1)
     valorTotal Double max(10) min(1)
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
     aprovado Boolean
-    dataAprovacao ZonedDateTime
-    usuarioAprovacao String maxlength(150) minlength(2)
     cancelado Boolean
-    dataCancelamento ZonedDateTime
-    usuarioCancelamento String maxlength(150) minlength(2)
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 enum TipoNotificacao {
@@ -264,13 +218,9 @@ entity Notificacao {
     mensagem String maxlength(500) minlength(2) required
     dataHoraEnvio ZonedDateTime required
     dataHoraLeitura ZonedDateTime
-    dataCadastro ZonedDateTime required
-    dataAtualizacao ZonedDateTime
     lido Boolean
     dataLeitura ZonedDateTime
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 entity Contratacao {
@@ -278,16 +228,8 @@ entity Contratacao {
     validadeEmDias Integer max(4) min(1) required
     dataValidade LocalDate required
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
     cancelado Boolean
-    dataCancelamento ZonedDateTime
-    usuarioCancelamento String maxlength(150) minlength(2)
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 enum TipoFatura {
@@ -303,16 +245,8 @@ entity Fatura {
     numeroParcela Integer max(4) min(1)
     valorTotal Double max(10) min(1) required
     observacao String maxlength(500) minlength(2)
-    dataCadastro ZonedDateTime required
-    usuarioCadastro String maxlength(150) minlength(2)
-    dataAtualizacao ZonedDateTime
-    usuarioAtualizacao String maxlength(150) minlength(2)
     cancelado Boolean
-    dataCancelamento ZonedDateTime
-    usuarioCancelamento String maxlength(150) minlength(2)
     removido Boolean
-    dataRemocao ZonedDateTime
-    usuarioRemocao String maxlength(150) minlength(2)
 }
 
 entity Regiao {
@@ -326,14 +260,14 @@ relationship OneToMany {
     Cidade{endereco} to Endereco{cidade}
     Banco{contaBancaria} to ContaBancaria{banco}
     Embarcador{endereco} to Endereco{embarcador}
-    Embarcador{cidade} to Cidade{embarcador}
     Embarcador{contaBancaria} to ContaBancaria{embarcador}
+    Cidade{embarcador} to Embarcador{cidade}
     Embarcador{tabelaFrete} to TabelaFrete{embarcador}
     Embarcador{solitacaoColeta} to SolicitacaoColeta{embarcador}
     Embarcador{notificacao} to Notificacao{embarcador}
     Embarcador{fatura} to Fatura{embarcador}
     Transportadora{endereco} to Endereco{transportadora}
-    Transportadora{cidade} to Cidade{transportadora}
+    Cidade{transportadora} to Transportadora{cidade}
     Transportadora{contaBancaria} to ContaBancaria{transportadora}
     Transportadora{tabelaFrete} to TabelaFrete{transportadora}
     Transportadora{tomadaPreco} to TomadaPreco{transportadora}
@@ -374,5 +308,4 @@ relationship ManyToMany {
 dto all with mapstruct
 paginate all with pagination
 service all with serviceImpl
-search all with elasticsearch
-
+filter all

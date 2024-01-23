@@ -11,8 +11,10 @@ export interface IContaBancaria {
   tipo?: string | null;
   pix?: string | null;
   titular?: string | null;
-  dataCadastro?: dayjs.Dayjs | null;
-  dataAtualizacao?: dayjs.Dayjs | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   banco?: Pick<IBanco, 'id'> | null;
   embarcador?: Pick<IEmbarcador, 'id'> | null;
   transportadora?: Pick<ITransportadora, 'id'> | null;

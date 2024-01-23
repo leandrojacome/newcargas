@@ -43,6 +43,8 @@
     </div>
   </form>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (notaFiscalColetas?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>Nenhum Nota Fiscal Coleta encontrado</span>
@@ -157,16 +159,32 @@
                 }
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataCadastro">
+            <th scope="col" jhiSortBy="createdBy">
               <div class="d-flex">
-                <span>Data Cadastro</span>
+                <span>Created By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span>Created Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dataAtualizacao">
+            <th scope="col" jhiSortBy="lastModifiedBy">
               <div class="d-flex">
-                <span>Data Atualizacao</span>
+                <span>Last Modified By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span>Last Modified Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -199,8 +217,10 @@
               <td>{{ notaFiscalColeta.pesoTotal }}</td>
               <td>{{ notaFiscalColeta.quantidadeTotal }}</td>
               <td>{{ notaFiscalColeta.observacao }}</td>
-              <td>{{ notaFiscalColeta.dataCadastro | formatMediumDatetime }}</td>
-              <td>{{ notaFiscalColeta.dataAtualizacao | formatMediumDatetime }}</td>
+              <td>{{ notaFiscalColeta.createdBy }}</td>
+              <td>{{ notaFiscalColeta.createdDate | formatMediumDatetime }}</td>
+              <td>{{ notaFiscalColeta.lastModifiedBy }}</td>
+              <td>{{ notaFiscalColeta.lastModifiedDate | formatMediumDatetime }}</td>
               <td>
                 @if (notaFiscalColeta.solicitacaoColeta) {
                   <div>
@@ -212,6 +232,26 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/endereco']"
+                    [queryParams]="{ 'filter[notaFiscalColetaOrigemId.in]': notaFiscalColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Endereco</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/endereco']"
+                    [queryParams]="{ 'filter[notaFiscalColetaDestinoId.in]': notaFiscalColeta.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Mostrar Endereco</span>
+                  </button>
                   <a
                     [routerLink]="['/nota-fiscal-coleta', notaFiscalColeta.id, 'view']"
                     class="btn btn-info btn-sm"

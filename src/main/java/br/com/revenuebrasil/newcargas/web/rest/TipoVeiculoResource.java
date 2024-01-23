@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.TipoVeiculoRepository;
+import br.com.revenuebrasil.newcargas.service.TipoVeiculoQueryService;
 import br.com.revenuebrasil.newcargas.service.TipoVeiculoService;
+import br.com.revenuebrasil.newcargas.service.criteria.TipoVeiculoCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.TipoVeiculoDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,16 @@ public class TipoVeiculoResource {
 
     private final TipoVeiculoRepository tipoVeiculoRepository;
 
-    public TipoVeiculoResource(TipoVeiculoService tipoVeiculoService, TipoVeiculoRepository tipoVeiculoRepository) {
+    private final TipoVeiculoQueryService tipoVeiculoQueryService;
+
+    public TipoVeiculoResource(
+        TipoVeiculoService tipoVeiculoService,
+        TipoVeiculoRepository tipoVeiculoRepository,
+        TipoVeiculoQueryService tipoVeiculoQueryService
+    ) {
         this.tipoVeiculoService = tipoVeiculoService;
         this.tipoVeiculoRepository = tipoVeiculoRepository;
+        this.tipoVeiculoQueryService = tipoVeiculoQueryService;
     }
 
     /**
@@ -80,7 +89,7 @@ public class TipoVeiculoResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TipoVeiculoDTO> updateTipoVeiculo(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody TipoVeiculoDTO tipoVeiculoDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TipoVeiculo : {}, {}", id, tipoVeiculoDTO);
@@ -115,7 +124,7 @@ public class TipoVeiculoResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TipoVeiculoDTO> partialUpdateTipoVeiculo(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody TipoVeiculoDTO tipoVeiculoDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TipoVeiculo partially : {}, {}", id, tipoVeiculoDTO);
@@ -142,14 +151,31 @@ public class TipoVeiculoResource {
      * {@code GET  /tipo-veiculos} : get all the tipoVeiculos.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tipoVeiculos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TipoVeiculoDTO>> getAllTipoVeiculos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TipoVeiculos");
-        Page<TipoVeiculoDTO> page = tipoVeiculoService.findAll(pageable);
+    public ResponseEntity<List<TipoVeiculoDTO>> getAllTipoVeiculos(
+        TipoVeiculoCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TipoVeiculos by criteria: {}", criteria);
+
+        Page<TipoVeiculoDTO> page = tipoVeiculoQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tipo-veiculos/count} : count all the tipoVeiculos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTipoVeiculos(TipoVeiculoCriteria criteria) {
+        log.debug("REST request to count TipoVeiculos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tipoVeiculoQueryService.countByCriteria(criteria));
     }
 
     /**

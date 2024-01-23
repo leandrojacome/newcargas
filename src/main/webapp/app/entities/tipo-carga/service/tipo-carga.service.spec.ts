@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ITipoCarga } from '../tipo-carga.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../tipo-carga.test-samples';
 
-import { TipoCargaService } from './tipo-carga.service';
+import { TipoCargaService, RestTipoCarga } from './tipo-carga.service';
 
-const requireRestSample: ITipoCarga = {
+const requireRestSample: RestTipoCarga = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('TipoCarga Service', () => {

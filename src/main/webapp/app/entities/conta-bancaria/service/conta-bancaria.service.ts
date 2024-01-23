@@ -14,9 +14,9 @@ import { IContaBancaria, NewContaBancaria } from '../conta-bancaria.model';
 
 export type PartialUpdateContaBancaria = Partial<IContaBancaria> & Pick<IContaBancaria, 'id'>;
 
-type RestOf<T extends IContaBancaria | NewContaBancaria> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type RestOf<T extends IContaBancaria | NewContaBancaria> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestContaBancaria = RestOf<IContaBancaria>;
@@ -117,16 +117,16 @@ export class ContaBancariaService {
   protected convertDateFromClient<T extends IContaBancaria | NewContaBancaria | PartialUpdateContaBancaria>(contaBancaria: T): RestOf<T> {
     return {
       ...contaBancaria,
-      dataCadastro: contaBancaria.dataCadastro?.toJSON() ?? null,
-      dataAtualizacao: contaBancaria.dataAtualizacao?.toJSON() ?? null,
+      createdDate: contaBancaria.createdDate?.toJSON() ?? null,
+      lastModifiedDate: contaBancaria.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
   protected convertDateFromServer(restContaBancaria: RestContaBancaria): IContaBancaria {
     return {
       ...restContaBancaria,
-      dataCadastro: restContaBancaria.dataCadastro ? dayjs(restContaBancaria.dataCadastro) : undefined,
-      dataAtualizacao: restContaBancaria.dataAtualizacao ? dayjs(restContaBancaria.dataAtualizacao) : undefined,
+      createdDate: restContaBancaria.createdDate ? dayjs(restContaBancaria.createdDate) : undefined,
+      lastModifiedDate: restContaBancaria.lastModifiedDate ? dayjs(restContaBancaria.lastModifiedDate) : undefined,
     };
   }
 

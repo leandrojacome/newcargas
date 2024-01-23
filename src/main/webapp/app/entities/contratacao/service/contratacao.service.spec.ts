@@ -10,10 +10,8 @@ import { ContratacaoService, RestContratacao } from './contratacao.service';
 const requireRestSample: RestContratacao = {
   ...sampleWithRequiredData,
   dataValidade: sampleWithRequiredData.dataValidade?.format(DATE_FORMAT),
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
-  dataCancelamento: sampleWithRequiredData.dataCancelamento?.toJSON(),
-  dataRemocao: sampleWithRequiredData.dataRemocao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Contratacao Service', () => {

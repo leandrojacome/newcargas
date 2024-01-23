@@ -91,8 +91,10 @@ public class TabelaFreteGatlingTest extends Simulation {
                                 ", \"valorEntrega\": 0" +
                                 ", \"valorTotal\": 0" +
                                 ", \"valorKmAdicional\": 0" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

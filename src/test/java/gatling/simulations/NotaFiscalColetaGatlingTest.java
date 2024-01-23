@@ -95,8 +95,10 @@ public class NotaFiscalColetaGatlingTest extends Simulation {
                                 ", \"pesoTotal\": 0" +
                                 ", \"quantidadeTotal\": 0" +
                                 ", \"observacao\": \"SAMPLE_TEXT\"" +
-                                ", \"dataCadastro\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"dataAtualizacao\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"createdBy\": \"SAMPLE_TEXT\"" +
+                                ", \"createdDate\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"lastModifiedBy\": \"SAMPLE_TEXT\"" +
+                                ", \"lastModifiedDate\": \"2020-01-01T00:00:00.000Z\"" +
                                 "}"
                             )
                         )

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { IEstado, NewEstado } from './estado.model';
 
 export const sampleWithRequiredData: IEstado = {
@@ -7,22 +9,28 @@ export const sampleWithRequiredData: IEstado = {
 };
 
 export const sampleWithPartialData: IEstado = {
-  id: 1949,
-  nome: 'wry',
-  sigla: 'br',
+  id: 7208,
+  nome: 'flake frank or',
+  sigla: 'se',
   codigoIbge: 7,
+  createdBy: 'serene',
+  createdDate: dayjs('2024-01-19T17:19'),
 };
 
 export const sampleWithFullData: IEstado = {
-  id: 24858,
-  nome: 'plasterboard incidentally engross',
-  sigla: 'ra',
+  id: 13121,
+  nome: 'terrarium',
+  sigla: 'wh',
   codigoIbge: 7,
+  createdBy: 'huzzah maintenance unhappy',
+  createdDate: dayjs('2024-01-20T01:16'),
+  lastModifiedBy: 'off',
+  lastModifiedDate: dayjs('2024-01-20T14:28'),
 };
 
 export const sampleWithNewData: NewEstado = {
-  nome: 'billing wherever',
-  sigla: 'ad',
+  nome: 'never',
+  sigla: 'he',
   id: null,
 };
 

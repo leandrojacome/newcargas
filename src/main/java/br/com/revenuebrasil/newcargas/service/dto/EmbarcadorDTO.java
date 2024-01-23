@@ -2,7 +2,7 @@ package br.com.revenuebrasil.newcargas.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -57,16 +57,15 @@ public class EmbarcadorDTO implements Serializable {
     @Size(min = 2, max = 500)
     private String observacao;
 
-    @NotNull
-    private ZonedDateTime dataCadastro;
+    private String createdBy;
 
-    @Size(min = 2, max = 150)
-    private String usuarioCadastro;
+    private Instant createdDate;
 
-    private ZonedDateTime dataAtualizacao;
+    private String lastModifiedBy;
 
-    @Size(min = 2, max = 150)
-    private String usuarioAtualizacao;
+    private Instant lastModifiedDate;
+
+    private CidadeDTO cidade;
 
     public Long getId() {
         return id;
@@ -188,36 +187,44 @@ public class EmbarcadorDTO implements Serializable {
         this.observacao = observacao;
     }
 
-    public ZonedDateTime getDataCadastro() {
-        return dataCadastro;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDataCadastro(ZonedDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getUsuarioCadastro() {
-        return usuarioCadastro;
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
-    public void setUsuarioCadastro(String usuarioCadastro) {
-        this.usuarioCadastro = usuarioCadastro;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public ZonedDateTime getDataAtualizacao() {
-        return dataAtualizacao;
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
     }
 
-    public void setDataAtualizacao(ZonedDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
-    public String getUsuarioAtualizacao() {
-        return usuarioAtualizacao;
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setUsuarioAtualizacao(String usuarioAtualizacao) {
-        this.usuarioAtualizacao = usuarioAtualizacao;
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public CidadeDTO getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(CidadeDTO cidade) {
+        this.cidade = cidade;
     }
 
     @Override
@@ -260,10 +267,11 @@ public class EmbarcadorDTO implements Serializable {
             ", telefone='" + getTelefone() + "'" +
             ", email='" + getEmail() + "'" +
             ", observacao='" + getObservacao() + "'" +
-            ", dataCadastro='" + getDataCadastro() + "'" +
-            ", usuarioCadastro='" + getUsuarioCadastro() + "'" +
-            ", dataAtualizacao='" + getDataAtualizacao() + "'" +
-            ", usuarioAtualizacao='" + getUsuarioAtualizacao() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", cidade=" + getCidade() +
             "}";
     }
 }

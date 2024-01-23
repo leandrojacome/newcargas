@@ -58,10 +58,10 @@ describe('TomadaPreco Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call contratacao query and add missing value', () => {
       const tomadaPreco: ITomadaPreco = { id: 456 };
-      const contratacao: IContratacao = { id: 8930 };
+      const contratacao: IContratacao = { id: 21705 };
       tomadaPreco.contratacao = contratacao;
 
-      const contratacaoCollection: IContratacao[] = [{ id: 28109 }];
+      const contratacaoCollection: IContratacao[] = [{ id: 6987 }];
       jest.spyOn(contratacaoService, 'query').mockReturnValue(of(new HttpResponse({ body: contratacaoCollection })));
       const expectedCollection: IContratacao[] = [contratacao, ...contratacaoCollection];
       jest.spyOn(contratacaoService, 'addContratacaoToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -76,10 +76,10 @@ describe('TomadaPreco Management Update Component', () => {
 
     it('Should call Transportadora query and add missing value', () => {
       const tomadaPreco: ITomadaPreco = { id: 456 };
-      const transportadora: ITransportadora = { id: 12112 };
+      const transportadora: ITransportadora = { id: 21107 };
       tomadaPreco.transportadora = transportadora;
 
-      const transportadoraCollection: ITransportadora[] = [{ id: 6137 }];
+      const transportadoraCollection: ITransportadora[] = [{ id: 624 }];
       jest.spyOn(transportadoraService, 'query').mockReturnValue(of(new HttpResponse({ body: transportadoraCollection })));
       const additionalTransportadoras = [transportadora];
       const expectedCollection: ITransportadora[] = [...additionalTransportadoras, ...transportadoraCollection];
@@ -98,10 +98,10 @@ describe('TomadaPreco Management Update Component', () => {
 
     it('Should call Roteirizacao query and add missing value', () => {
       const tomadaPreco: ITomadaPreco = { id: 456 };
-      const roteirizacao: IRoteirizacao = { id: 6419 };
+      const roteirizacao: IRoteirizacao = { id: 19910 };
       tomadaPreco.roteirizacao = roteirizacao;
 
-      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 9421 }];
+      const roteirizacaoCollection: IRoteirizacao[] = [{ id: 5791 }];
       jest.spyOn(roteirizacaoService, 'query').mockReturnValue(of(new HttpResponse({ body: roteirizacaoCollection })));
       const additionalRoteirizacaos = [roteirizacao];
       const expectedCollection: IRoteirizacao[] = [...additionalRoteirizacaos, ...roteirizacaoCollection];
@@ -120,11 +120,11 @@ describe('TomadaPreco Management Update Component', () => {
 
     it('Should update editForm', () => {
       const tomadaPreco: ITomadaPreco = { id: 456 };
-      const contratacao: IContratacao = { id: 2083 };
+      const contratacao: IContratacao = { id: 26899 };
       tomadaPreco.contratacao = contratacao;
-      const transportadora: ITransportadora = { id: 2309 };
+      const transportadora: ITransportadora = { id: 30475 };
       tomadaPreco.transportadora = transportadora;
-      const roteirizacao: IRoteirizacao = { id: 2245 };
+      const roteirizacao: IRoteirizacao = { id: 32113 };
       tomadaPreco.roteirizacao = roteirizacao;
 
       activatedRoute.data = of({ tomadaPreco });

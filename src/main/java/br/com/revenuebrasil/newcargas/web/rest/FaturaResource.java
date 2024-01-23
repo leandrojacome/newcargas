@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.FaturaRepository;
+import br.com.revenuebrasil.newcargas.service.FaturaQueryService;
 import br.com.revenuebrasil.newcargas.service.FaturaService;
+import br.com.revenuebrasil.newcargas.service.criteria.FaturaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.FaturaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,9 +45,12 @@ public class FaturaResource {
 
     private final FaturaRepository faturaRepository;
 
-    public FaturaResource(FaturaService faturaService, FaturaRepository faturaRepository) {
+    private final FaturaQueryService faturaQueryService;
+
+    public FaturaResource(FaturaService faturaService, FaturaRepository faturaRepository, FaturaQueryService faturaQueryService) {
         this.faturaService = faturaService;
         this.faturaRepository = faturaRepository;
+        this.faturaQueryService = faturaQueryService;
     }
 
     /**
@@ -80,7 +85,7 @@ public class FaturaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<FaturaDTO> updateFatura(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody FaturaDTO faturaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Fatura : {}, {}", id, faturaDTO);
@@ -115,7 +120,7 @@ public class FaturaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<FaturaDTO> partialUpdateFatura(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody FaturaDTO faturaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Fatura partially : {}, {}", id, faturaDTO);
@@ -142,14 +147,31 @@ public class FaturaResource {
      * {@code GET  /faturas} : get all the faturas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of faturas in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<FaturaDTO>> getAllFaturas(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Faturas");
-        Page<FaturaDTO> page = faturaService.findAll(pageable);
+    public ResponseEntity<List<FaturaDTO>> getAllFaturas(
+        FaturaCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Faturas by criteria: {}", criteria);
+
+        Page<FaturaDTO> page = faturaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /faturas/count} : count all the faturas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countFaturas(FaturaCriteria criteria) {
+        log.debug("REST request to count Faturas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(faturaQueryService.countByCriteria(criteria));
     }
 
     /**

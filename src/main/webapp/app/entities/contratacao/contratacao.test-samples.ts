@@ -3,24 +3,21 @@ import dayjs from 'dayjs/esm';
 import { IContratacao, NewContratacao } from './contratacao.model';
 
 export const sampleWithRequiredData: IContratacao = {
-  id: 31119,
-  valorTotal: 1.35,
-  validadeEmDias: 2,
+  id: 21431,
+  valorTotal: 6.59,
+  validadeEmDias: 4,
   dataValidade: dayjs('2024-01-20'),
-  dataCadastro: dayjs('2024-01-20T16:43'),
 };
 
 export const sampleWithPartialData: IContratacao = {
-  id: 12728,
-  valorTotal: 3.97,
-  validadeEmDias: 4,
+  id: 19147,
+  valorTotal: 1.14,
+  validadeEmDias: 3,
   dataValidade: dayjs('2024-01-20'),
-  dataCadastro: dayjs('2024-01-19T23:42'),
-  dataAtualizacao: dayjs('2024-01-20T07:55'),
   cancelado: true,
-  dataCancelamento: dayjs('2024-01-20T06:53'),
-  dataRemocao: dayjs('2024-01-19T17:42'),
-  usuarioRemocao: 'likewise physically remove',
+  createdBy: 'despite herring',
+  lastModifiedBy: 'teaching complexity avaricious',
+  lastModifiedDate: dayjs('2024-01-19T23:47'),
 };
 
 export const sampleWithFullData: IContratacao = {
@@ -29,23 +26,18 @@ export const sampleWithFullData: IContratacao = {
   validadeEmDias: 1,
   dataValidade: dayjs('2024-01-20'),
   observacao: 'rearm',
-  dataCadastro: dayjs('2024-01-20T09:32'),
-  usuarioCadastro: 'as but',
-  dataAtualizacao: dayjs('2024-01-19T21:46'),
-  usuarioAtualizacao: 'champion zowie',
-  cancelado: false,
-  dataCancelamento: dayjs('2024-01-20T03:00'),
-  usuarioCancelamento: 'yum actually',
+  cancelado: true,
   removido: false,
-  dataRemocao: dayjs('2024-01-20T04:38'),
-  usuarioRemocao: 'pish',
+  createdBy: 'entangle tensely ha',
+  createdDate: dayjs('2024-01-20T13:36'),
+  lastModifiedBy: 'nightingale among empty',
+  lastModifiedDate: dayjs('2024-01-20T07:08'),
 };
 
 export const sampleWithNewData: NewContratacao = {
-  valorTotal: 4.73,
-  validadeEmDias: 1,
+  valorTotal: 1.12,
+  validadeEmDias: 3,
   dataValidade: dayjs('2024-01-20'),
-  dataCadastro: dayjs('2024-01-20T16:35'),
   id: null,
 };
 

@@ -8,8 +8,8 @@ import { ContaBancariaService, RestContaBancaria } from './conta-bancaria.servic
 
 const requireRestSample: RestContaBancaria = {
   ...sampleWithRequiredData,
-  dataCadastro: sampleWithRequiredData.dataCadastro?.toJSON(),
-  dataAtualizacao: sampleWithRequiredData.dataAtualizacao?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('ContaBancaria Service', () => {

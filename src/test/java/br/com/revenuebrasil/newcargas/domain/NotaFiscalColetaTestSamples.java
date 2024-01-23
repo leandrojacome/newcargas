@@ -19,7 +19,9 @@ public class NotaFiscalColetaTestSamples {
             .remetente("remetente1")
             .destinatario("destinatario1")
             .quantidadeTotal(1)
-            .observacao("observacao1");
+            .observacao("observacao1")
+            .createdBy("createdBy1")
+            .lastModifiedBy("lastModifiedBy1");
     }
 
     public static NotaFiscalColeta getNotaFiscalColetaSample2() {
@@ -30,7 +32,9 @@ public class NotaFiscalColetaTestSamples {
             .remetente("remetente2")
             .destinatario("destinatario2")
             .quantidadeTotal(2)
-            .observacao("observacao2");
+            .observacao("observacao2")
+            .createdBy("createdBy2")
+            .lastModifiedBy("lastModifiedBy2");
     }
 
     public static NotaFiscalColeta getNotaFiscalColetaRandomSampleGenerator() {
@@ -41,6 +45,8 @@ public class NotaFiscalColetaTestSamples {
             .remetente(UUID.randomUUID().toString())
             .destinatario(UUID.randomUUID().toString())
             .quantidadeTotal(intCount.incrementAndGet())
-            .observacao(UUID.randomUUID().toString());
+            .observacao(UUID.randomUUID().toString())
+            .createdBy(UUID.randomUUID().toString())
+            .lastModifiedBy(UUID.randomUUID().toString());
     }
 }

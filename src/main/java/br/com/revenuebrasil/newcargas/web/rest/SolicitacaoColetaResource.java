@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.web.rest;
 
 import br.com.revenuebrasil.newcargas.repository.SolicitacaoColetaRepository;
+import br.com.revenuebrasil.newcargas.service.SolicitacaoColetaQueryService;
 import br.com.revenuebrasil.newcargas.service.SolicitacaoColetaService;
+import br.com.revenuebrasil.newcargas.service.criteria.SolicitacaoColetaCriteria;
 import br.com.revenuebrasil.newcargas.service.dto.SolicitacaoColetaDTO;
 import br.com.revenuebrasil.newcargas.web.rest.errors.BadRequestAlertException;
 import br.com.revenuebrasil.newcargas.web.rest.errors.ElasticsearchExceptionMapper;
@@ -43,12 +45,16 @@ public class SolicitacaoColetaResource {
 
     private final SolicitacaoColetaRepository solicitacaoColetaRepository;
 
+    private final SolicitacaoColetaQueryService solicitacaoColetaQueryService;
+
     public SolicitacaoColetaResource(
         SolicitacaoColetaService solicitacaoColetaService,
-        SolicitacaoColetaRepository solicitacaoColetaRepository
+        SolicitacaoColetaRepository solicitacaoColetaRepository,
+        SolicitacaoColetaQueryService solicitacaoColetaQueryService
     ) {
         this.solicitacaoColetaService = solicitacaoColetaService;
         this.solicitacaoColetaRepository = solicitacaoColetaRepository;
+        this.solicitacaoColetaQueryService = solicitacaoColetaQueryService;
     }
 
     /**
@@ -84,7 +90,7 @@ public class SolicitacaoColetaResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<SolicitacaoColetaDTO> updateSolicitacaoColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @Valid @RequestBody SolicitacaoColetaDTO solicitacaoColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to update SolicitacaoColeta : {}, {}", id, solicitacaoColetaDTO);
@@ -119,7 +125,7 @@ public class SolicitacaoColetaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SolicitacaoColetaDTO> partialUpdateSolicitacaoColeta(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody SolicitacaoColetaDTO solicitacaoColetaDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update SolicitacaoColeta partially : {}, {}", id, solicitacaoColetaDTO);
@@ -146,16 +152,31 @@ public class SolicitacaoColetaResource {
      * {@code GET  /solicitacao-coletas} : get all the solicitacaoColetas.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of solicitacaoColetas in body.
      */
     @GetMapping("")
     public ResponseEntity<List<SolicitacaoColetaDTO>> getAllSolicitacaoColetas(
+        SolicitacaoColetaCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of SolicitacaoColetas");
-        Page<SolicitacaoColetaDTO> page = solicitacaoColetaService.findAll(pageable);
+        log.debug("REST request to get SolicitacaoColetas by criteria: {}", criteria);
+
+        Page<SolicitacaoColetaDTO> page = solicitacaoColetaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /solicitacao-coletas/count} : count all the solicitacaoColetas.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countSolicitacaoColetas(SolicitacaoColetaCriteria criteria) {
+        log.debug("REST request to count SolicitacaoColetas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(solicitacaoColetaQueryService.countByCriteria(criteria));
     }
 
     /**

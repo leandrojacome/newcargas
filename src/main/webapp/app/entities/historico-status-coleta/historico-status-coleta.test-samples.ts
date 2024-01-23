@@ -8,18 +8,24 @@ export const sampleWithRequiredData: IHistoricoStatusColeta = {
 };
 
 export const sampleWithPartialData: IHistoricoStatusColeta = {
-  id: 1722,
-  dataCriacao: dayjs('2024-01-19T23:37'),
+  id: 925,
+  dataCriacao: dayjs('2024-01-20T07:54'),
+  createdBy: 'education',
+  lastModifiedDate: dayjs('2024-01-20T16:56'),
 };
 
 export const sampleWithFullData: IHistoricoStatusColeta = {
-  id: 32163,
-  dataCriacao: dayjs('2024-01-20T16:20'),
-  observacao: 'drift',
+  id: 4950,
+  dataCriacao: dayjs('2024-01-20T04:59'),
+  observacao: 'enchanted midst underneath',
+  createdBy: 'infantile eek',
+  createdDate: dayjs('2024-01-19T22:07'),
+  lastModifiedBy: 'pfft whenever along',
+  lastModifiedDate: dayjs('2024-01-20T15:48'),
 };
 
 export const sampleWithNewData: NewHistoricoStatusColeta = {
-  dataCriacao: dayjs('2024-01-20T03:48'),
+  dataCriacao: dayjs('2024-01-20T04:00'),
   id: null,
 };
 

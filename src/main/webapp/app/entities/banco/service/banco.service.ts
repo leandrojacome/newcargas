@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -11,6 +13,17 @@ import { SearchWithPagination } from 'app/core/request/request.model';
 import { IBanco, NewBanco } from '../banco.model';
 
 export type PartialUpdateBanco = Partial<IBanco> & Pick<IBanco, 'id'>;
+
+type RestOf<T extends IBanco | NewBanco> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
+};
+
+export type RestBanco = RestOf<IBanco>;
+
+export type NewRestBanco = RestOf<NewBanco>;
+
+export type PartialUpdateRestBanco = RestOf<PartialUpdateBanco>;
 
 export type EntityResponseType = HttpResponse<IBanco>;
 export type EntityArrayResponseType = HttpResponse<IBanco[]>;
@@ -26,24 +39,35 @@ export class BancoService {
   ) {}
 
   create(banco: NewBanco): Observable<EntityResponseType> {
-    return this.http.post<IBanco>(this.resourceUrl, banco, { observe: 'response' });
+    const copy = this.convertDateFromClient(banco);
+    return this.http.post<RestBanco>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(banco: IBanco): Observable<EntityResponseType> {
-    return this.http.put<IBanco>(`${this.resourceUrl}/${this.getBancoIdentifier(banco)}`, banco, { observe: 'response' });
+    const copy = this.convertDateFromClient(banco);
+    return this.http
+      .put<RestBanco>(`${this.resourceUrl}/${this.getBancoIdentifier(banco)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(banco: PartialUpdateBanco): Observable<EntityResponseType> {
-    return this.http.patch<IBanco>(`${this.resourceUrl}/${this.getBancoIdentifier(banco)}`, banco, { observe: 'response' });
+    const copy = this.convertDateFromClient(banco);
+    return this.http
+      .patch<RestBanco>(`${this.resourceUrl}/${this.getBancoIdentifier(banco)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IBanco>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestBanco>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IBanco[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestBanco[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -52,9 +76,10 @@ export class BancoService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<IBanco[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(catchError(() => scheduled([new HttpResponse<IBanco[]>()], asapScheduler)));
+    return this.http.get<RestBanco[]>(this.resourceSearchUrl, { params: options, observe: 'response' }).pipe(
+      map(res => this.convertResponseArrayFromServer(res)),
+      catchError(() => scheduled([new HttpResponse<IBanco[]>()], asapScheduler)),
+    );
   }
 
   getBancoIdentifier(banco: Pick<IBanco, 'id'>): number {
@@ -83,5 +108,33 @@ export class BancoService {
       return [...bancosToAdd, ...bancoCollection];
     }
     return bancoCollection;
+  }
+
+  protected convertDateFromClient<T extends IBanco | NewBanco | PartialUpdateBanco>(banco: T): RestOf<T> {
+    return {
+      ...banco,
+      createdDate: banco.createdDate?.toJSON() ?? null,
+      lastModifiedDate: banco.lastModifiedDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restBanco: RestBanco): IBanco {
+    return {
+      ...restBanco,
+      createdDate: restBanco.createdDate ? dayjs(restBanco.createdDate) : undefined,
+      lastModifiedDate: restBanco.lastModifiedDate ? dayjs(restBanco.lastModifiedDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestBanco>): HttpResponse<IBanco> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestBanco[]>): HttpResponse<IBanco[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

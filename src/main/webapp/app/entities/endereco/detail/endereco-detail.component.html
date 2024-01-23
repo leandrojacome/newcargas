@@ -39,6 +39,22 @@
           <dd>
             <span>{{ endereco.bairro }}</span>
           </dd>
+          <dt><span>Created By</span></dt>
+          <dd>
+            <span>{{ endereco.createdBy }}</span>
+          </dd>
+          <dt><span>Created Date</span></dt>
+          <dd>
+            <span>{{ endereco.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Last Modified By</span></dt>
+          <dd>
+            <span>{{ endereco.lastModifiedBy }}</span>
+          </dd>
+          <dt><span>Last Modified Date</span></dt>
+          <dd>
+            <span>{{ endereco.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
           <dt><span>Cidade</span></dt>
           <dd>
             @if (endereco.cidade) {

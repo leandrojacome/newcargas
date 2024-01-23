@@ -19,16 +19,16 @@ type EmbarcadorFormGroupInput = IEmbarcador | PartialWithRequiredKeyOf<NewEmbarc
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IEmbarcador | NewEmbarcador> = Omit<T, 'dataCadastro' | 'dataAtualizacao'> & {
-  dataCadastro?: string | null;
-  dataAtualizacao?: string | null;
+type FormValueOf<T extends IEmbarcador | NewEmbarcador> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type EmbarcadorFormRawValue = FormValueOf<IEmbarcador>;
 
 type NewEmbarcadorFormRawValue = FormValueOf<NewEmbarcador>;
 
-type EmbarcadorFormDefaults = Pick<NewEmbarcador, 'id' | 'dataCadastro' | 'dataAtualizacao'>;
+type EmbarcadorFormDefaults = Pick<NewEmbarcador, 'id' | 'createdDate' | 'lastModifiedDate'>;
 
 type EmbarcadorFormGroupContent = {
   id: FormControl<EmbarcadorFormRawValue['id'] | NewEmbarcador['id']>;
@@ -46,10 +46,11 @@ type EmbarcadorFormGroupContent = {
   telefone: FormControl<EmbarcadorFormRawValue['telefone']>;
   email: FormControl<EmbarcadorFormRawValue['email']>;
   observacao: FormControl<EmbarcadorFormRawValue['observacao']>;
-  dataCadastro: FormControl<EmbarcadorFormRawValue['dataCadastro']>;
-  usuarioCadastro: FormControl<EmbarcadorFormRawValue['usuarioCadastro']>;
-  dataAtualizacao: FormControl<EmbarcadorFormRawValue['dataAtualizacao']>;
-  usuarioAtualizacao: FormControl<EmbarcadorFormRawValue['usuarioAtualizacao']>;
+  createdBy: FormControl<EmbarcadorFormRawValue['createdBy']>;
+  createdDate: FormControl<EmbarcadorFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<EmbarcadorFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<EmbarcadorFormRawValue['lastModifiedDate']>;
+  cidade: FormControl<EmbarcadorFormRawValue['cidade']>;
 };
 
 export type EmbarcadorFormGroup = FormGroup<EmbarcadorFormGroupContent>;
@@ -111,16 +112,11 @@ export class EmbarcadorFormService {
       observacao: new FormControl(embarcadorRawValue.observacao, {
         validators: [Validators.minLength(2), Validators.maxLength(500)],
       }),
-      dataCadastro: new FormControl(embarcadorRawValue.dataCadastro, {
-        validators: [Validators.required],
-      }),
-      usuarioCadastro: new FormControl(embarcadorRawValue.usuarioCadastro, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
-      dataAtualizacao: new FormControl(embarcadorRawValue.dataAtualizacao),
-      usuarioAtualizacao: new FormControl(embarcadorRawValue.usuarioAtualizacao, {
-        validators: [Validators.minLength(2), Validators.maxLength(150)],
-      }),
+      createdBy: new FormControl(embarcadorRawValue.createdBy),
+      createdDate: new FormControl(embarcadorRawValue.createdDate),
+      lastModifiedBy: new FormControl(embarcadorRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(embarcadorRawValue.lastModifiedDate),
+      cidade: new FormControl(embarcadorRawValue.cidade),
     });
   }
 
@@ -143,8 +139,8 @@ export class EmbarcadorFormService {
 
     return {
       id: null,
-      dataCadastro: currentTime,
-      dataAtualizacao: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -153,8 +149,8 @@ export class EmbarcadorFormService {
   ): IEmbarcador | NewEmbarcador {
     return {
       ...rawEmbarcador,
-      dataCadastro: dayjs(rawEmbarcador.dataCadastro, DATE_TIME_FORMAT),
-      dataAtualizacao: dayjs(rawEmbarcador.dataAtualizacao, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawEmbarcador.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawEmbarcador.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -163,8 +159,8 @@ export class EmbarcadorFormService {
   ): EmbarcadorFormRawValue | PartialWithRequiredKeyOf<NewEmbarcadorFormRawValue> {
     return {
       ...embarcador,
-      dataCadastro: embarcador.dataCadastro ? embarcador.dataCadastro.format(DATE_TIME_FORMAT) : undefined,
-      dataAtualizacao: embarcador.dataAtualizacao ? embarcador.dataAtualizacao.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: embarcador.createdDate ? embarcador.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: embarcador.lastModifiedDate ? embarcador.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

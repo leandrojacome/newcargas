@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IRegiao } from '../regiao.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../regiao.test-samples';
 
-import { RegiaoService } from './regiao.service';
+import { RegiaoService, RestRegiao } from './regiao.service';
 
-const requireRestSample: IRegiao = {
+const requireRestSample: RestRegiao = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Regiao Service', () => {

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { IRegiao, NewRegiao } from './regiao.model';
 
 export const sampleWithRequiredData: IRegiao = {
@@ -6,21 +8,25 @@ export const sampleWithRequiredData: IRegiao = {
 };
 
 export const sampleWithPartialData: IRegiao = {
-  id: 30263,
-  nome: 'whereas inventory valiantly',
-  sigla: 'exclu',
-  descricao: 'duh now',
+  id: 8292,
+  nome: 'or',
+  sigla: 'oh la',
+  descricao: 'brightly third um',
 };
 
 export const sampleWithFullData: IRegiao = {
-  id: 17622,
-  nome: 'if oh',
-  sigla: 'corra',
-  descricao: 'ha closed gee',
+  id: 28526,
+  nome: 'scallop phooey',
+  sigla: 'cash ',
+  descricao: 'yet',
+  createdBy: 'ring weary',
+  createdDate: dayjs('2024-01-20T06:42'),
+  lastModifiedBy: 'aw oh aw',
+  lastModifiedDate: dayjs('2024-01-19T17:14'),
 };
 
 export const sampleWithNewData: NewRegiao = {
-  nome: 'unaccountably',
+  nome: 'whoa stave',
   id: null,
 };
 
