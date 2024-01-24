@@ -1,7 +1,9 @@
 package br.com.revenuebrasil.newcargas.service;
 
-import br.com.revenuebrasil.newcargas.domain.*; // for static metamodels
+import br.com.revenuebrasil.newcargas.domain.SolicitacaoColeta_;
+import br.com.revenuebrasil.newcargas.domain.TabelaFrete_;
 import br.com.revenuebrasil.newcargas.domain.TipoVeiculo;
+import br.com.revenuebrasil.newcargas.domain.TipoVeiculo_;
 import br.com.revenuebrasil.newcargas.repository.TipoVeiculoRepository;
 import br.com.revenuebrasil.newcargas.repository.search.TipoVeiculoSearchRepository;
 import br.com.revenuebrasil.newcargas.service.criteria.TipoVeiculoCriteria;
@@ -48,6 +50,7 @@ public class TipoVeiculoQueryService extends QueryService<TipoVeiculo> {
 
     /**
      * Return a {@link List} of {@link TipoVeiculoDTO} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -60,8 +63,9 @@ public class TipoVeiculoQueryService extends QueryService<TipoVeiculo> {
 
     /**
      * Return a {@link Page} of {@link TipoVeiculoDTO} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -73,6 +77,7 @@ public class TipoVeiculoQueryService extends QueryService<TipoVeiculo> {
 
     /**
      * Return the number of matching entities in the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -85,6 +90,7 @@ public class TipoVeiculoQueryService extends QueryService<TipoVeiculo> {
 
     /**
      * Function to convert {@link TipoVeiculoCriteria} to a {@link Specification}
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -121,7 +127,16 @@ public class TipoVeiculoQueryService extends QueryService<TipoVeiculo> {
                     specification.and(
                         buildSpecification(
                             criteria.getSolitacaoColetaId(),
-                            root -> root.join(TipoVeiculo_.solitacaoColetas, JoinType.LEFT).get(SolicitacaoColeta_.id)
+                            root -> root.join(TipoVeiculo_.solitacoesColeta, JoinType.LEFT).get(SolicitacaoColeta_.id)
+                        )
+                    );
+            }
+            if (criteria.getTabelaFreteId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTabelaFreteId(),
+                            root -> root.join(TipoVeiculo_.tabelasFrete, JoinType.LEFT).get(TabelaFrete_.id)
                         )
                     );
             }

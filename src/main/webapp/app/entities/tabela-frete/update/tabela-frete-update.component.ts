@@ -22,18 +22,23 @@ import { RegiaoService } from 'app/entities/regiao/service/regiao.service';
 import { TipoTabelaFrete } from 'app/entities/enumerations/tipo-tabela-frete.model';
 import { TabelaFreteService } from '../service/tabela-frete.service';
 import { ITabelaFrete } from '../tabela-frete.model';
-import { TabelaFreteFormService, TabelaFreteFormGroup } from './tabela-frete-form.service';
+import { TabelaFreteFormGroup, TabelaFreteFormService } from './tabela-frete-form.service';
+import { TipoVeiculoService } from '../../tipo-veiculo/service/tipo-veiculo.service';
+import { ITipoVeiculo } from '../../tipo-veiculo/tipo-veiculo.model';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-tabela-frete-update',
   templateUrl: './tabela-frete-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, CurrencyPipe],
 })
 export class TabelaFreteUpdateComponent implements OnInit {
   isSaving = false;
   tabelaFrete: ITabelaFrete | null = null;
   tipoTabelaFreteValues = Object.keys(TipoTabelaFrete);
+
+  tabelasFrete: ITabelaFrete[] = [];
 
   embarcadorsSharedCollection: IEmbarcador[] = [];
   transportadorasSharedCollection: ITransportadora[] = [];
@@ -41,8 +46,9 @@ export class TabelaFreteUpdateComponent implements OnInit {
   tipoFretesSharedCollection: ITipoFrete[] = [];
   formaCobrancasSharedCollection: IFormaCobranca[] = [];
   regiaosSharedCollection: IRegiao[] = [];
+  tipoVeiculosSharedCollection: ITipoVeiculo[] = [];
 
-  editForm: TabelaFreteFormGroup = this.tabelaFreteFormService.createTabelaFreteFormGroup();
+  editTabelaFreteForm: TabelaFreteFormGroup = this.tabelaFreteFormService.createTabelaFreteFormGroup();
 
   constructor(
     protected tabelaFreteService: TabelaFreteService,
@@ -53,6 +59,7 @@ export class TabelaFreteUpdateComponent implements OnInit {
     protected tipoFreteService: TipoFreteService,
     protected formaCobrancaService: FormaCobrancaService,
     protected regiaoService: RegiaoService,
+    protected tipoVeiculoService: TipoVeiculoService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -87,7 +94,7 @@ export class TabelaFreteUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const tabelaFrete = this.tabelaFreteFormService.getTabelaFrete(this.editForm);
+    const tabelaFrete = this.tabelaFreteFormService.getTabelaFrete(this.editTabelaFreteForm);
     if (tabelaFrete.id !== null) {
       this.subscribeToSaveResponse(this.tabelaFreteService.update(tabelaFrete));
     } else {
@@ -116,7 +123,7 @@ export class TabelaFreteUpdateComponent implements OnInit {
 
   protected updateForm(tabelaFrete: ITabelaFrete): void {
     this.tabelaFrete = tabelaFrete;
-    this.tabelaFreteFormService.resetForm(this.editForm, tabelaFrete);
+    this.tabelaFreteFormService.resetForm(this.editTabelaFreteForm, tabelaFrete);
 
     this.embarcadorsSharedCollection = this.embarcadorService.addEmbarcadorToCollectionIfMissing<IEmbarcador>(
       this.embarcadorsSharedCollection,
@@ -203,14 +210,35 @@ export class TabelaFreteUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IRegiao[]>) => res.body ?? []))
       .pipe(
-        map((regiaos: IRegiao[]) =>
+        map((regioes: IRegiao[]) =>
           this.regiaoService.addRegiaoToCollectionIfMissing<IRegiao>(
-            regiaos,
+            regioes,
             this.tabelaFrete?.regiaoOrigem,
             this.tabelaFrete?.regiaoDestino,
           ),
         ),
       )
       .subscribe((regiaos: IRegiao[]) => (this.regiaosSharedCollection = regiaos));
+
+    this.tipoVeiculoService
+      .query()
+      .pipe(map((res: HttpResponse<ITipoVeiculo[]>) => res.body ?? []))
+      .pipe(
+        map((tipoVeiculos: ITipoVeiculo[]) =>
+          this.tipoVeiculoService.addTipoVeiculoToCollectionIfMissing<ITipoVeiculo>(tipoVeiculos, this.tabelaFrete?.tipoVeiculo),
+        ),
+      )
+      .subscribe((tipoVeiculos: ITipoVeiculo[]) => (this.tipoVeiculosSharedCollection = tipoVeiculos));
   }
+
+  edit(tabelaFrete: ITabelaFrete) {
+    this.tabelaFrete = tabelaFrete;
+    this.updateForm(tabelaFrete);
+  }
+
+  delete(tabelaFrete: ITabelaFrete) {
+    this.tabelasFrete.slice(this.tabelasFrete.indexOf(tabelaFrete), 1);
+  }
+
+  importModal() {}
 }

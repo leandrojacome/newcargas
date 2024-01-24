@@ -11,19 +11,29 @@ import { ICidade } from 'app/entities/cidade/cidade.model';
 import { CidadeService } from 'app/entities/cidade/service/cidade.service';
 import { ITransportadora } from '../transportadora.model';
 import { TransportadoraService } from '../service/transportadora.service';
-import { TransportadoraFormService, TransportadoraFormGroup } from './transportadora-form.service';
+import { TransportadoraFormGroup, TransportadoraFormService } from './transportadora-form.service';
 import { EstadoService } from '../../estado/service/estado.service';
 import { IEstado } from '../../estado/estado.model';
 import { EnderecoUpdateComponent } from '../../endereco/update/endereco-update.component';
 import { EnderecoComponent } from '../../endereco/list/endereco.component';
 import { TipoEndereco } from '../../enumerations/tipo-endereco.model';
+import { ContaBancariaUpdateComponent } from '../../conta-bancaria/update/conta-bancaria-update.component';
+import { TabelaFreteUpdateComponent } from '../../tabela-frete/update/tabela-frete-update.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-transportadora-update',
   templateUrl: './transportadora-update.component.html',
   styleUrl: './transportadora-update.component.scss',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, EnderecoUpdateComponent, EnderecoComponent],
+  imports: [
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    EnderecoUpdateComponent,
+    EnderecoComponent,
+    ContaBancariaUpdateComponent,
+    TabelaFreteUpdateComponent,
+  ],
 })
 export class TransportadoraUpdateComponent implements OnInit {
   isSaving = false;
@@ -32,7 +42,7 @@ export class TransportadoraUpdateComponent implements OnInit {
   cidadesSharedCollection: ICidade[] = [];
   estadosSharedCollection: IEstado[] = [];
 
-  editForm: TransportadoraFormGroup = this.transportadoraFormService.createTransportadoraFormGroup();
+  editTransportadoraForm: TransportadoraFormGroup = this.transportadoraFormService.createTransportadoraFormGroup();
 
   constructor(
     protected transportadoraService: TransportadoraService,
@@ -63,12 +73,13 @@ export class TransportadoraUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const transportadora = this.transportadoraFormService.getTransportadora(this.editForm);
-    if (transportadora.id !== null) {
-      this.subscribeToSaveResponse(this.transportadoraService.update(transportadora));
-    } else {
-      this.subscribeToSaveResponse(this.transportadoraService.create(transportadora));
-    }
+    const transportadora = this.transportadoraFormService.getTransportadora(this.editTransportadoraForm);
+    console.log(transportadora);
+    // if (transportadora.id !== null) {
+    //   this.subscribeToSaveResponse(this.transportadoraService.update(transportadora));
+    // } else {
+    //   this.subscribeToSaveResponse(this.transportadoraService.create(transportadora));
+    // }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransportadora>>): void {
@@ -92,7 +103,7 @@ export class TransportadoraUpdateComponent implements OnInit {
 
   protected updateForm(transportadora: ITransportadora): void {
     this.transportadora = transportadora;
-    this.transportadoraFormService.resetForm(this.editForm, transportadora);
+    this.transportadoraFormService.resetForm(this.editTransportadoraForm, transportadora);
 
     this.cidadesSharedCollection = this.cidadeService.addCidadeToCollectionIfMissing<ICidade>(
       this.cidadesSharedCollection,
@@ -112,7 +123,7 @@ export class TransportadoraUpdateComponent implements OnInit {
 
   loadCidades() {
     this.cidadeService
-      .query({ 'estadoId.equals': this.editForm.get('estado')?.value ?? 0 })
+      .query({ 'estadoId.equals': this.editTransportadoraForm.get('estado')?.value ?? 0 })
       .pipe(map((res: HttpResponse<ICidade[]>) => res.body ?? []))
       .pipe(map((cidades: ICidade[]) => this.cidadeService.addCidadeToCollectionIfMissing<ICidade>(cidades, this.transportadora?.cidade)))
       .subscribe((cidades: ICidade[]) => (this.cidadesSharedCollection = cidades));

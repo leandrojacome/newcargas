@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editTransportadoraForm">
       <h2 id="jhi-transportadora-heading" data-cy="TransportadoraCreateUpdateHeading">Criar ou editar Transportadora</h2>
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
         <li ngbNavItem>
@@ -10,7 +10,7 @@
             <div class="mt-5">
               <jhi-alert-error></jhi-alert-error>
 
-              @if (editForm.controls.id.value !== null) {
+              @if (editTransportadoraForm.controls.id.value !== null) {
                 <div class="mb-3">
                   <label class="form-label" for="field_id">ID</label>
                   <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
@@ -22,15 +22,18 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_nome">Nome</label>
                     <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
-                    @if (editForm.get('nome')!.invalid && (editForm.get('nome')!.dirty || editForm.get('nome')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('nome')!.invalid &&
+                      (editTransportadoraForm.get('nome')!.dirty || editTransportadoraForm.get('nome')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('nome')?.errors?.required) {
+                        @if (editTransportadoraForm.get('nome')?.errors?.required) {
                           <small class="form-text text-danger">O campo é obrigatório.</small>
                         }
-                        @if (editForm.get('nome')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('nome')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('nome')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('nome')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -41,15 +44,18 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_cnpj">CNPJ</label>
                     <input type="text" class="form-control" name="cnpj" id="field_cnpj" data-cy="cnpj" formControlName="cnpj" />
-                    @if (editForm.get('cnpj')!.invalid && (editForm.get('cnpj')!.dirty || editForm.get('cnpj')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('cnpj')!.invalid &&
+                      (editTransportadoraForm.get('cnpj')!.dirty || editTransportadoraForm.get('cnpj')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('cnpj')?.errors?.required) {
+                        @if (editTransportadoraForm.get('cnpj')?.errors?.required) {
                           <small class="form-text text-danger">O campo é obrigatório.</small>
                         }
-                        @if (editForm.get('cnpj')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('cnpj')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 14 caracteres.</small>
                         }
-                        @if (editForm.get('cnpj')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('cnpj')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 14 caracteres.</small>
                         }
                       </div>
@@ -71,13 +77,14 @@
                       formControlName="razaoSocial"
                     />
                     @if (
-                      editForm.get('razaoSocial')!.invalid && (editForm.get('razaoSocial')!.dirty || editForm.get('razaoSocial')!.touched)
+                      editTransportadoraForm.get('razaoSocial')!.invalid &&
+                      (editTransportadoraForm.get('razaoSocial')!.dirty || editTransportadoraForm.get('razaoSocial')!.touched)
                     ) {
                       <div>
-                        @if (editForm.get('razaoSocial')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('razaoSocial')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('razaoSocial')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('razaoSocial')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -96,14 +103,14 @@
                       formControlName="inscricaoEstadual"
                     />
                     @if (
-                      editForm.get('inscricaoEstadual')!.invalid &&
-                      (editForm.get('inscricaoEstadual')!.dirty || editForm.get('inscricaoEstadual')!.touched)
+                      editTransportadoraForm.get('inscricaoEstadual')!.invalid &&
+                      (editTransportadoraForm.get('inscricaoEstadual')!.dirty || editTransportadoraForm.get('inscricaoEstadual')!.touched)
                     ) {
                       <div>
-                        @if (editForm.get('inscricaoEstadual')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('inscricaoEstadual')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('inscricaoEstadual')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('inscricaoEstadual')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
                         }
                       </div>
@@ -125,14 +132,14 @@
                       formControlName="inscricaoMunicipal"
                     />
                     @if (
-                      editForm.get('inscricaoMunicipal')!.invalid &&
-                      (editForm.get('inscricaoMunicipal')!.dirty || editForm.get('inscricaoMunicipal')!.touched)
+                      editTransportadoraForm.get('inscricaoMunicipal')!.invalid &&
+                      (editTransportadoraForm.get('inscricaoMunicipal')!.dirty || editTransportadoraForm.get('inscricaoMunicipal')!.touched)
                     ) {
                       <div>
-                        @if (editForm.get('inscricaoMunicipal')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('inscricaoMunicipal')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('inscricaoMunicipal')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('inscricaoMunicipal')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 20 caracteres.</small>
                         }
                       </div>
@@ -151,13 +158,14 @@
                       formControlName="responsavel"
                     />
                     @if (
-                      editForm.get('responsavel')!.invalid && (editForm.get('responsavel')!.dirty || editForm.get('responsavel')!.touched)
+                      editTransportadoraForm.get('responsavel')!.invalid &&
+                      (editTransportadoraForm.get('responsavel')!.dirty || editTransportadoraForm.get('responsavel')!.touched)
                     ) {
                       <div>
-                        @if (editForm.get('responsavel')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('responsavel')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('responsavel')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('responsavel')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -172,12 +180,15 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_cep">CEP</label>
                     <input type="text" class="form-control" name="cep" id="field_cep" data-cy="cep" formControlName="cep" />
-                    @if (editForm.get('cep')!.invalid && (editForm.get('cep')!.dirty || editForm.get('cep')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('cep')!.invalid &&
+                      (editTransportadoraForm.get('cep')!.dirty || editTransportadoraForm.get('cep')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('cep')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('cep')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 8 caracteres.</small>
                         }
-                        @if (editForm.get('cep')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('cep')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 8 caracteres.</small>
                         }
                       </div>
@@ -203,12 +214,15 @@
                       data-cy="endereco"
                       formControlName="endereco"
                     />
-                    @if (editForm.get('endereco')!.invalid && (editForm.get('endereco')!.dirty || editForm.get('endereco')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('endereco')!.invalid &&
+                      (editTransportadoraForm.get('endereco')!.dirty || editTransportadoraForm.get('endereco')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('endereco')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('endereco')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('endereco')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('endereco')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -219,12 +233,15 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_numero">Número</label>
                     <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
-                    @if (editForm.get('numero')!.invalid && (editForm.get('numero')!.dirty || editForm.get('numero')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('numero')!.invalid &&
+                      (editTransportadoraForm.get('numero')!.dirty || editTransportadoraForm.get('numero')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('numero')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('numero')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 1 caracteres.</small>
                         }
-                        @if (editForm.get('numero')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('numero')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 10 caracteres.</small>
                         }
                       </div>
@@ -246,13 +263,14 @@
                       formControlName="complemento"
                     />
                     @if (
-                      editForm.get('complemento')!.invalid && (editForm.get('complemento')!.dirty || editForm.get('complemento')!.touched)
+                      editTransportadoraForm.get('complemento')!.invalid &&
+                      (editTransportadoraForm.get('complemento')!.dirty || editTransportadoraForm.get('complemento')!.touched)
                     ) {
                       <div>
-                        @if (editForm.get('complemento')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('complemento')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('complemento')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('complemento')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -263,12 +281,15 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_bairro">Bairro</label>
                     <input type="text" class="form-control" name="bairro" id="field_bairro" data-cy="bairro" formControlName="bairro" />
-                    @if (editForm.get('bairro')!.invalid && (editForm.get('bairro')!.dirty || editForm.get('bairro')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('bairro')!.invalid &&
+                      (editTransportadoraForm.get('bairro')!.dirty || editTransportadoraForm.get('bairro')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('bairro')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('bairro')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('bairro')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('bairro')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -335,12 +356,15 @@
                       data-cy="telefone"
                       formControlName="telefone"
                     />
-                    @if (editForm.get('telefone')!.invalid && (editForm.get('telefone')!.dirty || editForm.get('telefone')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('telefone')!.invalid &&
+                      (editTransportadoraForm.get('telefone')!.dirty || editTransportadoraForm.get('telefone')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('telefone')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('telefone')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 10 caracteres.</small>
                         }
-                        @if (editForm.get('telefone')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('telefone')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 11 caracteres.</small>
                         }
                       </div>
@@ -351,12 +375,15 @@
                   <div class="mb-3">
                     <label class="form-label" for="field_email">Email</label>
                     <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-                    @if (editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)) {
+                    @if (
+                      editTransportadoraForm.get('email')!.invalid &&
+                      (editTransportadoraForm.get('email')!.dirty || editTransportadoraForm.get('email')!.touched)
+                    ) {
                       <div>
-                        @if (editForm.get('email')?.errors?.minlength) {
+                        @if (editTransportadoraForm.get('email')?.errors?.minlength) {
                           <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                         }
-                        @if (editForm.get('email')?.errors?.maxlength) {
+                        @if (editTransportadoraForm.get('email')?.errors?.maxlength) {
                           <small class="form-text text-danger">Este campo não pode ter mais de 150 caracteres.</small>
                         }
                       </div>
@@ -375,12 +402,15 @@
                   formControlName="observacao"
                   rows="5"
                 ></textarea>
-                @if (editForm.get('observacao')!.invalid && (editForm.get('observacao')!.dirty || editForm.get('observacao')!.touched)) {
+                @if (
+                  editTransportadoraForm.get('observacao')!.invalid &&
+                  (editTransportadoraForm.get('observacao')!.dirty || editTransportadoraForm.get('observacao')!.touched)
+                ) {
                   <div>
-                    @if (editForm.get('observacao')?.errors?.minlength) {
+                    @if (editTransportadoraForm.get('observacao')?.errors?.minlength) {
                       <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
                     }
-                    @if (editForm.get('observacao')?.errors?.maxlength) {
+                    @if (editTransportadoraForm.get('observacao')?.errors?.maxlength) {
                       <small class="form-text text-danger">Este campo não pode ter mais de 500 caracteres.</small>
                     }
                   </div>
@@ -395,6 +425,18 @@
             <jhi-endereco-update [tipoEndereco]="TipoEndereco.TRANSPORTADORA"></jhi-endereco-update>
           </ng-template>
         </li>
+        <li ngbNavItem>
+          <button ngbNavLink>Contas Bancárias</button>
+          <ng-template ngbNavContent>
+            <jhi-conta-bancaria-update></jhi-conta-bancaria-update>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <button ngbNavLink>Tabelas de Frete</button>
+          <ng-template ngbNavContent>
+            <jhi-tabela-frete-update></jhi-tabela-frete-update>
+          </ng-template>
+        </li>
       </ul>
       <div [ngbNavOutlet]="nav"></div>
 
@@ -403,13 +445,7 @@
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
         </button>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" [disabled]="isSaving" class="btn btn-primary">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
         </button>
       </div>

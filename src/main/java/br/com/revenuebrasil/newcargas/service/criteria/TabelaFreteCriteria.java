@@ -91,6 +91,8 @@ public class TabelaFreteCriteria implements Serializable, Criteria {
 
     private LongFilter regiaoDestinoId;
 
+    private LongFilter tipoVeiculoId;
+
     private Boolean distinct;
 
     public TabelaFreteCriteria() {}
@@ -518,6 +520,21 @@ public class TabelaFreteCriteria implements Serializable, Criteria {
 
     public void setRegiaoDestinoId(LongFilter regiaoDestinoId) {
         this.regiaoDestinoId = regiaoDestinoId;
+    }
+
+    public LongFilter getTipoVeiculoId() {
+        return tipoVeiculoId;
+    }
+
+    public LongFilter tipoVeiculoId() {
+        if (tipoVeiculoId == null) {
+            tipoVeiculoId = new LongFilter();
+        }
+        return tipoVeiculoId;
+    }
+
+    public void setTipoVeiculoId(LongFilter tipoVeiculoId) {
+        this.tipoVeiculoId = tipoVeiculoId;
     }
 
     public Boolean getDistinct() {

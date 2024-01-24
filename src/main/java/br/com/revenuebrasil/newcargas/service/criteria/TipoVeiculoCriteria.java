@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.core.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.*;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.InstantFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link br.com.revenuebrasil.newcargas.domain.TipoVeiculo} entity. This class is used
@@ -36,6 +39,8 @@ public class TipoVeiculoCriteria implements Serializable, Criteria {
     private InstantFilter lastModifiedDate;
 
     private LongFilter solitacaoColetaId;
+
+    private LongFilter tabelaFreteId;
 
     private Boolean distinct;
 
@@ -178,6 +183,21 @@ public class TipoVeiculoCriteria implements Serializable, Criteria {
         this.solitacaoColetaId = solitacaoColetaId;
     }
 
+    public LongFilter getTabelaFreteId() {
+        return tabelaFreteId;
+    }
+
+    public LongFilter tabelaFreteId() {
+        if (tabelaFreteId == null) {
+            tabelaFreteId = new LongFilter();
+        }
+        return tabelaFreteId;
+    }
+
+    public void setTabelaFreteId(LongFilter tabelaFreteId) {
+        this.tabelaFreteId = tabelaFreteId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -204,6 +224,7 @@ public class TipoVeiculoCriteria implements Serializable, Criteria {
             Objects.equals(lastModifiedBy, that.lastModifiedBy) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
             Objects.equals(solitacaoColetaId, that.solitacaoColetaId) &&
+            Objects.equals(tabelaFreteId, that.tabelaFreteId) &&
             Objects.equals(distinct, that.distinct)
         );
     }

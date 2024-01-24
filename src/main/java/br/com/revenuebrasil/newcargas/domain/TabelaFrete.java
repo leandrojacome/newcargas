@@ -141,6 +141,10 @@ public class TabelaFrete extends AbstractAuditingEntity<Long> implements Seriali
     @JsonIgnoreProperties(value = { "tabelaFreteOrigems", "tabelaFreteDestinos" }, allowSetters = true)
     private Regiao regiaoDestino;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "tabelaFretes", "solitacaoColetas" }, allowSetters = true)
+    private TipoVeiculo tipoVeiculo;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -451,6 +455,19 @@ public class TabelaFrete extends AbstractAuditingEntity<Long> implements Seriali
     public TabelaFrete regiaoDestino(Regiao regiao) {
         this.setRegiaoDestino(regiao);
         return this;
+    }
+
+    public TabelaFrete tipoVeiculo(TipoVeiculo tipoVeiculo) {
+        this.setTipoVeiculo(tipoVeiculo);
+        return this;
+    }
+
+    public TipoVeiculo getTipoVeiculo() {
+        return tipoVeiculo;
+    }
+
+    public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
+        this.tipoVeiculo = tipoVeiculo;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -31,19 +31,19 @@ class TipoVeiculoTest {
         SolicitacaoColeta solicitacaoColetaBack = getSolicitacaoColetaRandomSampleGenerator();
 
         tipoVeiculo.addSolitacaoColeta(solicitacaoColetaBack);
-        assertThat(tipoVeiculo.getSolitacaoColetas()).containsOnly(solicitacaoColetaBack);
+        assertThat(tipoVeiculo.getSolitacoesColeta()).containsOnly(solicitacaoColetaBack);
         assertThat(solicitacaoColetaBack.getTipoVeiculo()).isEqualTo(tipoVeiculo);
 
         tipoVeiculo.removeSolitacaoColeta(solicitacaoColetaBack);
-        assertThat(tipoVeiculo.getSolitacaoColetas()).doesNotContain(solicitacaoColetaBack);
+        assertThat(tipoVeiculo.getSolitacoesColeta()).doesNotContain(solicitacaoColetaBack);
         assertThat(solicitacaoColetaBack.getTipoVeiculo()).isNull();
 
         tipoVeiculo.solitacaoColetas(new HashSet<>(Set.of(solicitacaoColetaBack)));
-        assertThat(tipoVeiculo.getSolitacaoColetas()).containsOnly(solicitacaoColetaBack);
+        assertThat(tipoVeiculo.getSolitacoesColeta()).containsOnly(solicitacaoColetaBack);
         assertThat(solicitacaoColetaBack.getTipoVeiculo()).isEqualTo(tipoVeiculo);
 
-        tipoVeiculo.setSolitacaoColetas(new HashSet<>());
-        assertThat(tipoVeiculo.getSolitacaoColetas()).doesNotContain(solicitacaoColetaBack);
+        tipoVeiculo.setSolitacoesColeta(new HashSet<>());
+        assertThat(tipoVeiculo.getSolitacoesColeta()).doesNotContain(solicitacaoColetaBack);
         assertThat(solicitacaoColetaBack.getTipoVeiculo()).isNull();
     }
 }

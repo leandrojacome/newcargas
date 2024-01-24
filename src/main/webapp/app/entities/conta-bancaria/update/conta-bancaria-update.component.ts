@@ -27,11 +27,11 @@ export class ContaBancariaUpdateComponent implements OnInit {
   isSaving = false;
   contaBancaria: IContaBancaria | null = null;
 
-  bancosSharedCollection: IBanco[] = [];
-  embarcadorsSharedCollection: IEmbarcador[] = [];
-  transportadorasSharedCollection: ITransportadora[] = [];
+  contasBancarias: IContaBancaria[] = [];
 
-  editForm: ContaBancariaFormGroup = this.contaBancariaFormService.createContaBancariaFormGroup();
+  bancosSharedCollection: IBanco[] = [];
+
+  editContaBancariaForm: ContaBancariaFormGroup = this.contaBancariaFormService.createContaBancariaFormGroup();
 
   constructor(
     protected contaBancariaService: ContaBancariaService,
@@ -66,7 +66,7 @@ export class ContaBancariaUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const contaBancaria = this.contaBancariaFormService.getContaBancaria(this.editForm);
+    const contaBancaria = this.contaBancariaFormService.getContaBancaria(this.editContaBancariaForm);
     if (contaBancaria.id !== null) {
       this.subscribeToSaveResponse(this.contaBancariaService.update(contaBancaria));
     } else {
@@ -95,17 +95,9 @@ export class ContaBancariaUpdateComponent implements OnInit {
 
   protected updateForm(contaBancaria: IContaBancaria): void {
     this.contaBancaria = contaBancaria;
-    this.contaBancariaFormService.resetForm(this.editForm, contaBancaria);
+    this.contaBancariaFormService.resetForm(this.editContaBancariaForm, contaBancaria);
 
     this.bancosSharedCollection = this.bancoService.addBancoToCollectionIfMissing<IBanco>(this.bancosSharedCollection, contaBancaria.banco);
-    this.embarcadorsSharedCollection = this.embarcadorService.addEmbarcadorToCollectionIfMissing<IEmbarcador>(
-      this.embarcadorsSharedCollection,
-      contaBancaria.embarcador,
-    );
-    this.transportadorasSharedCollection = this.transportadoraService.addTransportadoraToCollectionIfMissing<ITransportadora>(
-      this.transportadorasSharedCollection,
-      contaBancaria.transportadora,
-    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -114,28 +106,15 @@ export class ContaBancariaUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IBanco[]>) => res.body ?? []))
       .pipe(map((bancos: IBanco[]) => this.bancoService.addBancoToCollectionIfMissing<IBanco>(bancos, this.contaBancaria?.banco)))
       .subscribe((bancos: IBanco[]) => (this.bancosSharedCollection = bancos));
+  }
 
-    this.embarcadorService
-      .query()
-      .pipe(map((res: HttpResponse<IEmbarcador[]>) => res.body ?? []))
-      .pipe(
-        map((embarcadors: IEmbarcador[]) =>
-          this.embarcadorService.addEmbarcadorToCollectionIfMissing<IEmbarcador>(embarcadors, this.contaBancaria?.embarcador),
-        ),
-      )
-      .subscribe((embarcadors: IEmbarcador[]) => (this.embarcadorsSharedCollection = embarcadors));
+  addContaBancaria() {}
 
-    this.transportadoraService
-      .query()
-      .pipe(map((res: HttpResponse<ITransportadora[]>) => res.body ?? []))
-      .pipe(
-        map((transportadoras: ITransportadora[]) =>
-          this.transportadoraService.addTransportadoraToCollectionIfMissing<ITransportadora>(
-            transportadoras,
-            this.contaBancaria?.transportadora,
-          ),
-        ),
-      )
-      .subscribe((transportadoras: ITransportadora[]) => (this.transportadorasSharedCollection = transportadoras));
+  edit(contaBancaria: IContaBancaria) {
+    this.updateForm(contaBancaria);
+  }
+
+  delete(contaBancaria: IContaBancaria) {
+    this.contasBancarias.slice(this.contasBancarias.indexOf(contaBancaria), 1);
   }
 }

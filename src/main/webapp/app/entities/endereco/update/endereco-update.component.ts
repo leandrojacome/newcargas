@@ -122,12 +122,59 @@ export class EnderecoUpdateComponent implements OnInit {
     let endereco = this.enderecoFormService.getEndereco(this.editEnderecoForm);
     endereco.tipo = this.tipoEndereco;
     const enderecoConvertido = this.convertToIEndereco(endereco);
+    this.getCompletedEndereco(endereco, enderecoConvertido);
+    this.selectStackHolderId(enderecoConvertido);
+    this.addToEnderecoList(enderecoConvertido);
+  }
+
+  private addToEnderecoList(enderecoConvertido: IEndereco) {
     this.enderecos.push(enderecoConvertido);
     this.endereco = null;
     this.editEnderecoForm = this.enderecoFormService.createEnderecoFormGroup();
   }
 
-  convertToIEndereco(endereco: IEndereco | NewEndereco): IEndereco {
+  private getCompletedEndereco(
+    endereco:
+      | IEndereco
+      | (Omit<IEndereco, 'id'> & {
+          id?: number | null;
+        }),
+    enderecoConvertido: IEndereco,
+  ) {
+    this.cidadeService.find(Number(endereco.cidade)).subscribe(cidadeData => {
+      enderecoConvertido.cidade = { id: cidadeData.body?.id as number, nome: cidadeData.body?.nome };
+    });
+    this.estadoService.find(Number(endereco.estado)).subscribe(estadoData => {
+      enderecoConvertido.estado = { id: estadoData.body?.id as number, nome: estadoData.body?.nome };
+    });
+  }
+
+  private selectStackHolderId(enderecoConvertido: IEndereco) {
+    if (this.idParent !== undefined && this.idParent !== null && this.idParent !== 0) {
+      switch (this.tipoEndereco) {
+        case TipoEndereco.EMBARCADOR:
+          enderecoConvertido.embarcador = { id: this.idParent };
+          break;
+        case TipoEndereco.TRANSPORTADORA:
+          enderecoConvertido.transportadora = { id: this.idParent };
+          break;
+        case TipoEndereco.NOTA_FISCAL_COLETA_ORIGEM:
+          enderecoConvertido.notaFiscalColetaOrigem = { id: this.idParent };
+          break;
+        case TipoEndereco.NOTA_FISCAL_COLETA_DESTINO:
+          enderecoConvertido.notaFiscalColetaDestino = { id: this.idParent };
+          break;
+        case TipoEndereco.SOLICITACAO_COLETA_ORIGEM:
+          enderecoConvertido.solicitacaoColetaOrigem = { id: this.idParent };
+          break;
+        case TipoEndereco.SOLICITACAO_COLETA_DESTINO:
+          enderecoConvertido.solicitacaoColetaDestino = { id: this.idParent };
+          break;
+      }
+    }
+  }
+
+  private convertToIEndereco(endereco: IEndereco | NewEndereco): IEndereco {
     const id = endereco.id === undefined || endereco.id === null ? 0 : endereco.id;
     return { ...endereco, id };
   }

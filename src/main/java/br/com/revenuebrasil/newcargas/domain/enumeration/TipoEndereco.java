@@ -6,6 +6,8 @@ package br.com.revenuebrasil.newcargas.domain.enumeration;
 public enum TipoEndereco {
     TRANSPORTADORA,
     EMBARCADOR,
-    SOLICITACAO_COLETA,
-    NOTA_FISCAL_COLETA,
+    NOTA_FISCAL_COLETA_ORIGEM,
+    NOTA_FISCAL_COLETA_DESTINO,
+    SOLITACAO_COLETA_ORIGEM,
+    SOLICITACAO_COLETA_DESTINO,
 }

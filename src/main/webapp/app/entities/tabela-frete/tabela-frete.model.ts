@@ -6,6 +6,7 @@ import { ITipoFrete } from 'app/entities/tipo-frete/tipo-frete.model';
 import { IFormaCobranca } from 'app/entities/forma-cobranca/forma-cobranca.model';
 import { IRegiao } from 'app/entities/regiao/regiao.model';
 import { TipoTabelaFrete } from 'app/entities/enumerations/tipo-tabela-frete.model';
+import { ITipoVeiculo } from '../tipo-veiculo/tipo-veiculo.model';
 
 export interface ITabelaFrete {
   id: number;
@@ -34,6 +35,7 @@ export interface ITabelaFrete {
   formaCobranca?: Pick<IFormaCobranca, 'id'> | null;
   regiaoOrigem?: Pick<IRegiao, 'id'> | null;
   regiaoDestino?: Pick<IRegiao, 'id'> | null;
+  tipoVeiculo?: Pick<ITipoVeiculo, 'id'> | null;
 }
 
 export type NewTabelaFrete = Omit<ITabelaFrete, 'id'> & { id: null };

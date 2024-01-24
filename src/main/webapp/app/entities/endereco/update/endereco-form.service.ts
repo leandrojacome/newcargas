@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
@@ -9,8 +9,6 @@ import { IEndereco, NewEndereco } from '../endereco.model';
  * A partial Type with required key is used as form input.
  */
 type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>> & { id: NonNullable<T['id']> };
-
-type PartialWithRequiredId<T extends { id?: unknown }> = Partial<Omit<T, 'id'>> & { id: NonNullable<T['id']> };
 
 /**
  * Type for createFormGroup and resetForm argument.
@@ -28,9 +26,11 @@ type FormValueOf<T extends IEndereco | NewEndereco> = Omit<T, 'createdDate' | 'l
 
 type EnderecoFormRawValue = FormValueOf<IEndereco>;
 
-type NewEnderecoFormRawValue = FormValueOf<NewEndereco>;
+type NewEnderecoFormRawValue = FormValueOf<NewEndereco> & { id: number };
 
 type EnderecoFormDefaults = Pick<NewEndereco, 'id' | 'createdDate' | 'lastModifiedDate'>;
+
+type PartialWithRequiredId<T extends { id?: unknown }> = Partial<Omit<T, 'id'>> & { id: NonNullable<T['id']> | null };
 
 type EnderecoFormGroupContent = {
   id: FormControl<EnderecoFormRawValue['id'] | NewEndereco['id']>;
@@ -65,7 +65,7 @@ export class EnderecoFormService {
     });
     return new FormGroup<EnderecoFormGroupContent>({
       id: new FormControl(
-        { value: enderecoRawValue.id, disabled: true },
+        { value: enderecoRawValue.id ?? 0, disabled: true },
         {
           nonNullable: true,
           validators: [Validators.required],
@@ -143,6 +143,7 @@ export class EnderecoFormService {
       ...endereco,
       createdDate: endereco.createdDate ? endereco.createdDate.format(DATE_TIME_FORMAT) : undefined,
       lastModifiedDate: endereco.lastModifiedDate ? endereco.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
+      id: endereco.id ?? 0, // Fornecendo um valor padrão para id
     };
   }
 }

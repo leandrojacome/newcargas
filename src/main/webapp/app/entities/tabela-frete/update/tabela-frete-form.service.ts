@@ -57,6 +57,7 @@ type TabelaFreteFormGroupContent = {
   formaCobranca: FormControl<TabelaFreteFormRawValue['formaCobranca']>;
   regiaoOrigem: FormControl<TabelaFreteFormRawValue['regiaoOrigem']>;
   regiaoDestino: FormControl<TabelaFreteFormRawValue['regiaoDestino']>;
+  tipoVeiculo: FormControl<TabelaFreteFormRawValue['tipoVeiculo']>;
 };
 
 export type TabelaFreteFormGroup = FormGroup<TabelaFreteFormGroupContent>;
@@ -129,6 +130,7 @@ export class TabelaFreteFormService {
       formaCobranca: new FormControl(tabelaFreteRawValue.formaCobranca),
       regiaoOrigem: new FormControl(tabelaFreteRawValue.regiaoOrigem),
       regiaoDestino: new FormControl(tabelaFreteRawValue.regiaoDestino),
+      tipoVeiculo: new FormControl(tabelaFreteRawValue.tipoVeiculo),
     });
   }
 

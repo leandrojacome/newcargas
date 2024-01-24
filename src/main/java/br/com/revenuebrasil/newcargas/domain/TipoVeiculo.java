@@ -62,7 +62,13 @@ public class TipoVeiculo extends AbstractAuditingEntity<Long> implements Seriali
         },
         allowSetters = true
     )
-    private Set<SolicitacaoColeta> solitacaoColetas = new HashSet<>();
+    private Set<SolicitacaoColeta> solitacoesColeta = new HashSet<>();
+
+    @OneToMany(mappedBy = "tipoVeiculo")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(value = { "tipoVeiculo" }, allowSetters = true)
+    private Set<TabelaFrete> tabelasFrete = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -129,33 +135,33 @@ public class TipoVeiculo extends AbstractAuditingEntity<Long> implements Seriali
         return this;
     }
 
-    public Set<SolicitacaoColeta> getSolitacaoColetas() {
-        return this.solitacaoColetas;
+    public Set<SolicitacaoColeta> getSolitacoesColeta() {
+        return this.solitacoesColeta;
     }
 
-    public void setSolitacaoColetas(Set<SolicitacaoColeta> solicitacaoColetas) {
-        if (this.solitacaoColetas != null) {
-            this.solitacaoColetas.forEach(i -> i.setTipoVeiculo(null));
+    public void setSolitacoesColeta(Set<SolicitacaoColeta> solicitacaoColetas) {
+        if (this.solitacoesColeta != null) {
+            this.solitacoesColeta.forEach(i -> i.setTipoVeiculo(null));
         }
         if (solicitacaoColetas != null) {
             solicitacaoColetas.forEach(i -> i.setTipoVeiculo(this));
         }
-        this.solitacaoColetas = solicitacaoColetas;
+        this.solitacoesColeta = solicitacaoColetas;
     }
 
     public TipoVeiculo solitacaoColetas(Set<SolicitacaoColeta> solicitacaoColetas) {
-        this.setSolitacaoColetas(solicitacaoColetas);
+        this.setSolitacoesColeta(solicitacaoColetas);
         return this;
     }
 
     public TipoVeiculo addSolitacaoColeta(SolicitacaoColeta solicitacaoColeta) {
-        this.solitacaoColetas.add(solicitacaoColeta);
+        this.solitacoesColeta.add(solicitacaoColeta);
         solicitacaoColeta.setTipoVeiculo(this);
         return this;
     }
 
     public TipoVeiculo removeSolitacaoColeta(SolicitacaoColeta solicitacaoColeta) {
-        this.solitacaoColetas.remove(solicitacaoColeta);
+        this.solitacoesColeta.remove(solicitacaoColeta);
         solicitacaoColeta.setTipoVeiculo(null);
         return this;
     }

@@ -215,6 +215,16 @@ public class TabelaFreteQueryService extends QueryService<TabelaFrete> {
                         )
                     );
             }
+
+            if (criteria.getTipoVeiculoId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTipoVeiculoId(),
+                            root -> root.join(TabelaFrete_.tipoVeiculo, JoinType.LEFT).get(TipoVeiculo_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

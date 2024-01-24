@@ -3,7 +3,7 @@
     <div [formGroup]="editEnderecoForm">
       <jhi-alert-error></jhi-alert-error>
 
-      @if (editEnderecoForm.controls.id.value !== null) {
+      @if (editEnderecoForm.controls.id.value !== null && editEnderecoForm.controls.id.value !== 0) {
         <div class="mb-3">
           <label class="form-label" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
@@ -190,7 +190,7 @@
               <td>{{ endereco.cep }}</td>
               <td>{{ endereco.endereco }}</td>
               <td>{{ endereco.bairro }}</td>
-              <td>{{ endereco.cidade }}</td>
+              <td>{{ endereco.cidade?.nome }}</td>
               <td>
                 <div class="btn-group">
                   <button type="button" class="btn btn-info btn-sm" (click)="edit(endereco)">
