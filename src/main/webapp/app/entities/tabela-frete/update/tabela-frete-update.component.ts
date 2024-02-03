@@ -26,12 +26,14 @@ import { TabelaFreteFormGroup, TabelaFreteFormService } from './tabela-frete-for
 import { TipoVeiculoService } from '../../tipo-veiculo/service/tipo-veiculo.service';
 import { ITipoVeiculo } from '../../tipo-veiculo/tipo-veiculo.model';
 import { CurrencyPipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faIcons } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   standalone: true,
   selector: 'jhi-tabela-frete-update',
   templateUrl: './tabela-frete-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, CurrencyPipe],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, CurrencyPipe, FaIconComponent],
 })
 export class TabelaFreteUpdateComponent implements OnInit {
   isSaving = false;
@@ -241,4 +243,6 @@ export class TabelaFreteUpdateComponent implements OnInit {
   }
 
   importModal() {}
+
+  protected readonly faIcons = faIcons;
 }

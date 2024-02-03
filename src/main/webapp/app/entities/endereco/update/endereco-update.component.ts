@@ -15,6 +15,7 @@ import { IEndereco, NewEndereco } from '../endereco.model';
 import { EnderecoFormGroup, EnderecoFormService } from './endereco-form.service';
 import { EstadoService } from '../../estado/service/estado.service';
 import { IEstado } from '../../estado/estado.model';
+import { TransportadoraCommunicationService } from '../../transportadora/service/transportadora-communication-service';
 
 @Component({
   standalone: true,
@@ -41,6 +42,7 @@ export class EnderecoUpdateComponent implements OnInit {
     protected enderecoFormService: EnderecoFormService,
     protected estadoService: EstadoService,
     protected cidadeService: CidadeService,
+    protected transpotadoraCommunicationService: TransportadoraCommunicationService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -67,11 +69,6 @@ export class EnderecoUpdateComponent implements OnInit {
     this.isSaving = true;
     let endereco = this.enderecoFormService.getEndereco(this.editEnderecoForm);
     const enderecoConvertido: IEndereco = this.convertToIEndereco(endereco);
-    if (enderecoConvertido.id !== null && enderecoConvertido.id !== 0) {
-      this.subscribeToSaveResponse(this.enderecoService.update(enderecoConvertido));
-    } else {
-      this.subscribeToSaveResponse(this.enderecoService.create(enderecoConvertido));
-    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEndereco>>): void {
@@ -129,6 +126,7 @@ export class EnderecoUpdateComponent implements OnInit {
 
   private addToEnderecoList(enderecoConvertido: IEndereco) {
     this.enderecos.push(enderecoConvertido);
+    this.transpotadoraCommunicationService.addEndereco(enderecoConvertido);
     this.endereco = null;
     this.editEnderecoForm = this.enderecoFormService.createEnderecoFormGroup();
   }
@@ -188,11 +186,13 @@ export class EnderecoUpdateComponent implements OnInit {
   }
 
   delete(endereco: any) {
+    this.transpotadoraCommunicationService.removeEndereco(endereco);
     this.enderecos.splice(this.enderecos.indexOf(endereco), 1);
   }
 
   edit(endereco: any) {
     this.endereco = endereco;
+    this.transpotadoraCommunicationService.updateEndereco(endereco);
     this.updateForm(endereco);
   }
 }
