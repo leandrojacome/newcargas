@@ -30,6 +30,7 @@ local.properties
 .settings/
 .loadpath
 .factorypath
+jpb
 
 # External tool builders
 .externalToolBuilders/**

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -28,6 +28,7 @@ import { ITipoVeiculo } from '../../tipo-veiculo/tipo-veiculo.model';
 import { CurrencyPipe } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faIcons } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   standalone: true,
@@ -36,6 +37,8 @@ import { faIcons } from '@fortawesome/free-solid-svg-icons';
   imports: [SharedModule, FormsModule, ReactiveFormsModule, CurrencyPipe, FaIconComponent],
 })
 export class TabelaFreteUpdateComponent implements OnInit {
+  @ViewChild('importModal') importModal!: TemplateRef<any>;
+
   isSaving = false;
   tabelaFrete: ITabelaFrete | null = null;
   tipoTabelaFreteValues = Object.keys(TipoTabelaFrete);
@@ -63,6 +66,7 @@ export class TabelaFreteUpdateComponent implements OnInit {
     protected regiaoService: RegiaoService,
     protected tipoVeiculoService: TipoVeiculoService,
     protected activatedRoute: ActivatedRoute,
+    protected modalService: NgbModal,
   ) {}
 
   compareEmbarcador = (o1: IEmbarcador | null, o2: IEmbarcador | null): boolean => this.embarcadorService.compareEmbarcador(o1, o2);
@@ -88,6 +92,12 @@ export class TabelaFreteUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+  }
+
+  openImportModal() {
+    this.modalService.open(this.importModal);
+    document.getElementById('importModal')?.classList.add('show');
+    document.getElementById('importModal')?.setAttribute('style', 'display: block;');
   }
 
   previousState(): void {
@@ -242,7 +252,19 @@ export class TabelaFreteUpdateComponent implements OnInit {
     this.tabelasFrete.slice(this.tabelasFrete.indexOf(tabelaFrete), 1);
   }
 
-  importModal() {}
-
   protected readonly faIcons = faIcons;
+
+  onFileSelected($event: Event) {
+    const input = $event.target as HTMLInputElement;
+    if (input.files) {
+      const file = input.files[0];
+      if (file) {
+        this.importFile();
+      }
+    }
+  }
+
+  importFile() {
+    console.log('importFile');
+  }
 }

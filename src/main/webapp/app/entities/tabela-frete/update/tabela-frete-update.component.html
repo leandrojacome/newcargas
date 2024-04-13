@@ -502,7 +502,7 @@
           <fa-icon icon="plus"></fa-icon>
           <span class="d-none d-md-inline">Adicionar</span>
         </button>
-        <button class="btn btn-outline-danger" (click)="importModal()">
+        <button class="btn btn-outline-danger" (click)="openImportModal()" data-bs-toggle="modal" data-bs-target="#importModal">
           <fa-icon icon="file"></fa-icon>
           <span class="d-none d-md-inline">Importar</span>
         </button>
@@ -548,3 +548,23 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<ng-template #importModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Importar Arquivo</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+    />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="importFile(); modal.close('Import click')">Importar</button>
+  </div>
+</ng-template>
